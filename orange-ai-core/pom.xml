@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>cn.hengzq.orange</groupId>
+        <artifactId>orange-ai</artifactId>
+        <version>${revision}</version>
+        <relativePath>../pom.xml</relativePath>
+    </parent>
+
+    <artifactId>orange-ai-core</artifactId>
+    <name>${project.artifactId}</name>
+    <packaging>jar</packaging>
+
+    <description>
+        orange-ai-biz
+    </description>
+
+    <dependencies>
+        <!--  阿里AI大模型      -->
+        <dependency>
+            <groupId>cn.hengzq.orange</groupId>
+            <artifactId>orange-ai-alibaba-biz-starter</artifactId>
+        </dependency>
+        <!--  ollama 大模型-->
+        <dependency>
+            <groupId>cn.hengzq.orange</groupId>
+            <artifactId>orange-ai-ollama-biz-starter</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-webflux</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>cn.hengzq.orange</groupId>
+            <artifactId>orange-starter-mybatis</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>cn.hengzq.orange</groupId>
+            <artifactId>orange-ai-common</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-actuator</artifactId>
+        </dependency>
+    </dependencies>
+</project>

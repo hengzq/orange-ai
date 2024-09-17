@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>cn.hengzq.orange</groupId>
+        <artifactId>orange-dependencies-parent</artifactId>
+        <version>0.0.1-SNAPSHOT</version>
+    </parent>
+
+    <artifactId>orange-ai</artifactId>
+    <name>${project.artifactId}</name>
+    <version>${revision}</version>
+    <packaging>pom</packaging>
+
+    <description>
+        orange-ai
+    </description>
+
+    <properties>
+        <revision>0.0.1-SNAPSHOT</revision>
+    </properties>
+
+    <modules>
+        <module>orange-ai-common</module>
+        <module>orange-ai-ollama-biz-starter</module>
+        <module>orange-ai-alibaba-biz-starter</module>
+        <module>orange-ai-core</module>
+        <module>orange-ai-service</module>
+    </modules>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>cn.hengzq.orange</groupId>
+                <artifactId>orange-ai-common</artifactId>
+                <version>${revision}</version>
+            </dependency>
+            <dependency>
+                <groupId>cn.hengzq.orange</groupId>
+                <artifactId>orange-ai-alibaba-biz-starter</artifactId>
+                <version>${revision}</version>
+            </dependency>
+            <dependency>
+                <groupId>cn.hengzq.orange</groupId>
+                <artifactId>orange-ai-ollama-biz-starter</artifactId>
+                <version>${revision}</version>
+            </dependency>
+            <dependency>
+                <groupId>cn.hengzq.orange</groupId>
+                <artifactId>orange-ai-core</artifactId>
+                <version>${revision}</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
+</project>
