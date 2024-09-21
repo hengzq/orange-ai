@@ -1,7 +1,7 @@
-package cn.hengzq.orange.ai.core.core.chat.convert;
+package cn.hengzq.orange.ai.core.core.chat.converter;
 
 
-import cn.hengzq.orange.common.convert.Converter;
+import cn.hengzq.orange.common.converter.Converter;
 import cn.hengzq.orange.ai.core.core.chat.entity.ChatSessionEntity;
 import cn.hengzq.orange.ai.common.vo.chat.ChatSessionVO;
 import cn.hengzq.orange.ai.common.vo.chat.param.AddChatSessionParam;

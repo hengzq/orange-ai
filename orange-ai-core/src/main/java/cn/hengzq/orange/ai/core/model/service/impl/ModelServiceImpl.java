@@ -2,7 +2,7 @@ package cn.hengzq.orange.ai.core.model.service.impl;
 
 import cn.hengzq.orange.common.dto.PageDTO;
 import cn.hengzq.orange.common.util.Assert;
-import cn.hengzq.orange.ai.core.model.convert.ModelConverter;
+import cn.hengzq.orange.ai.core.model.converter.ModelConverter;
 import cn.hengzq.orange.ai.core.model.entity.ModelEntity;
 import cn.hengzq.orange.ai.core.model.mapper.ModelMapper;
 import cn.hengzq.orange.ai.core.model.service.ModelService;

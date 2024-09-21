@@ -1,11 +1,11 @@
-package cn.hengzq.orange.ai.core.model.convert;
+package cn.hengzq.orange.ai.core.model.converter;
 
 
 import cn.hengzq.orange.ai.core.model.entity.ModelEntity;
 import cn.hengzq.orange.ai.common.vo.model.ModelVO;
 import cn.hengzq.orange.ai.common.vo.model.param.AddModelParam;
 import cn.hengzq.orange.ai.common.vo.model.param.UpdateModelParam;
-import cn.hengzq.orange.common.convert.Converter;
+import cn.hengzq.orange.common.converter.Converter;
 import cn.hengzq.orange.common.dto.PageDTO;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;

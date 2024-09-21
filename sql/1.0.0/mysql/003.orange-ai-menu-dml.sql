@@ -53,4 +53,10 @@ INSERT INTO sys_menu (id, tenant_id, parent_id, name, permission, preset, path, 
 VALUES (1003, @t_id, 1000, '模型管理', 'system-permission:department:view', 0, 'large-model/model',
         'system-people-circle', 0, 20, @u_id);
 
+insert into sys_button (id, tenant_id, menu_id, name, permission, preset, sort, created_by)
+values (100300, @t_id, 1003, '新增', 'orange-ai:model:add', 1, 1, @u_id),
+       (100301, @t_id, 1003, '删除', 'orange-ai:model:delete', 1, 10, @u_id),
+       (100302, @t_id, 1003, '修改', 'orange-ai:model:update', 1, 20, @u_id)
+;
+
 COMMIT;

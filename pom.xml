@@ -26,6 +26,7 @@
         <module>orange-ai-common</module>
         <module>orange-ai-ollama-biz-starter</module>
         <module>orange-ai-alibaba-biz-starter</module>
+        <module>orange-ai-zhipuai-biz-starter</module>
         <module>orange-ai-core</module>
         <module>orange-ai-service</module>
     </modules>

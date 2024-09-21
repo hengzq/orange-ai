@@ -28,6 +28,12 @@
             <groupId>cn.hengzq.orange</groupId>
             <artifactId>orange-ai-ollama-biz-starter</artifactId>
         </dependency>
+        <!-- 智谱 AI -->
+        <dependency>
+            <groupId>cn.hengzq.orange</groupId>
+            <artifactId>orange-ai-zhipuai-biz-starter</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
 
         <dependency>
             <groupId>org.springframework</groupId>

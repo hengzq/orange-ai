@@ -7,6 +7,9 @@ import reactor.core.publisher.Flux;
 
 public interface ChatService {
 
+    ConversationReplyVO conversation(ConversationParam param);
+
+
     Flux<Result<ConversationReplyVO>> conversationStream(ConversationParam param);
 
 }

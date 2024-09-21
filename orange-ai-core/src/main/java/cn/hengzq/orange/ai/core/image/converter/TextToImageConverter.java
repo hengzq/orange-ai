@@ -1,7 +1,7 @@
-package cn.hengzq.orange.ai.core.image.convert;
+package cn.hengzq.orange.ai.core.image.converter;
 
 
-import cn.hengzq.orange.common.convert.Converter;
+import cn.hengzq.orange.common.converter.Converter;
 import cn.hengzq.orange.common.dto.PageDTO;
 import cn.hengzq.orange.ai.core.image.entity.TextToImageEntity;
 import cn.hengzq.orange.ai.common.vo.image.TextToImageVO;

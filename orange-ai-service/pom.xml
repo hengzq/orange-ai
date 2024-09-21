@@ -24,6 +24,12 @@
             <artifactId>orange-ai-core</artifactId>
         </dependency>
 
+        <!-- security 依赖-->
+        <dependency>
+            <groupId>cn.hengzq.orange</groupId>
+            <artifactId>orange-starter-security</artifactId>
+        </dependency>
+
         <!-- 引入 bootstrap 依赖-->
         <dependency>
             <groupId>org.springframework.cloud</groupId>

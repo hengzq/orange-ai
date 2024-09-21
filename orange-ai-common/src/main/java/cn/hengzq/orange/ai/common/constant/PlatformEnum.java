@@ -15,7 +15,11 @@ import java.util.List;
 public enum PlatformEnum implements BaseEnum<String> {
 
     TONGYI("阿里通义", List.of(ModelTypeEnum.CHAT, ModelTypeEnum.TEXT_TO_IMAGE)),
-    OLLAMA("OLLAMA", List.of(ModelTypeEnum.CHAT));
+    OLLAMA("OLLAMA", List.of(ModelTypeEnum.CHAT)),
+    ZHI_PU("智谱AI", List.of(ModelTypeEnum.CHAT)),
+
+
+    ;
 
 
     private final String description;

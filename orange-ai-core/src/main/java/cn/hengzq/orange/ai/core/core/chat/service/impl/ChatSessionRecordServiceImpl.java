@@ -1,6 +1,6 @@
 package cn.hengzq.orange.ai.core.core.chat.service.impl;
 
-import cn.hengzq.orange.ai.core.core.chat.convert.ChatSessionLogConverter;
+import cn.hengzq.orange.ai.core.core.chat.converter.ChatSessionLogConverter;
 import cn.hengzq.orange.ai.core.core.chat.entity.ChatSessionRecordEntity;
 import cn.hengzq.orange.ai.core.core.chat.mapper.ChatSessionLogMapper;
 import cn.hengzq.orange.ai.core.core.chat.service.ChatSessionRecordService;

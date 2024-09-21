@@ -36,6 +36,5 @@ public class AddModelParam implements Serializable {
     private Integer sort;
 
     @Schema(description = "模型描述")
-    @Size(max = 1000, message = "长度必须小于等于500")
     private String description;
 }

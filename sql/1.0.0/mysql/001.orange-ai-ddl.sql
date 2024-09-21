@@ -18,7 +18,7 @@ CREATE TABLE IF NOT EXISTS `ai_model`
     `type`        varchar(256) NOT NULL COMMENT '模型类型',
     `enabled`     tinyint(1)            DEFAULT 1 COMMENT '启用状态 1 启用 0 禁用',
     `sort`        int                   DEFAULT 1 COMMENT '显示顺序',
-    `description` varchar(512)          DEFAULT NULL COMMENT '模型描述',
+    `description` text                  DEFAULT NULL COMMENT '模型描述',
     `created_by`  bigint(20)   NOT NULL COMMENT '创建人',
     `created_at`  datetime     NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
     `updated_by`  bigint(20)            DEFAULT NULL COMMENT '更新人',

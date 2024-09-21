@@ -1,6 +1,6 @@
 package cn.hengzq.orange.ai.core.core.chat.service.impl;
 
-import cn.hengzq.orange.ai.core.core.chat.convert.ChatSessionConverter;
+import cn.hengzq.orange.ai.core.core.chat.converter.ChatSessionConverter;
 import cn.hengzq.orange.ai.core.core.chat.entity.ChatSessionEntity;
 import cn.hengzq.orange.ai.core.core.chat.mapper.ChatSessionMapper;
 import cn.hengzq.orange.ai.core.core.chat.service.ChatSessionService;
