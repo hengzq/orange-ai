@@ -11,7 +11,7 @@ import java.io.Serializable;
 public class GenerateImageParam implements Serializable {
 
     @Schema(description = "所属平台")
-    private PlatformEnum platform = PlatformEnum.TONGYI;
+    private PlatformEnum platform = PlatformEnum.ALI_BAI_LIAN;
 
     @Schema(description = "模型编码")
     private String modelCode = "wanx-style-cosplay-v1";

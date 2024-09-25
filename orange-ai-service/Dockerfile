@@ -11,7 +11,8 @@ WORKDIR /orange
 COPY target/orange-ai-service.jar app.jar
 
 # 设置环境变量
-ENV JAVA_OPTS="-Xms512m -Xmx512m"
+ENV TZ=Asia/Shanghai
+ENV JAVA_OPTS="-Xms256m -Xmx1024m"
 ENV SPRING_PROFILES_ACTIVE=prod
 
 # 暴露端口

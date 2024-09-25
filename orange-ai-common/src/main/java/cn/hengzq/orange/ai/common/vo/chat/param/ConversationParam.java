@@ -3,7 +3,6 @@ package cn.hengzq.orange.ai.common.vo.chat.param;
 import cn.hengzq.orange.ai.common.constant.PlatformEnum;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
-import lombok.NonNull;
 
 @Data
 @Schema(description = "对话交流参数 VO")
@@ -13,7 +12,7 @@ public class ConversationParam {
     private Long sessionId;
 
     @Schema(description = "所属平台")
-    private PlatformEnum platform = PlatformEnum.TONGYI;
+    private PlatformEnum platform = PlatformEnum.ALI_BAI_LIAN;
 
     @Schema(description = "模型编码")
     private String modelCode = "wanx-style-cosplay-v1";
