@@ -6,7 +6,7 @@
     <parent>
         <groupId>cn.hengzq.orange</groupId>
         <artifactId>orange-dependencies-parent</artifactId>
-        <version>0.0.1-SNAPSHOT</version>
+        <version>0.0.5-SNAPSHOT</version>
     </parent>
 
     <artifactId>orange-ai</artifactId>
@@ -19,7 +19,7 @@
     </description>
 
     <properties>
-        <revision>0.0.1-SNAPSHOT</revision>
+        <revision>0.0.5-SNAPSHOT</revision>
     </properties>
 
     <modules>
@@ -36,16 +36,25 @@
                 <artifactId>orange-ai-common</artifactId>
                 <version>${revision}</version>
             </dependency>
+
             <dependency>
                 <groupId>cn.hengzq.orange</groupId>
                 <artifactId>orange-ai-alibaba-biz-starter</artifactId>
                 <version>${revision}</version>
             </dependency>
+
             <dependency>
                 <groupId>cn.hengzq.orange</groupId>
                 <artifactId>orange-ai-ollama-biz-starter</artifactId>
                 <version>${revision}</version>
             </dependency>
+
+            <dependency>
+                <groupId>cn.hengzq.orange</groupId>
+                <artifactId>orange-ai-zhipu-biz-starter</artifactId>
+                <version>${revision}</version>
+            </dependency>
+
             <dependency>
                 <groupId>cn.hengzq.orange</groupId>
                 <artifactId>orange-ai-core</artifactId>

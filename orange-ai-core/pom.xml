@@ -23,30 +23,34 @@
             <groupId>cn.hengzq.orange</groupId>
             <artifactId>orange-ai-alibaba-biz-starter</artifactId>
         </dependency>
+
         <!--  ollama 大模型-->
         <dependency>
             <groupId>cn.hengzq.orange</groupId>
             <artifactId>orange-ai-ollama-biz-starter</artifactId>
         </dependency>
+
         <!-- 智谱 AI -->
         <dependency>
             <groupId>cn.hengzq.orange</groupId>
             <artifactId>orange-ai-zhipu-biz-starter</artifactId>
-            <version>0.0.1-SNAPSHOT</version>
         </dependency>
 
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-webflux</artifactId>
         </dependency>
+
         <dependency>
             <groupId>cn.hengzq.orange</groupId>
             <artifactId>orange-starter-mybatis</artifactId>
         </dependency>
+
         <dependency>
             <groupId>cn.hengzq.orange</groupId>
             <artifactId>orange-ai-common</artifactId>
         </dependency>
+
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-actuator</artifactId>
