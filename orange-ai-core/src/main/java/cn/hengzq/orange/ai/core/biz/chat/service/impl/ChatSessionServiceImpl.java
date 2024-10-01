@@ -10,6 +10,7 @@ import cn.hengzq.orange.ai.common.vo.chat.param.ChatSessionListParam;
 import cn.hengzq.orange.ai.common.vo.chat.param.ChatSessionPageParam;
 import cn.hengzq.orange.ai.common.vo.chat.param.UpdateChatSessionParam;
 import cn.hengzq.orange.common.dto.PageDTO;
+import cn.hengzq.orange.context.GlobalContextHelper;
 import cn.hengzq.orange.mybatis.query.CommonWrappers;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -30,7 +31,6 @@ public class ChatSessionServiceImpl implements ChatSessionService {
     @Override
     public Long add(AddChatSessionParam param) {
         ChatSessionEntity entity = ChatSessionConverter.INSTANCE.toEntity(param);
-        entity.setCreatedBy(-100L);
         return chatSessionMapper.insertOne(entity);
     }
 
@@ -42,7 +42,6 @@ public class ChatSessionServiceImpl implements ChatSessionService {
     @Override
     public Boolean updateById(Long id, UpdateChatSessionParam param) {
         ChatSessionEntity entity = chatSessionMapper.selectById(id);
-//        Assert.nonNull(entity, DepartmentErrorCode.GLOBAL_DATA_NOT_EXIST);
         entity = ChatSessionConverter.INSTANCE.toUpdateEntity(entity, param);
         return chatSessionMapper.updateOneById(entity);
     }
@@ -55,6 +54,7 @@ public class ChatSessionServiceImpl implements ChatSessionService {
     @Override
     public PageDTO<ChatSessionVO> page(ChatSessionPageParam param) {
         PageDTO<ChatSessionEntity> page = chatSessionMapper.selectPage(param, CommonWrappers.<ChatSessionEntity>lambdaQuery()
+                .eqIfPresent(ChatSessionEntity::getUserId, GlobalContextHelper.getUserId())
                 .orderByDesc(ChatSessionEntity::getCreatedAt));
         return ChatSessionConverter.INSTANCE.toPage(page);
     }
@@ -63,6 +63,7 @@ public class ChatSessionServiceImpl implements ChatSessionService {
     public List<ChatSessionVO> list(ChatSessionListParam param) {
         List<ChatSessionEntity> entityList = chatSessionMapper.selectList(
                 CommonWrappers.<ChatSessionEntity>lambdaQuery()
+                        .eqIfPresent(ChatSessionEntity::getUserId, GlobalContextHelper.getUserId())
                         .orderByDesc(ChatSessionEntity::getCreatedAt)
         );
         return ChatSessionConverter.INSTANCE.toListV0(entityList);

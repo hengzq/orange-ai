@@ -4,16 +4,14 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ConfigurableApplicationContext;
-import org.springframework.context.annotation.Bean;
 import org.springframework.core.env.Environment;
-import org.springframework.web.client.RestClient;
 
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 
 
 @Slf4j
-@SpringBootApplication(scanBasePackages = {"cn.hengzq.orange.ai.core"})
+@SpringBootApplication(scanBasePackages = {"cn.hengzq.orange.ai.core", "cn.hengzq.orange.ai.service"})
 public class Application {
 
     public static void main(String[] args) {

@@ -44,7 +44,6 @@ public class ModelServiceImpl implements ModelService {
     @Override
     public Long add(AddModelParam request) {
         ModelEntity entity = ModelConverter.INSTANCE.toEntity(request);
-        entity.setCreatedBy(-100L);
         return modelMapper.insertOne(entity);
     }
 

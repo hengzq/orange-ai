@@ -3,8 +3,6 @@ package cn.hengzq.orange.ai.common.vo.model.param;
 import cn.hengzq.orange.ai.common.constant.ModelTypeEnum;
 import cn.hengzq.orange.ai.common.constant.PlatformEnum;
 import io.swagger.v3.oas.annotations.media.Schema;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Size;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -22,7 +20,6 @@ public class AddModelParam implements Serializable {
     @Schema(description = "模型类别")
     private ModelTypeEnum type;
 
-//    @NotBlank(message = ModelErrorCode.BUTTON_PERMISSION_CANNOT_REPEAT.getCode())
     @Schema(description = "模型名称")
     private String name;
 

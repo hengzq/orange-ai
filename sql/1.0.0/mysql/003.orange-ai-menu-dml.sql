@@ -32,7 +32,7 @@ where id >= 100000
 
 -- 系统管理
 INSERT INTO sys_menu (id, tenant_id, parent_id, name, permission, preset, path, icon, hidden, sort, created_by)
-VALUES (1000, @t_id, -1, 'AI 大模型', 'ai', 0, '', 'system-settings', 0, 20, @u_id);
+VALUES (1000, @t_id, -1, 'AI 大模型', 'orange-ai', 0, '', 'system-settings', 0, 20, @u_id);
 
 -- 部门管理
 INSERT INTO sys_menu (id, tenant_id, parent_id, name, permission, preset, path, icon, hidden, sort, created_by)

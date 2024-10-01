@@ -1,12 +1,11 @@
 package cn.hengzq.orange.ai.alibaba.chat;
 
-import cn.hengzq.orange.common.result.Result;
-import cn.hengzq.orange.common.result.ResultWrapper;
 import cn.hengzq.orange.ai.common.constant.PlatformEnum;
 import cn.hengzq.orange.ai.common.service.chat.ChatModelService;
 import cn.hengzq.orange.ai.common.vo.chat.ConversationReplyVO;
 import cn.hengzq.orange.ai.common.vo.chat.param.ConversationParam;
-import cn.hutool.json.JSONUtil;
+import cn.hengzq.orange.common.result.Result;
+import cn.hengzq.orange.common.result.ResultWrapper;
 import com.alibaba.cloud.ai.dashscope.chat.DashScopeChatModel;
 import com.alibaba.cloud.ai.dashscope.chat.DashScopeChatOptions;
 import lombok.AllArgsConstructor;

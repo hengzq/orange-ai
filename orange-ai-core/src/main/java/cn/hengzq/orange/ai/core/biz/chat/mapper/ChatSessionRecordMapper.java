@@ -8,7 +8,7 @@ import org.springframework.stereotype.Repository;
  * @author hengzq
  */
 @Repository
-public interface ChatSessionLogMapper extends CommonMapper<ChatSessionRecordEntity> {
+public interface ChatSessionRecordMapper extends CommonMapper<ChatSessionRecordEntity> {
 
 
 }

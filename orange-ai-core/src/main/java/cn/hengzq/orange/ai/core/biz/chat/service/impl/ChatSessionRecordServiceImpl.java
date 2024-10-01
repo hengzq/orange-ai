@@ -2,7 +2,7 @@ package cn.hengzq.orange.ai.core.biz.chat.service.impl;
 
 import cn.hengzq.orange.ai.core.biz.chat.converter.ChatSessionLogConverter;
 import cn.hengzq.orange.ai.core.biz.chat.entity.ChatSessionRecordEntity;
-import cn.hengzq.orange.ai.core.biz.chat.mapper.ChatSessionLogMapper;
+import cn.hengzq.orange.ai.core.biz.chat.mapper.ChatSessionRecordMapper;
 import cn.hengzq.orange.ai.core.biz.chat.service.ChatSessionRecordService;
 import cn.hengzq.orange.ai.common.vo.chat.ChatSessionRecordVO;
 import cn.hengzq.orange.ai.common.vo.chat.param.AddChatSessionRecordParam;
@@ -19,11 +19,11 @@ import java.util.List;
 @AllArgsConstructor
 public class ChatSessionRecordServiceImpl implements ChatSessionRecordService {
 
-    private final ChatSessionLogMapper chatSessionLogMapper;
+    private final ChatSessionRecordMapper chatSessionRecordMapper;
 
     @Override
     public List<ChatSessionRecordVO> list(ChatSessionLogListParam param) {
-        List<ChatSessionRecordEntity> entityList = chatSessionLogMapper.selectList(
+        List<ChatSessionRecordEntity> entityList = chatSessionRecordMapper.selectList(
                 CommonWrappers.<ChatSessionRecordEntity>lambdaQuery()
                         .eqIfPresent(ChatSessionRecordEntity::getUserId, param.getUserId())
                         .eqIfPresent(ChatSessionRecordEntity::getSessionId, param.getSessionId())
@@ -35,7 +35,6 @@ public class ChatSessionRecordServiceImpl implements ChatSessionRecordService {
     @Override
     public Long add(AddChatSessionRecordParam param) {
         ChatSessionRecordEntity entity = ChatSessionLogConverter.INSTANCE.toEntity(param);
-        entity.setCreatedBy(-100L);
-        return chatSessionLogMapper.insertOne(entity);
+        return chatSessionRecordMapper.insertOne(entity);
     }
 }

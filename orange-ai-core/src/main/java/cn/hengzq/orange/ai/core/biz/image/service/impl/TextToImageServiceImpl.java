@@ -12,6 +12,7 @@ import cn.hengzq.orange.ai.common.vo.image.TextToImageVO;
 import cn.hengzq.orange.ai.common.vo.image.param.GenerateImageParam;
 import cn.hengzq.orange.ai.common.vo.image.param.TextToImageListParam;
 import cn.hengzq.orange.ai.common.vo.image.param.TextToImagePageParam;
+import cn.hengzq.orange.context.GlobalContextHelper;
 import cn.hengzq.orange.mybatis.entity.BaseEntity;
 import cn.hengzq.orange.mybatis.query.CommonWrappers;
 import lombok.AllArgsConstructor;
@@ -53,9 +54,8 @@ public class TextToImageServiceImpl implements TextToImageService {
         ImageModelService imageModelService = imageModelServiceFactory.getImageModelService(param.getPlatform());
         ImageResponse response = imageModelService.textToImage(param);
         TextToImageEntity entity = TextToImageConverter.INSTANCE.toEntity(param, response);
-        entity.setUserId(-100L);
-        entity.setCreatedBy(-100L);
-        textToImageMapper.insert(entity);
+        entity.setUserId(GlobalContextHelper.getUserId());
+        textToImageMapper.insertOne(entity);
         return TextToImageConverter.INSTANCE.toVO(entity);
     }
 
