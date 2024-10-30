@@ -1,5 +1,6 @@
 package cn.hengzq.orange.ai.ollama.chat;
 
+import cn.hengzq.orange.ai.common.vo.chat.ChatSessionRecordVO;
 import cn.hengzq.orange.common.result.Result;
 import cn.hengzq.orange.ai.common.constant.PlatformEnum;
 import cn.hengzq.orange.ai.common.service.chat.ChatModelService;
@@ -10,6 +11,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.ai.ollama.OllamaChatModel;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
+
+import java.util.List;
 
 @Slf4j
 @Service
@@ -25,6 +28,11 @@ public class OllamaChatModelServiceImpl implements ChatModelService {
 
     @Override
     public Flux<Result<ConversationReplyVO>> conversationStream(ConversationParam param) {
+        return conversationStream(param, List.of());
+    }
+
+    @Override
+    public Flux<Result<ConversationReplyVO>> conversationStream(ConversationParam param, List<ChatSessionRecordVO> contextMessageList) {
         return null;
     }
 

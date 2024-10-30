@@ -14,7 +14,8 @@ import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Flux;
 
-@Tag(name = "聊天会话 - 沟通交流")
+
+@Tag(name = "AI - 聊天会话")
 @Slf4j
 @RestController
 @AllArgsConstructor

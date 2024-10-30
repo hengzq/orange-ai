@@ -21,7 +21,7 @@ import java.util.stream.Collectors;
 /**
  * @author hengzq
  */
-@Tag(name = "AI 平台管理")
+@Tag(name = "AI - 平台管理")
 @RestController
 @AllArgsConstructor
 @RequestMapping(AIConstant.V1_0_URL_PREFIX + "/platform")

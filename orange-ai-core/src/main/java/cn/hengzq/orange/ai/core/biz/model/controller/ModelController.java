@@ -22,7 +22,7 @@ import java.util.List;
 /**
  * @author hengzq
  */
-@Tag(name = "AI 大模型管理")
+@Tag(name = "AI - 模型管理")
 @RestController
 @AllArgsConstructor
 @RequestMapping(AIConstant.V1_0_URL_PREFIX + "/model")

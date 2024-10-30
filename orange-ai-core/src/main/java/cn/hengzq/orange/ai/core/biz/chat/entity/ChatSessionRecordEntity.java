@@ -34,4 +34,7 @@ public class ChatSessionRecordEntity extends BaseTenantEntity {
 
     private String content;
 
+    @TableField(value = "token_quantity")
+    private Long tokenQuantity;
+
 }

@@ -16,11 +16,11 @@ import java.util.List;
  * @author hengzq
  */
 @Mapper
-public interface ChatSessionLogConverter extends Converter {
+public interface ChatSessionRecordConverter extends Converter {
 
-    ChatSessionLogConverter INSTANCE = Mappers.getMapper(ChatSessionLogConverter.class);
+    ChatSessionRecordConverter INSTANCE = Mappers.getMapper(ChatSessionRecordConverter.class);
 
-    List<ChatSessionRecordVO> toListV0(List<ChatSessionRecordEntity> entityList);
+    List<ChatSessionRecordVO> toListVO(List<ChatSessionRecordEntity> entityList);
 
     ChatSessionRecordEntity toEntity(AddChatSessionRecordParam param);
 }

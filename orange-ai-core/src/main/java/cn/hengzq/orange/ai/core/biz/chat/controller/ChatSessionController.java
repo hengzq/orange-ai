@@ -22,7 +22,7 @@ import java.util.List;
 /**
  * @author hengzq
  */
-@Tag(name = "聊天会话 - 管理")
+@Tag(name = "AI - 聊天会话管理")
 @RestController
 @AllArgsConstructor
 @RequestMapping(AIConstant.V1_0_URL_PREFIX + "/chat-session")

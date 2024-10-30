@@ -1,6 +1,6 @@
 package cn.hengzq.orange.ai.core.biz.chat.service.impl;
 
-import cn.hengzq.orange.ai.core.biz.chat.converter.ChatSessionLogConverter;
+import cn.hengzq.orange.ai.core.biz.chat.converter.ChatSessionRecordConverter;
 import cn.hengzq.orange.ai.core.biz.chat.entity.ChatSessionRecordEntity;
 import cn.hengzq.orange.ai.core.biz.chat.mapper.ChatSessionRecordMapper;
 import cn.hengzq.orange.ai.core.biz.chat.service.ChatSessionRecordService;
@@ -29,12 +29,12 @@ public class ChatSessionRecordServiceImpl implements ChatSessionRecordService {
                         .eqIfPresent(ChatSessionRecordEntity::getSessionId, param.getSessionId())
                         .orderByAsc(ChatSessionRecordEntity::getCreatedAt)
         );
-        return ChatSessionLogConverter.INSTANCE.toListV0(entityList);
+        return ChatSessionRecordConverter.INSTANCE.toListVO(entityList);
     }
 
     @Override
     public Long add(AddChatSessionRecordParam param) {
-        ChatSessionRecordEntity entity = ChatSessionLogConverter.INSTANCE.toEntity(param);
+        ChatSessionRecordEntity entity = ChatSessionRecordConverter.INSTANCE.toEntity(param);
         return chatSessionRecordMapper.insertOne(entity);
     }
 }

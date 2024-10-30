@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
-@Tag(name = "模型-文生图模型")
+@Tag(name = "AI - 文生图管理")
 @Slf4j
 @RestController
 @AllArgsConstructor

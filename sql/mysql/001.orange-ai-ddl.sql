@@ -51,16 +51,17 @@ CREATE TABLE IF NOT EXISTS `ai_chat_session`
 -- ----------------------------
 CREATE TABLE IF NOT EXISTS `ai_chat_session_record`
 (
-    `id`           bigint(20)  NOT NULL COMMENT '表的主键',
-    `tenant_id`    bigint(20)  NOT NULL COMMENT '租户id',
-    `user_id`      bigint(20)  NOT NULL COMMENT '用户id',
-    `session_id`   bigint(20)  NOT NULL COMMENT '会话id',
-    `message_type` varchar(32) NOT NULL COMMENT '消息类型',
-    `content`      text COMMENT '会话内容',
-    `created_by`   bigint(20)  NOT NULL COMMENT '创建人',
-    `created_at`   datetime    NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-    `updated_by`   bigint(20)           DEFAULT NULL COMMENT '更新人',
-    `updated_at`   datetime    NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+    `id`             bigint(20)  NOT NULL COMMENT '表的主键',
+    `tenant_id`      bigint(20)  NOT NULL COMMENT '租户id',
+    `user_id`        bigint(20)  NOT NULL COMMENT '用户id',
+    `session_id`     bigint(20)  NOT NULL COMMENT '会话id',
+    `message_type`   varchar(32) NOT NULL COMMENT '消息类型',
+    `content`        text COMMENT '会话内容',
+    `token_quantity` int COMMENT 'token使用量',
+    `created_by`     bigint(20)  NOT NULL COMMENT '创建人',
+    `created_at`     datetime    NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+    `updated_by`     bigint(20)           DEFAULT NULL COMMENT '更新人',
+    `updated_at`     datetime    NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
     PRIMARY KEY (`id`)
 ) ENGINE = InnoDB COMMENT = '聊天会话记录管理';
 

@@ -18,6 +18,7 @@
         <module>orange-ai-alibaba-biz-starter</module>
         <module>orange-ai-ollama-biz-starter</module>
         <module>orange-ai-zhipu-biz-starter</module>
+        <module>orange-ai-tencent-biz-starter</module>
     </modules>
 
 </project>

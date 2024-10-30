@@ -36,6 +36,12 @@
             <artifactId>orange-ai-zhipu-biz-starter</artifactId>
         </dependency>
 
+        <!-- 腾讯AI 依赖-->
+        <dependency>
+            <groupId>cn.hengzq.orange</groupId>
+            <artifactId>orange-ai-tencent-biz-starter</artifactId>
+        </dependency>
+
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-webflux</artifactId>
