@@ -1,10 +1,10 @@
 package cn.hengzq.orange.ai.core.biz.image.service;
 
 import cn.hengzq.orange.common.dto.PageDTO;
-import cn.hengzq.orange.ai.common.vo.image.TextToImageVO;
-import cn.hengzq.orange.ai.common.vo.image.param.GenerateImageParam;
-import cn.hengzq.orange.ai.common.vo.image.param.TextToImageListParam;
-import cn.hengzq.orange.ai.common.vo.image.param.TextToImagePageParam;
+import cn.hengzq.orange.ai.common.biz.image.vo.TextToImageVO;
+import cn.hengzq.orange.ai.common.biz.image.vo.param.GenerateImageParam;
+import cn.hengzq.orange.ai.common.biz.image.vo.param.TextToImageListParam;
+import cn.hengzq.orange.ai.common.biz.image.vo.param.TextToImagePageParam;
 
 import java.util.List;
 

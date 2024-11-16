@@ -3,10 +3,10 @@ package cn.hengzq.orange.ai.core.biz.chat.converter;
 
 import cn.hengzq.orange.common.converter.Converter;
 import cn.hengzq.orange.ai.core.biz.chat.entity.ChatSessionEntity;
-import cn.hengzq.orange.ai.common.vo.chat.ChatSessionVO;
-import cn.hengzq.orange.ai.common.vo.chat.param.AddChatSessionParam;
-import cn.hengzq.orange.ai.common.vo.chat.param.ConversationParam;
-import cn.hengzq.orange.ai.common.vo.chat.param.UpdateChatSessionParam;
+import cn.hengzq.orange.ai.common.biz.chat.vo.ChatSessionVO;
+import cn.hengzq.orange.ai.common.biz.chat.vo.param.AddChatSessionParam;
+import cn.hengzq.orange.ai.common.biz.chat.vo.param.ConversationParam;
+import cn.hengzq.orange.ai.common.biz.chat.vo.param.UpdateChatSessionParam;
 import cn.hengzq.orange.common.dto.PageDTO;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;

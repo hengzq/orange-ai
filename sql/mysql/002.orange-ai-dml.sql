@@ -69,8 +69,8 @@ VALUES (200, @t_id, 'ZHI_PU', 'GLM-4-Flash', 'GLM-4-Flash', 'CHAT', 1, 1, '# 智
 # -------------------------------------------------------------------------------------------------------------------
 # ---------------------------------     腾讯大模型    -----------------------------------------------------------------
 # -------------------------------------------------------------------------------------------------------------------
-INSERT INTO ai_model (id, tenant_id, platform, name, code, type, enabled, sort, description, created_by )
-VALUES (300, -100, 'TENCENT', 'hunyuan-turbo', 'hunyuan-turbo', 'CHAT', 1, 1, '# 混元生文
+INSERT INTO ai_model (id, tenant_id, platform, name, code, type, enabled, sort, description, created_by)
+VALUES (300, @t_id, 'TENCENT', 'hunyuan-turbo', 'hunyuan-turbo', 'CHAT', 1, 1, '# 混元生文
 
 
 | 模型名称 | 能力和特征 | 分支版本 | 输入输出 |

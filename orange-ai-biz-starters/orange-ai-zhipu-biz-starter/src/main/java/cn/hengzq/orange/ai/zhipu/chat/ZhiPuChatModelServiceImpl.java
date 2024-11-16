@@ -1,12 +1,12 @@
 package cn.hengzq.orange.ai.zhipu.chat;
 
 import cn.hengzq.orange.ai.common.constant.PlatformEnum;
-import cn.hengzq.orange.ai.common.converter.MessageConverter;
-import cn.hengzq.orange.ai.common.service.chat.ChatModelService;
-import cn.hengzq.orange.ai.common.vo.TokenUsageVO;
-import cn.hengzq.orange.ai.common.vo.chat.ChatSessionRecordVO;
-import cn.hengzq.orange.ai.common.vo.chat.ConversationReplyVO;
-import cn.hengzq.orange.ai.common.vo.chat.param.ConversationParam;
+import cn.hengzq.orange.ai.common.biz.chat.converter.MessageConverter;
+import cn.hengzq.orange.ai.common.biz.chat.service.ChatModelService;
+import cn.hengzq.orange.ai.common.biz.chat.vo.TokenUsageVO;
+import cn.hengzq.orange.ai.common.biz.chat.vo.ChatSessionRecordVO;
+import cn.hengzq.orange.ai.common.biz.chat.vo.ConversationReplyVO;
+import cn.hengzq.orange.ai.common.biz.chat.vo.param.ConversationParam;
 import cn.hengzq.orange.common.result.Result;
 import cn.hengzq.orange.common.result.ResultWrapper;
 import lombok.AllArgsConstructor;

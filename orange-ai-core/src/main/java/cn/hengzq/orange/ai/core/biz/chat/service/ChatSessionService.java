@@ -1,10 +1,10 @@
 package cn.hengzq.orange.ai.core.biz.chat.service;
 
-import cn.hengzq.orange.ai.common.vo.chat.ChatSessionVO;
-import cn.hengzq.orange.ai.common.vo.chat.param.AddChatSessionParam;
-import cn.hengzq.orange.ai.common.vo.chat.param.ChatSessionListParam;
-import cn.hengzq.orange.ai.common.vo.chat.param.ChatSessionPageParam;
-import cn.hengzq.orange.ai.common.vo.chat.param.UpdateChatSessionParam;
+import cn.hengzq.orange.ai.common.biz.chat.vo.ChatSessionVO;
+import cn.hengzq.orange.ai.common.biz.chat.vo.param.AddChatSessionParam;
+import cn.hengzq.orange.ai.common.biz.chat.vo.param.ChatSessionListParam;
+import cn.hengzq.orange.ai.common.biz.chat.vo.param.ChatSessionPageParam;
+import cn.hengzq.orange.ai.common.biz.chat.vo.param.UpdateChatSessionParam;
 import cn.hengzq.orange.common.dto.PageDTO;
 
 import java.util.List;

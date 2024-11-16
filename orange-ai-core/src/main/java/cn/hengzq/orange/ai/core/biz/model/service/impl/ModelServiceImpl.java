@@ -6,12 +6,12 @@ import cn.hengzq.orange.ai.core.biz.model.converter.ModelConverter;
 import cn.hengzq.orange.ai.core.biz.model.entity.ModelEntity;
 import cn.hengzq.orange.ai.core.biz.model.mapper.ModelMapper;
 import cn.hengzq.orange.ai.core.biz.model.service.ModelService;
-import cn.hengzq.orange.ai.common.exception.ModelErrorCode;
-import cn.hengzq.orange.ai.common.vo.model.ModelVO;
-import cn.hengzq.orange.ai.common.vo.model.param.AddModelParam;
-import cn.hengzq.orange.ai.common.vo.model.param.ModelListParam;
-import cn.hengzq.orange.ai.common.vo.model.param.ModelPageParam;
-import cn.hengzq.orange.ai.common.vo.model.param.UpdateModelParam;
+import cn.hengzq.orange.ai.common.biz.model.constant.AIModelErrorCode;
+import cn.hengzq.orange.ai.common.biz.model.vo.ModelVO;
+import cn.hengzq.orange.ai.common.biz.model.vo.param.AddModelParam;
+import cn.hengzq.orange.ai.common.biz.model.vo.param.ModelListParam;
+import cn.hengzq.orange.ai.common.biz.model.vo.param.ModelPageParam;
+import cn.hengzq.orange.ai.common.biz.model.vo.param.UpdateModelParam;
 import cn.hengzq.orange.mybatis.query.CommonWrappers;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -50,7 +50,7 @@ public class ModelServiceImpl implements ModelService {
     @Override
     public Boolean updateById(Long id, UpdateModelParam request) {
         ModelEntity entity = modelMapper.selectById(id);
-        Assert.nonNull(entity, ModelErrorCode.GLOBAL_DATA_NOT_EXIST);
+        Assert.nonNull(entity, AIModelErrorCode.GLOBAL_DATA_NOT_EXIST);
         entity = ModelConverter.INSTANCE.toUpdateEntity(entity, request);
         return modelMapper.updateOneById(entity);
     }

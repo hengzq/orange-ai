@@ -1,7 +1,7 @@
 package cn.hengzq.orange.ai.core.biz.image.service;
 
 import cn.hengzq.orange.ai.common.constant.PlatformEnum;
-import cn.hengzq.orange.ai.common.service.image.ImageModelService;
+import cn.hengzq.orange.ai.common.biz.image.service.ImageModelService;
 import org.springframework.stereotype.Component;
 
 import java.util.HashMap;

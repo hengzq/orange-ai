@@ -1,7 +1,7 @@
 package cn.hengzq.orange.ai.core.biz.chat.service;
 
 import cn.hengzq.orange.ai.common.constant.PlatformEnum;
-import cn.hengzq.orange.ai.common.service.chat.ChatModelService;
+import cn.hengzq.orange.ai.common.biz.chat.service.ChatModelService;
 import org.springframework.stereotype.Component;
 
 import java.util.HashMap;

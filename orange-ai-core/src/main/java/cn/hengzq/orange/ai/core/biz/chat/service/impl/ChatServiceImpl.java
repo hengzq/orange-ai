@@ -1,11 +1,11 @@
 package cn.hengzq.orange.ai.core.biz.chat.service.impl;
 
-import cn.hengzq.orange.ai.common.constant.MessageTypeEnum;
-import cn.hengzq.orange.ai.common.service.chat.ChatModelService;
-import cn.hengzq.orange.ai.common.vo.TokenUsageVO;
-import cn.hengzq.orange.ai.common.vo.chat.ChatSessionRecordVO;
-import cn.hengzq.orange.ai.common.vo.chat.ConversationReplyVO;
-import cn.hengzq.orange.ai.common.vo.chat.param.ConversationParam;
+import cn.hengzq.orange.ai.common.biz.chat.constant.MessageTypeEnum;
+import cn.hengzq.orange.ai.common.biz.chat.service.ChatModelService;
+import cn.hengzq.orange.ai.common.biz.chat.vo.TokenUsageVO;
+import cn.hengzq.orange.ai.common.biz.chat.vo.ChatSessionRecordVO;
+import cn.hengzq.orange.ai.common.biz.chat.vo.ConversationReplyVO;
+import cn.hengzq.orange.ai.common.biz.chat.vo.param.ConversationParam;
 import cn.hengzq.orange.ai.core.biz.chat.converter.ChatSessionConverter;
 import cn.hengzq.orange.ai.core.biz.chat.converter.ChatSessionRecordConverter;
 import cn.hengzq.orange.ai.core.biz.chat.entity.ChatSessionEntity;
@@ -17,6 +17,7 @@ import cn.hengzq.orange.ai.core.biz.chat.service.ChatService;
 import cn.hengzq.orange.common.result.Result;
 import cn.hengzq.orange.common.result.ResultWrapper;
 import cn.hengzq.orange.context.GlobalContextHelper;
+import cn.hutool.core.util.IdUtil;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -66,6 +67,8 @@ public class ChatServiceImpl implements ChatService {
                         userRecord.setTokenQuantity(result.getData().getTokenUsage().getPromptTokens());
                         assistantRecord.setTokenQuantity(result.getData().getTokenUsage().getGenerationTokens());
                     }
+                    // 封装消息ID
+                    result.getData().setId(assistantRecord.getId());
                     return result;
                 })
                 .doOnComplete(() -> {
@@ -80,6 +83,7 @@ public class ChatServiceImpl implements ChatService {
 
     private ChatSessionRecordEntity generateRecord(Long sessionId, ConversationParam param, MessageTypeEnum messageTypeEnum) {
         ChatSessionRecordEntity entity = new ChatSessionRecordEntity();
+        entity.setId(IdUtil.getSnowflakeNextId());
         entity.setUserId(GlobalContextHelper.getUserId());
         entity.setSessionId(sessionId);
         entity.setMessageType(messageTypeEnum);

@@ -1,6 +1,6 @@
 package cn.hengzq.orange.ai.zhipu.config;
 
-import cn.hengzq.orange.ai.common.service.chat.ChatModelService;
+import cn.hengzq.orange.ai.common.biz.chat.service.ChatModelService;
 import cn.hengzq.orange.ai.zhipu.chat.ZhiPuChatModelServiceImpl;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.ai.zhipuai.ZhiPuAiChatModel;

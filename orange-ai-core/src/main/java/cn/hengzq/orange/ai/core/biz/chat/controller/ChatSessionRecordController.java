@@ -1,19 +1,18 @@
 package cn.hengzq.orange.ai.core.biz.chat.controller;
 
 
-import cn.hengzq.orange.ai.core.biz.chat.service.ChatSessionRecordService;
 import cn.hengzq.orange.ai.common.constant.AIConstant;
-import cn.hengzq.orange.ai.common.vo.chat.ChatSessionRecordVO;
-import cn.hengzq.orange.ai.common.vo.chat.param.ChatSessionLogListParam;
+import cn.hengzq.orange.ai.common.biz.chat.vo.ChatSessionRecordVO;
+import cn.hengzq.orange.ai.common.biz.chat.vo.param.ChatSessionLogListParam;
+import cn.hengzq.orange.ai.common.biz.chat.vo.param.ChatSessionRecordRateParam;
+import cn.hengzq.orange.ai.core.biz.chat.service.ChatSessionRecordService;
 import cn.hengzq.orange.common.result.Result;
 import cn.hengzq.orange.common.result.ResultWrapper;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -34,4 +33,12 @@ public class ChatSessionRecordController {
         List<ChatSessionRecordVO> list = chatSessionRecordService.list(query);
         return ResultWrapper.ok(list);
     }
+
+    @Operation(summary = "评价", operationId = "orange-ai:chat-session-record:rate")
+    @PutMapping("/rate/{id}")
+    public Result<Boolean> rateById(@PathVariable("id") Long id, @RequestBody @Validated ChatSessionRecordRateParam param) {
+        return ResultWrapper.ok(chatSessionRecordService.rateById(id, param));
+    }
+
+
 }

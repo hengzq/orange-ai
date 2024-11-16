@@ -1,13 +1,13 @@
 package cn.hengzq.orange.ai.tencent.chat;
 
-import cn.hengzq.orange.ai.common.constant.MessageTypeEnum;
+import cn.hengzq.orange.ai.common.biz.chat.constant.MessageTypeEnum;
 import cn.hengzq.orange.ai.common.constant.PlatformEnum;
-import cn.hengzq.orange.ai.common.exception.AIChatErrorCode;
-import cn.hengzq.orange.ai.common.service.chat.ChatModelService;
-import cn.hengzq.orange.ai.common.vo.TokenUsageVO;
-import cn.hengzq.orange.ai.common.vo.chat.ChatSessionRecordVO;
-import cn.hengzq.orange.ai.common.vo.chat.ConversationReplyVO;
-import cn.hengzq.orange.ai.common.vo.chat.param.ConversationParam;
+import cn.hengzq.orange.ai.common.biz.chat.constant.AIChatErrorCode;
+import cn.hengzq.orange.ai.common.biz.chat.service.ChatModelService;
+import cn.hengzq.orange.ai.common.biz.chat.vo.TokenUsageVO;
+import cn.hengzq.orange.ai.common.biz.chat.vo.ChatSessionRecordVO;
+import cn.hengzq.orange.ai.common.biz.chat.vo.ConversationReplyVO;
+import cn.hengzq.orange.ai.common.biz.chat.vo.param.ConversationParam;
 import cn.hengzq.orange.common.exception.ServiceException;
 import cn.hengzq.orange.common.result.Result;
 import cn.hengzq.orange.common.result.ResultWrapper;

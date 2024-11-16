@@ -1,8 +1,8 @@
 package cn.hengzq.orange.ai.alibaba.image;
 
 import cn.hengzq.orange.ai.common.constant.PlatformEnum;
-import cn.hengzq.orange.ai.common.service.image.ImageModelService;
-import cn.hengzq.orange.ai.common.vo.image.param.GenerateImageParam;
+import cn.hengzq.orange.ai.common.biz.image.service.ImageModelService;
+import cn.hengzq.orange.ai.common.biz.image.vo.param.GenerateImageParam;
 import com.alibaba.cloud.ai.dashscope.image.DashScopeImageModel;
 import com.alibaba.cloud.ai.dashscope.image.DashScopeImageOptions;
 import lombok.AllArgsConstructor;

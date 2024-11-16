@@ -3,11 +3,11 @@ package cn.hengzq.orange.ai.core.biz.chat.controller;
 
 import cn.hengzq.orange.ai.core.biz.chat.service.ChatSessionService;
 import cn.hengzq.orange.ai.common.constant.AIConstant;
-import cn.hengzq.orange.ai.common.vo.chat.ChatSessionVO;
-import cn.hengzq.orange.ai.common.vo.chat.param.AddChatSessionParam;
-import cn.hengzq.orange.ai.common.vo.chat.param.ChatSessionListParam;
-import cn.hengzq.orange.ai.common.vo.chat.param.ChatSessionPageParam;
-import cn.hengzq.orange.ai.common.vo.chat.param.UpdateChatSessionParam;
+import cn.hengzq.orange.ai.common.biz.chat.vo.ChatSessionVO;
+import cn.hengzq.orange.ai.common.biz.chat.vo.param.AddChatSessionParam;
+import cn.hengzq.orange.ai.common.biz.chat.vo.param.ChatSessionListParam;
+import cn.hengzq.orange.ai.common.biz.chat.vo.param.ChatSessionPageParam;
+import cn.hengzq.orange.ai.common.biz.chat.vo.param.UpdateChatSessionParam;
 import cn.hengzq.orange.common.dto.PageDTO;
 import cn.hengzq.orange.common.result.Result;
 import cn.hengzq.orange.common.result.ResultWrapper;

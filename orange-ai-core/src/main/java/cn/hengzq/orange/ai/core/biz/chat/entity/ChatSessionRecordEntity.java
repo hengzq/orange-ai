@@ -1,6 +1,7 @@
 package cn.hengzq.orange.ai.core.biz.chat.entity;
 
-import cn.hengzq.orange.ai.common.constant.MessageTypeEnum;
+import cn.hengzq.orange.ai.common.biz.chat.constant.MessageTypeEnum;
+import cn.hengzq.orange.ai.common.biz.chat.constant.RatingEnum;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
@@ -36,5 +37,7 @@ public class ChatSessionRecordEntity extends BaseTenantEntity {
 
     @TableField(value = "token_quantity")
     private Long tokenQuantity;
+
+    private RatingEnum rating;
 
 }

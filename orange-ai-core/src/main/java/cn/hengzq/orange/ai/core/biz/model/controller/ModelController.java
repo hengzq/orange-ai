@@ -3,11 +3,11 @@ package cn.hengzq.orange.ai.core.biz.model.controller;
 
 import cn.hengzq.orange.ai.core.biz.model.service.ModelService;
 import cn.hengzq.orange.ai.common.constant.AIConstant;
-import cn.hengzq.orange.ai.common.vo.model.ModelVO;
-import cn.hengzq.orange.ai.common.vo.model.param.AddModelParam;
-import cn.hengzq.orange.ai.common.vo.model.param.ModelListParam;
-import cn.hengzq.orange.ai.common.vo.model.param.ModelPageParam;
-import cn.hengzq.orange.ai.common.vo.model.param.UpdateModelParam;
+import cn.hengzq.orange.ai.common.biz.model.vo.ModelVO;
+import cn.hengzq.orange.ai.common.biz.model.vo.param.AddModelParam;
+import cn.hengzq.orange.ai.common.biz.model.vo.param.ModelListParam;
+import cn.hengzq.orange.ai.common.biz.model.vo.param.ModelPageParam;
+import cn.hengzq.orange.ai.common.biz.model.vo.param.UpdateModelParam;
 import cn.hengzq.orange.common.dto.PageDTO;
 import cn.hengzq.orange.common.result.Result;
 import cn.hengzq.orange.common.result.ResultWrapper;

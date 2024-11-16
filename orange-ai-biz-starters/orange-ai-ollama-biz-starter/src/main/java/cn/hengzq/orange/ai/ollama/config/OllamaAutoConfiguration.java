@@ -1,6 +1,6 @@
 package cn.hengzq.orange.ai.ollama.config;
 
-import cn.hengzq.orange.ai.common.service.chat.ChatModelService;
+import cn.hengzq.orange.ai.common.biz.chat.service.ChatModelService;
 import cn.hengzq.orange.ai.ollama.chat.OllamaChatModelServiceImpl;
 import org.springframework.ai.ollama.OllamaChatModel;
 import org.springframework.boot.autoconfigure.AutoConfiguration;

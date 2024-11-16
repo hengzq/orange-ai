@@ -3,8 +3,8 @@ package cn.hengzq.orange.ai.core.biz.chat.converter;
 
 import cn.hengzq.orange.common.converter.Converter;
 import cn.hengzq.orange.ai.core.biz.chat.entity.ChatSessionRecordEntity;
-import cn.hengzq.orange.ai.common.vo.chat.ChatSessionRecordVO;
-import cn.hengzq.orange.ai.common.vo.chat.param.AddChatSessionRecordParam;
+import cn.hengzq.orange.ai.common.biz.chat.vo.ChatSessionRecordVO;
+import cn.hengzq.orange.ai.common.biz.chat.vo.param.AddChatSessionRecordParam;
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
 

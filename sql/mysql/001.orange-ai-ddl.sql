@@ -58,6 +58,7 @@ CREATE TABLE IF NOT EXISTS `ai_chat_session_record`
     `message_type`   varchar(32) NOT NULL COMMENT '消息类型',
     `content`        text COMMENT '会话内容',
     `token_quantity` int COMMENT 'token使用量',
+    `rating`         varchar(32)          DEFAULT NULL COMMENT '回话内容评价',
     `created_by`     bigint(20)  NOT NULL COMMENT '创建人',
     `created_at`     datetime    NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
     `updated_by`     bigint(20)           DEFAULT NULL COMMENT '更新人',

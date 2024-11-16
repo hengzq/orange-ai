@@ -1,12 +1,13 @@
 package cn.hengzq.orange.ai.alibaba.chat;
 
+import cn.hengzq.orange.ai.common.biz.chat.constant.ConverstationEventEnum;
 import cn.hengzq.orange.ai.common.constant.PlatformEnum;
-import cn.hengzq.orange.ai.common.converter.MessageConverter;
-import cn.hengzq.orange.ai.common.service.chat.ChatModelService;
-import cn.hengzq.orange.ai.common.vo.TokenUsageVO;
-import cn.hengzq.orange.ai.common.vo.chat.ChatSessionRecordVO;
-import cn.hengzq.orange.ai.common.vo.chat.ConversationReplyVO;
-import cn.hengzq.orange.ai.common.vo.chat.param.ConversationParam;
+import cn.hengzq.orange.ai.common.biz.chat.converter.MessageConverter;
+import cn.hengzq.orange.ai.common.biz.chat.service.ChatModelService;
+import cn.hengzq.orange.ai.common.biz.chat.vo.TokenUsageVO;
+import cn.hengzq.orange.ai.common.biz.chat.vo.ChatSessionRecordVO;
+import cn.hengzq.orange.ai.common.biz.chat.vo.ConversationReplyVO;
+import cn.hengzq.orange.ai.common.biz.chat.vo.param.ConversationParam;
 import cn.hengzq.orange.common.result.Result;
 import cn.hengzq.orange.common.result.ResultWrapper;
 import com.alibaba.cloud.ai.dashscope.chat.DashScopeChatModel;
@@ -58,7 +59,10 @@ public class DashScopeChatModelServiceImpl implements ChatModelService {
                     }
                     Usage usage = chatResponse.getMetadata().getUsage();
                     String content = chatResponse.getResult().getOutput().getContent();
+                    String finishReason = chatResponse.getResult().getMetadata().getFinishReason();
+
                     ConversationReplyVO replyVO = ConversationReplyVO.builder()
+                            .event("STOP".equalsIgnoreCase(finishReason) ? ConverstationEventEnum.FINISHED : ConverstationEventEnum.REPLY)
                             .content(content)
                             .tokenUsage(TokenUsageVO.builder()
                                     .promptTokens(usage.getPromptTokens())

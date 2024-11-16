@@ -1,8 +1,8 @@
 package cn.hengzq.orange.ai.core.biz.chat.controller;
 
 import cn.hengzq.orange.ai.common.constant.AIConstant;
-import cn.hengzq.orange.ai.common.vo.chat.ConversationReplyVO;
-import cn.hengzq.orange.ai.common.vo.chat.param.ConversationParam;
+import cn.hengzq.orange.ai.common.biz.chat.vo.ConversationReplyVO;
+import cn.hengzq.orange.ai.common.biz.chat.vo.param.ConversationParam;
 import cn.hengzq.orange.ai.core.biz.chat.service.ChatService;
 import cn.hengzq.orange.common.result.Result;
 import cn.hengzq.orange.common.result.ResultWrapper;

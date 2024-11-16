@@ -1,6 +1,6 @@
 package cn.hengzq.orange.ai.tencent.config;
 
-import cn.hengzq.orange.ai.common.service.chat.ChatModelService;
+import cn.hengzq.orange.ai.common.biz.chat.service.ChatModelService;
 import cn.hengzq.orange.ai.tencent.chat.HunYuanChatModelServiceImpl;
 import com.tencentcloudapi.common.Credential;
 import com.tencentcloudapi.common.profile.ClientProfile;

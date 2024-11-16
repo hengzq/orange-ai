@@ -1,8 +1,9 @@
 package cn.hengzq.orange.ai.core.biz.chat.service;
 
-import cn.hengzq.orange.ai.common.vo.chat.ChatSessionRecordVO;
-import cn.hengzq.orange.ai.common.vo.chat.param.AddChatSessionRecordParam;
-import cn.hengzq.orange.ai.common.vo.chat.param.ChatSessionLogListParam;
+import cn.hengzq.orange.ai.common.biz.chat.vo.ChatSessionRecordVO;
+import cn.hengzq.orange.ai.common.biz.chat.vo.param.AddChatSessionRecordParam;
+import cn.hengzq.orange.ai.common.biz.chat.vo.param.ChatSessionLogListParam;
+import cn.hengzq.orange.ai.common.biz.chat.vo.param.ChatSessionRecordRateParam;
 
 import java.util.List;
 
@@ -12,4 +13,5 @@ public interface ChatSessionRecordService {
 
     Long add(AddChatSessionRecordParam param);
 
+    Boolean rateById(Long id, ChatSessionRecordRateParam param);
 }

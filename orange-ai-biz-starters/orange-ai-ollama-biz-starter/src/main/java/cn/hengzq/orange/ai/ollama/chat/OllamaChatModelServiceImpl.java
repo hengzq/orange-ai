@@ -1,11 +1,11 @@
 package cn.hengzq.orange.ai.ollama.chat;
 
-import cn.hengzq.orange.ai.common.vo.chat.ChatSessionRecordVO;
+import cn.hengzq.orange.ai.common.biz.chat.vo.ChatSessionRecordVO;
 import cn.hengzq.orange.common.result.Result;
 import cn.hengzq.orange.ai.common.constant.PlatformEnum;
-import cn.hengzq.orange.ai.common.service.chat.ChatModelService;
-import cn.hengzq.orange.ai.common.vo.chat.ConversationReplyVO;
-import cn.hengzq.orange.ai.common.vo.chat.param.ConversationParam;
+import cn.hengzq.orange.ai.common.biz.chat.service.ChatModelService;
+import cn.hengzq.orange.ai.common.biz.chat.vo.ConversationReplyVO;
+import cn.hengzq.orange.ai.common.biz.chat.vo.param.ConversationParam;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.ai.ollama.OllamaChatModel;

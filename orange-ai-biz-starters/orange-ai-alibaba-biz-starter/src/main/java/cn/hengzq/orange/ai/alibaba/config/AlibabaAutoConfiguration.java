@@ -2,8 +2,8 @@ package cn.hengzq.orange.ai.alibaba.config;
 
 import cn.hengzq.orange.ai.alibaba.chat.DashScopeChatModelServiceImpl;
 import cn.hengzq.orange.ai.alibaba.image.DashScopeImageModelServiceImpl;
-import cn.hengzq.orange.ai.common.service.chat.ChatModelService;
-import cn.hengzq.orange.ai.common.service.image.ImageModelService;
+import cn.hengzq.orange.ai.common.biz.chat.service.ChatModelService;
+import cn.hengzq.orange.ai.common.biz.image.service.ImageModelService;
 import com.alibaba.cloud.ai.dashscope.chat.DashScopeChatModel;
 import com.alibaba.cloud.ai.dashscope.image.DashScopeImageModel;
 import org.springframework.boot.autoconfigure.AutoConfiguration;

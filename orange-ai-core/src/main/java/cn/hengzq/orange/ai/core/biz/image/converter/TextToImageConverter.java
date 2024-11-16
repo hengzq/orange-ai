@@ -1,16 +1,15 @@
 package cn.hengzq.orange.ai.core.biz.image.converter;
 
 
+import cn.hengzq.orange.ai.common.biz.image.vo.TextToImageVO;
+import cn.hengzq.orange.ai.common.biz.image.vo.param.GenerateImageParam;
 import cn.hengzq.orange.ai.core.biz.image.entity.TextToImageEntity;
 import cn.hengzq.orange.common.converter.Converter;
 import cn.hengzq.orange.common.dto.PageDTO;
-import cn.hengzq.orange.ai.common.vo.image.TextToImageVO;
-import cn.hengzq.orange.ai.common.vo.image.param.GenerateImageParam;
+import cn.hengzq.orange.system.common.biz.storage.vo.StorageObjectVO;
+import cn.hutool.core.collection.CollUtil;
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
-import org.springframework.ai.image.Image;
-import org.springframework.ai.image.ImageGeneration;
-import org.springframework.ai.image.ImageResponse;
 
 import java.util.List;
 
@@ -26,10 +25,11 @@ public interface TextToImageConverter extends Converter {
 
     PageDTO<TextToImageVO> toPage(PageDTO<TextToImageEntity> page);
 
-    default TextToImageEntity toEntity(GenerateImageParam param, ImageResponse response) {
+    default TextToImageEntity toEntity(GenerateImageParam param, List<StorageObjectVO> storageObjectVOList) {
         TextToImageEntity entity = toEntity(param);
-        List<String> urls = response.getResults().stream().map(ImageGeneration::getOutput).map(Image::getUrl).toList();
-        entity.setUrls(urls);
+        if (CollUtil.isNotEmpty(storageObjectVOList)) {
+            entity.setUrls(storageObjectVOList.stream().map(StorageObjectVO::getUrl).toList());
+        }
         return entity;
     }
 
