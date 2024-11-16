@@ -63,6 +63,12 @@
 
             <dependency>
                 <groupId>cn.hengzq.orange</groupId>
+                <artifactId>orange-ai-qianfan-biz-starter</artifactId>
+                <version>${revision}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>cn.hengzq.orange</groupId>
                 <artifactId>orange-ai-core</artifactId>
                 <version>${revision}</version>
             </dependency>

@@ -81,5 +81,17 @@ VALUES (300, @t_id, 'TENCENT', 'hunyuan-turbo', 'hunyuan-turbo', 'CHAT', 1, 1, '
 
 ', @u_id);
 
+# -------------------------------------------------------------------------------------------------------------------
+# ---------------------------------     百度智能云-千帆ModelBuilder    ------------------------------------------------
+# -------------------------------------------------------------------------------------------------------------------
+INSERT INTO ai_model (id, tenant_id, platform, name, code, type, enabled, sort, description, created_by)
+VALUES ( 400, @t_id, 'QIAN_FAN', 'ERNIE-4.0-8K', 'completions_pro', 'CHAT', 1, 1, '# ERNIE-4.0-8K
+
+> ERNIE 4.0是百度自研的旗舰级超大规模⼤语⾔模型，相较ERNIE 3.5实现了模型能力全面升级，广泛适用于各领域复杂任务场景；支持自动对接百度搜索插件，保障问答信息时效，支持5K tokens输入+2K tokens输出。ERNIE-4.0-8K是模型的一个版本，本文介绍了相关API及使用。
+
+## 参考
+- [https://cloud.baidu.com/doc/WENXINWORKSHOP/s/clntwmv7t](https://cloud.baidu.com/doc/WENXINWORKSHOP/s/clntwmv7t)'
+       , @u_id);
+
 
 COMMIT;
