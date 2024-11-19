@@ -28,7 +28,7 @@ public interface TextToImageConverter extends Converter {
     default TextToImageEntity toEntity(GenerateImageParam param, List<StorageObjectVO> storageObjectVOList) {
         TextToImageEntity entity = toEntity(param);
         if (CollUtil.isNotEmpty(storageObjectVOList)) {
-            entity.setUrls(storageObjectVOList.stream().map(StorageObjectVO::getUrl).toList());
+            entity.setUrls(storageObjectVOList.stream().map(StorageObjectVO::getPreviewUrl).toList());
         }
         return entity;
     }

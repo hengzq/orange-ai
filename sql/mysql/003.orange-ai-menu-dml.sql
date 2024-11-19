@@ -36,12 +36,10 @@ VALUES (1000, @t_id, -1, 'AI 大模型', 'orange-ai', 0, '', 'system-settings', 
 
 -- 部门管理
 INSERT INTO sys_menu (id, tenant_id, parent_id, name, permission, preset, path, icon, hidden, sort, created_by)
-VALUES (1001, @t_id, 1000, 'AI 聊天', 'orange-ai:chat:view', 0, 'large-model/chat',
-        'system-people-circle', 0, 20, @u_id);
+VALUES (1001, @t_id, 1000, 'AI 聊天', 'orange-ai:chat:view', 0, 'large-model/chat', 'system-people-circle', 0, 20, @u_id);
 
 INSERT INTO sys_menu (id, tenant_id, parent_id, name, permission, preset, path, icon, hidden, sort, created_by)
-VALUES (1002, @t_id, 1000, 'AI 文生图', 'orange-ai:text-to-image:view', 0, 'large-model/image',
-        'system-people-circle', 0, 20, @u_id);
+VALUES (1002, @t_id, 1000, 'AI 文生图', 'orange-ai:text-to-image:view', 0, 'large-model/image', 'system-people-circle', 0, 20, @u_id);
 
 INSERT INTO sys_menu (id, tenant_id, parent_id, name, permission, preset, path, icon, hidden, sort, created_by)
 VALUES (1003, @t_id, 1000, 'AI 模型管理', 'orange-ai:model:view', 0, 'large-model/model', 'system-people-circle', 0, 20,
