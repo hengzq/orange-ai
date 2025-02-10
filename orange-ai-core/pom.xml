@@ -48,6 +48,12 @@
             <artifactId>orange-ai-qianfan-biz-starter</artifactId>
         </dependency>
 
+        <!-- DeepSeek AI 依赖    -->
+        <dependency>
+            <groupId>cn.hengzq.orange</groupId>
+            <artifactId>orange-ai-deepseek-biz-starter</artifactId>
+        </dependency>
+
         <dependency>
             <groupId>cn.hengzq.orange</groupId>
             <artifactId>orange-system-api</artifactId>

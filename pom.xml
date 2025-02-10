@@ -6,7 +6,7 @@
     <parent>
         <groupId>cn.hengzq.orange</groupId>
         <artifactId>orange-dependencies-parent</artifactId>
-        <version>1.2.0</version>
+        <version>1.3.0-SNAPSHOT</version>
     </parent>
 
     <artifactId>orange-ai</artifactId>
@@ -19,7 +19,7 @@
     </description>
 
     <properties>
-        <revision>1.2.0</revision>
+        <revision>1.3.0-SNAPSHOT</revision>
     </properties>
 
     <modules>
@@ -64,6 +64,12 @@
             <dependency>
                 <groupId>cn.hengzq.orange</groupId>
                 <artifactId>orange-ai-qianfan-biz-starter</artifactId>
+                <version>${revision}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>cn.hengzq.orange</groupId>
+                <artifactId>orange-ai-deepseek-biz-starter</artifactId>
                 <version>${revision}</version>
             </dependency>
 

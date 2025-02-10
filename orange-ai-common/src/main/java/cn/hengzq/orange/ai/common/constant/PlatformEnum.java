@@ -24,6 +24,8 @@ public enum PlatformEnum implements BaseEnum<String> {
 
     QIAN_FAN("百度智能云-千帆ModelBuilder", List.of(ModelTypeEnum.CHAT, ModelTypeEnum.TEXT_TO_IMAGE)),
 
+    DEEP_SEEK("DeepSeek ", List.of(ModelTypeEnum.CHAT)),
+
     ;
 
     private final String description;
