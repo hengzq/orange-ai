@@ -25,6 +25,7 @@
     <modules>
         <module>orange-ai-common</module>
         <module>orange-ai-biz-starters</module>
+        <module>orange-ai-vector-store-biz-starters</module>
         <module>orange-ai-core</module>
         <module>orange-ai-service</module>
     </modules>

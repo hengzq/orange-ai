@@ -42,6 +42,21 @@ VALUES (100000, @t_id, 1, '512*1024', '512*1024', 'ai_image_resolution', 1, '#40
        (100005, @t_id, 1, '1024*1024', '1024*1024', 'ai_image_resolution', 1, '#f56c6c', 1, '分辨率-1024*1024', @u_id);
 
 
+-- ------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+--  会话来源  ai_session_source      type ID范围 [1001]  data ID范围 [100100 - 100200）
+-- ------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+-- 新增字典类型
+INSERT INTO sys_dict_type (id, tenant_id, name, dict_type, enabled, preset, description, created_by)
+VALUES (1001, @t_id, 'AI - 会话来源', 'ai_session_source', 1, 1, 'AI - 图片分辨率', @u_id);
+
+-- 新增字典数据
+INSERT INTO sys_dict_data (id, tenant_id, sort, dict_label, dict_value, dict_type, preset, show_style, enabled, description, created_by)
+VALUES (100100, @t_id, 1, '智能体', 'AGENT', 'ai_session_source', 1, '#409eff', 1, '会话来源-智能体', @u_id),
+       (100101, @t_id, 1, '智能体调试', 'AGENT_DEBUG', 'ai_session_source', 1, '#909399', 1, '会话来源-智能体调试', @u_id),
+       (100102, @t_id, 1, '体验中心-聊天会话', 'CHAT_EXPERIENCE', 'ai_session_source', 1, '#87d068', 1, '会话来源-体验中心-聊天会话', @u_id);
+
+
+
 COMMIT;
 
 
