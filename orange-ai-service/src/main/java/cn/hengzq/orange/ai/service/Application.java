@@ -11,7 +11,9 @@ import java.net.UnknownHostException;
 
 
 @Slf4j
-@SpringBootApplication(scanBasePackages = {"cn.hengzq.orange.ai.core", "cn.hengzq.orange.ai.service"})
+@SpringBootApplication(
+        scanBasePackages = {"cn.hengzq.orange.ai.core", "cn.hengzq.orange.ai.service"}
+)
 public class Application {
 
     public static void main(String[] args) {

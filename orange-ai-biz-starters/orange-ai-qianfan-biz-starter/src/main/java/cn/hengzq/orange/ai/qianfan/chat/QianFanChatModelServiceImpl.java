@@ -1,19 +1,19 @@
 package cn.hengzq.orange.ai.qianfan.chat;
 
-import cn.hengzq.orange.ai.common.constant.PlatformEnum;
-import cn.hengzq.orange.ai.common.biz.chat.converter.MessageConverter;
+import cn.hengzq.orange.ai.common.biz.chat.dto.ChatModelConversationParam;
 import cn.hengzq.orange.ai.common.biz.chat.service.ChatModelService;
-import cn.hengzq.orange.ai.common.biz.chat.vo.TokenUsageVO;
-import cn.hengzq.orange.ai.common.biz.chat.vo.ChatSessionRecordVO;
 import cn.hengzq.orange.ai.common.biz.chat.vo.ConversationReplyVO;
-import cn.hengzq.orange.ai.common.biz.chat.vo.param.ConversationParam;
+import cn.hengzq.orange.ai.common.biz.chat.vo.TokenUsageVO;
+import cn.hengzq.orange.ai.common.constant.PlatformEnum;
 import cn.hengzq.orange.common.result.Result;
 import cn.hengzq.orange.common.result.ResultWrapper;
+import cn.hutool.core.collection.CollUtil;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.ai.chat.messages.Message;
 import org.springframework.ai.chat.messages.UserMessage;
 import org.springframework.ai.chat.metadata.Usage;
+import org.springframework.ai.chat.model.ChatModel;
 import org.springframework.ai.chat.model.ChatResponse;
 import org.springframework.ai.chat.prompt.Prompt;
 import org.springframework.ai.qianfan.QianFanChatModel;
@@ -36,17 +36,17 @@ public class QianFanChatModelServiceImpl implements ChatModelService {
     }
 
     @Override
-    public Flux<Result<ConversationReplyVO>> conversationStream(ConversationParam param) {
-        return conversationStream(param, List.of());
+    public ChatModel getChatModel() {
+        return this.chatModel;
     }
 
     @Override
-    public Flux<Result<ConversationReplyVO>> conversationStream(ConversationParam param, List<ChatSessionRecordVO> contextMessageList) {
-        List<Message> messages = new ArrayList<>(MessageConverter.toMessageList(contextMessageList));
+    public Flux<Result<ConversationReplyVO>> conversationStream(ChatModelConversationParam param) {
+        List<Message> messages = CollUtil.isEmpty(param.getMessages()) ? new ArrayList<>() : new ArrayList<>(param.getMessages());
         messages.add(new UserMessage(param.getPrompt()));
 
         Prompt prompt = new Prompt(messages, QianFanChatOptions.builder()
-                .withModel(param.getModelCode())
+                .model(param.getModel())
                 .build());
         Flux<ChatResponse> stream = chatModel.stream(prompt);
         return stream

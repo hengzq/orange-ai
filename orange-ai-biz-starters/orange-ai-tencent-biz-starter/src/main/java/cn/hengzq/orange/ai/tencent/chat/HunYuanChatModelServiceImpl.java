@@ -1,13 +1,12 @@
 package cn.hengzq.orange.ai.tencent.chat;
 
-import cn.hengzq.orange.ai.common.biz.chat.constant.MessageTypeEnum;
-import cn.hengzq.orange.ai.common.constant.PlatformEnum;
 import cn.hengzq.orange.ai.common.biz.chat.constant.AIChatErrorCode;
+import cn.hengzq.orange.ai.common.biz.chat.constant.MessageTypeEnum;
+import cn.hengzq.orange.ai.common.biz.chat.dto.ChatModelConversationParam;
 import cn.hengzq.orange.ai.common.biz.chat.service.ChatModelService;
-import cn.hengzq.orange.ai.common.biz.chat.vo.TokenUsageVO;
-import cn.hengzq.orange.ai.common.biz.chat.vo.ChatSessionRecordVO;
 import cn.hengzq.orange.ai.common.biz.chat.vo.ConversationReplyVO;
-import cn.hengzq.orange.ai.common.biz.chat.vo.param.ConversationParam;
+import cn.hengzq.orange.ai.common.biz.chat.vo.TokenUsageVO;
+import cn.hengzq.orange.ai.common.constant.PlatformEnum;
 import cn.hengzq.orange.common.exception.ServiceException;
 import cn.hengzq.orange.common.result.Result;
 import cn.hengzq.orange.common.result.ResultWrapper;
@@ -19,6 +18,7 @@ import com.tencentcloudapi.hunyuan.v20230901.HunyuanClient;
 import com.tencentcloudapi.hunyuan.v20230901.models.*;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.ai.chat.model.ChatModel;
 import reactor.core.publisher.Flux;
 
 import java.util.ArrayList;
@@ -38,21 +38,21 @@ public class HunYuanChatModelServiceImpl implements ChatModelService {
     }
 
     @Override
-    public Flux<Result<ConversationReplyVO>> conversationStream(ConversationParam param) {
-        return conversationStream(param, List.of());
+    public ChatModel getChatModel() {
+        return null;
     }
 
     @Override
-    public Flux<Result<ConversationReplyVO>> conversationStream(ConversationParam param, List<ChatSessionRecordVO> contextMessageList) {
+    public Flux<Result<ConversationReplyVO>> conversationStream(ChatModelConversationParam param) {
         // 实例化一个请求对象,每个接口都会对应一个request对象
         ChatCompletionsRequest req = new ChatCompletionsRequest();
-        req.setModel(param.getModelCode());
+        req.setModel(param.getModel());
         req.setStream(Boolean.TRUE);
 
         List<Message> messages = new ArrayList<>();
         // 分装历史回话信息
-        if (CollUtil.isNotEmpty(contextMessageList)) {
-            messages.addAll(contextMessageList.stream().filter(Objects::nonNull)
+        if (CollUtil.isNotEmpty(param.getMessages())) {
+            messages.addAll(param.getMessages().stream().filter(Objects::nonNull)
                     .map(record -> {
                         Message message = new Message();
                         message.setRole(record.getMessageType().name().toLowerCase(Locale.ROOT));

@@ -8,4 +8,3 @@ spring:
       discovery:
         server-addr: nacos-server:8848
         namespace: "81e6a257-aa90-4be0-9e58-9214b563a18d"
-

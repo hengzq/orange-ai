@@ -1,10 +1,8 @@
 package cn.hengzq.orange.ai.deepseek.chat;
 
-import cn.hengzq.orange.ai.common.biz.chat.constant.MessageTypeEnum;
+import cn.hengzq.orange.ai.common.biz.chat.dto.ChatModelConversationParam;
 import cn.hengzq.orange.ai.common.biz.chat.service.ChatModelService;
-import cn.hengzq.orange.ai.common.biz.chat.vo.ChatSessionRecordVO;
 import cn.hengzq.orange.ai.common.biz.chat.vo.ConversationReplyVO;
-import cn.hengzq.orange.ai.common.biz.chat.vo.param.ConversationParam;
 import cn.hengzq.orange.ai.common.constant.PlatformEnum;
 import cn.hengzq.orange.ai.deepseek.config.DeepSeekStorageProperties;
 import cn.hengzq.orange.ai.deepseek.constant.DeepSeekContent;
@@ -24,7 +22,9 @@ import okhttp3.sse.EventSource;
 import okhttp3.sse.EventSourceListener;
 import okhttp3.sse.EventSources;
 import org.jetbrains.annotations.NotNull;
+import org.springframework.ai.chat.messages.Message;
 import org.springframework.ai.chat.messages.MessageType;
+import org.springframework.ai.chat.model.ChatModel;
 import reactor.core.publisher.Flux;
 
 import java.util.ArrayList;
@@ -42,15 +42,15 @@ public class DeepSeekChatModelServiceImpl implements ChatModelService {
     }
 
     @Override
-    public Flux<Result<ConversationReplyVO>> conversationStream(ConversationParam param) {
-        return conversationStream(param, List.of());
+    public ChatModel getChatModel() {
+        return null;
     }
 
     @Override
-    public Flux<Result<ConversationReplyVO>> conversationStream(ConversationParam param, List<ChatSessionRecordVO> contextMessageList) {
+    public Flux<Result<ConversationReplyVO>> conversationStream(ChatModelConversationParam param) {
         OkHttpClient client = new OkHttpClient();
         MediaType mediaType = MediaType.get("application/json");
-        ChatCompletionsParam reqBody = generateChatRequestBody(param, contextMessageList);
+        ChatCompletionsParam reqBody = generateChatRequestBody(param);
 
         Request request = new Request.Builder()
                 .url(deepSeekStorageProperties.getChatUrl())
@@ -99,15 +99,15 @@ public class DeepSeekChatModelServiceImpl implements ChatModelService {
         });
     }
 
-    private ChatCompletionsParam generateChatRequestBody(ConversationParam param, List<ChatSessionRecordVO> contextMessageList) {
+    private ChatCompletionsParam generateChatRequestBody(ChatModelConversationParam param) {
         List<MessageItem> messages = new ArrayList<>();
-        if (CollUtil.isNotEmpty(contextMessageList)) {
-            for (ChatSessionRecordVO record : contextMessageList) {
-                if (MessageTypeEnum.USER.equals(record.getMessageType())) {
+        if (CollUtil.isNotEmpty(param.getMessages())) {
+            for (Message record : param.getMessages()) {
+                if (MessageType.USER.equals(record.getMessageType())) {
                     messages.add(MessageItem.builder().role(MessageType.USER.getValue()).content(record.getContent()).build());
                     continue;
                 }
-                if (MessageTypeEnum.ASSISTANT.equals(record.getMessageType())) {
+                if (MessageType.ASSISTANT.equals(record.getMessageType())) {
                     messages.add(MessageItem.builder().role(MessageType.ASSISTANT.getValue()).content(record.getContent()).build());
                 }
             }
@@ -115,7 +115,7 @@ public class DeepSeekChatModelServiceImpl implements ChatModelService {
         messages.add(MessageItem.builder().role(MessageType.USER.getValue()).content(param.getPrompt()).build());
 
         return ChatCompletionsParam.builder()
-                .model(param.getModelCode())
+                .model(param.getModel())
                 .messages(messages)
                 .stream(Boolean.TRUE)
                 .build();

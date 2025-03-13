@@ -22,6 +22,16 @@
         <dependency>
             <groupId>com.alibaba.cloud.ai</groupId>
             <artifactId>spring-ai-alibaba-starter</artifactId>
+            <exclusions>
+                <exclusion>
+                    <artifactId>spring-alibaba-nacos-config</artifactId>
+                    <groupId>com.alibaba.cloud</groupId>
+                </exclusion>
+                <exclusion>
+                    <artifactId>nacos-client-mse-extension</artifactId>
+                    <groupId>com.alibaba.nacos</groupId>
+                </exclusion>
+            </exclusions>
         </dependency>
 
         <dependency>

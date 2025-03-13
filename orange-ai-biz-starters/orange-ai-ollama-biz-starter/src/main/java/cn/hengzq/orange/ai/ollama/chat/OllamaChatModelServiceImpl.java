@@ -1,18 +1,16 @@
 package cn.hengzq.orange.ai.ollama.chat;
 
-import cn.hengzq.orange.ai.common.biz.chat.vo.ChatSessionRecordVO;
-import cn.hengzq.orange.common.result.Result;
-import cn.hengzq.orange.ai.common.constant.PlatformEnum;
+import cn.hengzq.orange.ai.common.biz.chat.dto.ChatModelConversationParam;
 import cn.hengzq.orange.ai.common.biz.chat.service.ChatModelService;
 import cn.hengzq.orange.ai.common.biz.chat.vo.ConversationReplyVO;
-import cn.hengzq.orange.ai.common.biz.chat.vo.param.ConversationParam;
+import cn.hengzq.orange.ai.common.constant.PlatformEnum;
+import cn.hengzq.orange.common.result.Result;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.ai.chat.model.ChatModel;
 import org.springframework.ai.ollama.OllamaChatModel;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
-
-import java.util.List;
 
 @Slf4j
 @Service
@@ -27,12 +25,13 @@ public class OllamaChatModelServiceImpl implements ChatModelService {
     }
 
     @Override
-    public Flux<Result<ConversationReplyVO>> conversationStream(ConversationParam param) {
-        return conversationStream(param, List.of());
+    public ChatModel getChatModel() {
+        return this.ollamaChatModel;
     }
 
+
     @Override
-    public Flux<Result<ConversationReplyVO>> conversationStream(ConversationParam param, List<ChatSessionRecordVO> contextMessageList) {
+    public Flux<Result<ConversationReplyVO>> conversationStream(ChatModelConversationParam param) {
         return null;
     }
 
