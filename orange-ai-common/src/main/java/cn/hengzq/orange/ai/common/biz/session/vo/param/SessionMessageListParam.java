@@ -1,4 +1,4 @@
-package cn.hengzq.orange.ai.common.biz.chat.vo.param;
+package cn.hengzq.orange.ai.common.biz.session.vo.param;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
@@ -10,7 +10,7 @@ import java.io.Serializable;
  */
 @Data
 @Schema(description = "会话记录管理 - 列表查询参数")
-public class ChatSessionLogListParam implements Serializable {
+public class SessionMessageListParam implements Serializable {
 
     @Schema(description = "用户ID")
     private Long userId;

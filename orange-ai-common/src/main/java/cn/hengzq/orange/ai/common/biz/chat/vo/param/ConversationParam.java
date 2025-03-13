@@ -11,11 +11,8 @@ public class ConversationParam {
     @Schema(description = "回话ID")
     private Long sessionId;
 
-    @Schema(description = "所属平台")
-    private PlatformEnum platform = PlatformEnum.ALI_BAI_LIAN;
-
-    @Schema(description = "模型编码")
-    private String modelCode = "wanx-style-cosplay-v1";
+    @Schema(description = "模型ID")
+    private Long modelId;
 
     @Schema(description = "生成图片的提示")
     private String prompt;
