@@ -30,7 +30,7 @@ public class VectorDataController {
 
     @Operation(summary = "添加向量数据", operationId = "orange-ai:vector-data:add")
     @PostMapping
-    public Result<Long> add(@RequestBody @Validated AddVectorDataParam param) {
+    public Result<String> add(@RequestBody @Validated AddVectorDataParam param) {
         return ResultWrapper.ok(vectorDataService.add(param));
     }
 

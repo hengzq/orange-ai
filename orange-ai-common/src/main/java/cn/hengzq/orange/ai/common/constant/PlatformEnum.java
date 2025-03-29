@@ -24,7 +24,7 @@ public enum PlatformEnum implements BaseEnum<String> {
 
     QIAN_FAN("百度智能云-千帆ModelBuilder", 50, List.of(ModelTypeEnum.CHAT, ModelTypeEnum.TEXT_TO_IMAGE)),
 
-    DEEP_SEEK("DeepSeek", 1, List.of(ModelTypeEnum.CHAT)),
+    DEEP_SEEK("DeepSeek", 60, List.of(ModelTypeEnum.CHAT)),
 
     ;
 
@@ -36,6 +36,8 @@ public enum PlatformEnum implements BaseEnum<String> {
     private final Integer sort;
 
     private final List<ModelTypeEnum> modelTypes;
+
+
 
 
     PlatformEnum(String description, Integer sort, List<ModelTypeEnum> modelTypes) {

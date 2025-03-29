@@ -11,13 +11,13 @@ import java.util.List;
 
 public interface SessionService {
 
-    Long add(AddSessionParam param);
+    String add(AddSessionParam param);
 
-    Boolean deleteById(Long id);
+    Boolean deleteById(String id);
 
-    Boolean updateById(Long id, UpdateSessionParam param);
+    Boolean updateById(String id, UpdateSessionParam param);
 
-    SessionVO getById(Long id);
+    SessionVO getById(String id);
 
     PageDTO<SessionVO> page(SessionPageParam param);
 

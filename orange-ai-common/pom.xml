@@ -23,8 +23,18 @@
         </dependency>
 
         <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-web</artifactId>
+        </dependency>
+
+        <dependency>
             <groupId>cn.hengzq.orange</groupId>
             <artifactId>orange-starter-common</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>cn.hutool</groupId>
+            <artifactId>hutool-crypto</artifactId>
         </dependency>
     </dependencies>
 

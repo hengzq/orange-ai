@@ -19,10 +19,10 @@ import java.io.Serializable;
 public class AddSessionMessageParam implements Serializable {
 
     @Schema(description = "父级ID")
-    private Long parentId = GlobalConstant.DEFAULT_PARENT_ID;
+    private String parentId = GlobalConstant.DEFAULT_PARENT_ID + "";
 
     @Schema(description = "会话ID")
-    private Long sessionId;
+    private String sessionId;
 
     @Schema(description = "消息类型")
     private MessageTypeEnum role;

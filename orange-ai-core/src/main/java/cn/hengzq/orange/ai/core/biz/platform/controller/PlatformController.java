@@ -5,16 +5,16 @@ import cn.hengzq.orange.ai.common.biz.model.vo.ModelTypeVO;
 import cn.hengzq.orange.ai.common.biz.platform.vo.PlatformVO;
 import cn.hengzq.orange.ai.common.biz.platform.vo.param.PlatformListParam;
 import cn.hengzq.orange.ai.common.constant.AIConstant;
+import cn.hengzq.orange.ai.common.constant.ModelTypeEnum;
 import cn.hengzq.orange.ai.common.constant.PlatformEnum;
+import cn.hengzq.orange.ai.core.biz.chat.service.ChatModelServiceFactory;
+import cn.hengzq.orange.ai.core.biz.embedding.service.EmbeddingModelServiceFactory;
 import cn.hengzq.orange.common.result.Result;
 import cn.hengzq.orange.common.result.ResultWrapper;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Arrays;
 import java.util.Comparator;
@@ -30,6 +30,10 @@ import java.util.stream.Collectors;
 @AllArgsConstructor
 @RequestMapping(AIConstant.V1_0_URL_PREFIX + "/platform")
 public class PlatformController {
+
+    private final ChatModelServiceFactory chatModelServiceFactory;
+
+    private final EmbeddingModelServiceFactory embeddingModelServiceFactory;
 
     @PostMapping(value = "/list")
     @Operation(summary = "查询所有的数据", operationId = "orange-ai:platform:list", description = "返回所有的数据")
@@ -51,4 +55,18 @@ public class PlatformController {
                 .collect(Collectors.toList());
         return ResultWrapper.ok(list);
     }
+
+    @GetMapping(value = "/list-model/{platform}/{modelType}")
+    @Operation(summary = "根据供应商和模型类型，查询模型", operationId = "orange-ai:platform:list", description = "返回所有的数据")
+    public Result<List<String>> listModel(@PathVariable("platform") PlatformEnum platform,
+                                          @PathVariable("modelType") ModelTypeEnum modelType) {
+        List<String> modelList = List.of();
+        if (ModelTypeEnum.CHAT.equals(modelType)) {
+            modelList = chatModelServiceFactory.getChatModelService(platform).listModel();
+        } else if (ModelTypeEnum.EMBEDDING.equals(modelType)) {
+            modelList = embeddingModelServiceFactory.getEmbeddingModelService(platform).listModel();
+        }
+        return ResultWrapper.ok(modelList);
+    }
+
 }

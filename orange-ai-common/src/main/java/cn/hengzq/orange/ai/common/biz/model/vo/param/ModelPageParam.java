@@ -19,7 +19,7 @@ public class ModelPageParam extends PageParam {
     private PlatformEnum platform;
 
     @Schema(description = "模型类别")
-    private ModelTypeEnum type;
+    private ModelTypeEnum modelType;
 
     @Schema(description = "模型名称")
     private String name;

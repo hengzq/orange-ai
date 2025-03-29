@@ -16,25 +16,28 @@ import lombok.EqualsAndHashCode;
 public class ModelVO extends BaseTenantDTO {
 
     @Schema(description = "主键", accessMode = Schema.AccessMode.READ_ONLY)
-    private Long id;
+    private String id;
 
     @Schema(description = "模型所属平台")
     private PlatformEnum platform;
 
     @Schema(description = "模型类别")
-    private ModelTypeEnum type;
+    private ModelTypeEnum modelType;
 
     @Schema(description = "模型名称")
     private String name;
 
-    @Schema(description = "模型编码,不能重复")
-    private String code;
+    @Schema(description = "原始模型名称 ")
+    private String modelName;
 
     @Schema(description = "模型启用状态 true:启用 false：不启用")
     private boolean enabled;
 
     @Schema(description = "排序")
     private Integer sort;
+
+    @Schema(description = "API KEY")
+    private String apiKey;
 
     @Schema(description = "备注")
     private String description;

@@ -35,7 +35,7 @@ public class SessionServiceImpl implements SessionService {
 
 
     @Override
-    public Long add(AddSessionParam param) {
+    public String add(AddSessionParam param) {
         SessionEntity entity = SessionConverter.INSTANCE.toEntity(param);
         entity.setUserId(GlobalContextHelper.getUserId());
         return sessionMapper.insertOne(entity);
@@ -43,27 +43,27 @@ public class SessionServiceImpl implements SessionService {
 
     @Transactional(rollbackFor = Exception.class)
     @Override
-    public Boolean deleteById(Long id) {
+    public Boolean deleteById(String id) {
         sessionMessageMapper.delete(CommonWrappers.<SessionMessageEntity>lambdaQuery().eq(SessionMessageEntity::getSessionId, id));
         return sessionMapper.deleteOneById(id);
     }
 
     @Override
-    public Boolean updateById(Long id, UpdateSessionParam param) {
+    public Boolean updateById(String id, UpdateSessionParam param) {
         SessionEntity entity = sessionMapper.selectById(id);
         entity = SessionConverter.INSTANCE.toUpdateEntity(entity, param);
         return sessionMapper.updateOneById(entity);
     }
 
     @Override
-    public SessionVO getById(Long id) {
+    public SessionVO getById(String id) {
         return SessionConverter.INSTANCE.toVO(sessionMapper.selectById(id));
     }
 
     @Override
     public PageDTO<SessionVO> page(SessionPageParam param) {
         PageDTO<SessionEntity> page = sessionMapper.selectPage(param, CommonWrappers.<SessionEntity>lambdaQuery()
-                .eqIfPresent(SessionEntity::getSource, param.getSource())
+                .eqIfPresent(SessionEntity::getSessionType, param.getSessionType())
                 .eqIfPresent(SessionEntity::getModelId, param.getModelId())
                 .eqIfPresent(SessionEntity::getAssociationId, param.getAssociationId())
                 .orderByDesc(SessionEntity::getCreatedAt));
@@ -74,7 +74,7 @@ public class SessionServiceImpl implements SessionService {
     public List<SessionVO> list(SessionListParam param) {
         List<SessionEntity> entityList = sessionMapper.selectList(
                 CommonWrappers.<SessionEntity>lambdaQuery()
-                        .eqIfPresent(SessionEntity::getSource, param.getSource())
+                        .eqIfPresent(SessionEntity::getSessionType, param.getSessionType())
                         .eqIfPresent(SessionEntity::getModelId, param.getModelId())
                         .eqIfPresent(SessionEntity::getAssociationId, param.getAssociationId())
                         .orderByDesc(SessionEntity::getCreatedAt)

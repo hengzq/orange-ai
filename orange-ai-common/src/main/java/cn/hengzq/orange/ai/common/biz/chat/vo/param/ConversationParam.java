@@ -9,10 +9,10 @@ import lombok.Data;
 public class ConversationParam {
 
     @Schema(description = "回话ID")
-    private Long sessionId;
+    private String sessionId;
 
     @Schema(description = "模型ID")
-    private Long modelId;
+    private String modelId;
 
     @Schema(description = "生成图片的提示")
     private String prompt;

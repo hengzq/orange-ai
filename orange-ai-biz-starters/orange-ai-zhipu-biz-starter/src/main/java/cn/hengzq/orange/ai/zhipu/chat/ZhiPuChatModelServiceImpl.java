@@ -1,9 +1,10 @@
 package cn.hengzq.orange.ai.zhipu.chat;
 
 import cn.hengzq.orange.ai.common.biz.chat.dto.ChatModelConversationParam;
-import cn.hengzq.orange.ai.common.biz.chat.service.ChatModelService;
+import cn.hengzq.orange.ai.common.biz.chat.service.AbstractChatModelService;
 import cn.hengzq.orange.ai.common.biz.chat.vo.ConversationReplyVO;
 import cn.hengzq.orange.ai.common.biz.chat.vo.TokenUsageVO;
+import cn.hengzq.orange.ai.common.biz.model.vo.ModelVO;
 import cn.hengzq.orange.ai.common.constant.PlatformEnum;
 import cn.hengzq.orange.common.result.Result;
 import cn.hengzq.orange.common.result.ResultWrapper;
@@ -24,18 +25,13 @@ import java.util.stream.Stream;
 
 @Slf4j
 @AllArgsConstructor
-public class ZhiPuChatModelServiceImpl implements ChatModelService {
+public class ZhiPuChatModelServiceImpl extends AbstractChatModelService {
 
     private final ZhiPuAiChatModel chatModel;
 
     @Override
     public PlatformEnum getPlatform() {
         return PlatformEnum.ZHI_PU;
-    }
-
-    @Override
-    public ChatModel getChatModel() {
-        return this.chatModel;
     }
 
     @Override
@@ -46,7 +42,7 @@ public class ZhiPuChatModelServiceImpl implements ChatModelService {
         );
 
         Prompt prompt = new Prompt(messageStream.collect(Collectors.toList()), ZhiPuAiChatOptions.builder()
-                .model(param.getModel())
+                .model(param.getModel().getModelName())
                 .build());
         Flux<ChatResponse> stream = chatModel.stream(prompt);
         return stream.map(chatResponse -> {
@@ -54,17 +50,21 @@ public class ZhiPuChatModelServiceImpl implements ChatModelService {
                 log.debug("chatResponse: {}", chatResponse);
             }
             Usage usage = chatResponse.getMetadata().getUsage();
-            String content = chatResponse.getResult().getOutput().getContent();
+            String content = chatResponse.getResult().getOutput().getText();
             ConversationReplyVO replyVO = ConversationReplyVO.builder()
                     .content(content)
                     .tokenUsage(TokenUsageVO.builder()
-                            .promptTokens(usage.getPromptTokens())
-                            .generationTokens(usage.getGenerationTokens())
-                            .totalTokens(usage.getTotalTokens())
+                            .promptTokens(Long.valueOf(usage.getPromptTokens()))
+                            .generationTokens(Long.valueOf(usage.getCompletionTokens()))
+                            .totalTokens(Long.valueOf(usage.getTotalTokens()))
                             .build())
                     .build();
             return ResultWrapper.ok(replyVO);
         });
     }
 
+    @Override
+    protected ChatModel createChatModel(ModelVO model) {
+        return null;
+    }
 }

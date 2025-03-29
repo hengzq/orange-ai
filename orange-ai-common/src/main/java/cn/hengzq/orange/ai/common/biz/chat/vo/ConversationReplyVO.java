@@ -13,7 +13,7 @@ import java.io.Serializable;
 public class ConversationReplyVO implements Serializable {
 
     @Schema(description = "消息Id")
-    private Long id;
+    private String sessionId;
 
     @Schema(description = "对话事件")
     private ConverstationEventEnum event;

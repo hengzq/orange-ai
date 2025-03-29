@@ -27,11 +27,11 @@ public interface ModelConverter extends Converter {
 
     ModelVO toVO(ModelEntity entity);
 
-    List<ModelVO> toListV0(List<ModelEntity> entityList);
+    List<ModelVO> toListVO(List<ModelEntity> entityList);
 
     @Mapping(source = "entity.id", target = "id")
     @Mapping(source = "param.name", target = "name")
-    @Mapping(source = "param.code", target = "code")
+    @Mapping(source = "param.modelName", target = "modelName")
     @Mapping(source = "param.sort", target = "sort")
     @Mapping(source = "param.description", target = "description")
     ModelEntity toUpdateEntity(ModelEntity entity, UpdateModelParam param);

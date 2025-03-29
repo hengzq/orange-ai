@@ -1,6 +1,6 @@
 package cn.hengzq.orange.ai.common.biz.session.vo.param;
 
-import cn.hengzq.orange.ai.common.biz.session.constant.SessionSourceEnum;
+import cn.hengzq.orange.ai.common.biz.session.constant.SessionTypeEnum;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -20,12 +20,12 @@ public class AddSessionParam implements Serializable {
     private String name;
 
     @Schema(description = "模型ID")
-    private Long modelId;
+    private String modelId;
 
     @Schema(description = "关联外键ID")
-    private Long associationId;
+    private String associationId;
 
-    @Schema(description = "会话来源")
-    private SessionSourceEnum source;
+    @Schema(description = "会话类型")
+    private SessionTypeEnum sessionType;
 
 }

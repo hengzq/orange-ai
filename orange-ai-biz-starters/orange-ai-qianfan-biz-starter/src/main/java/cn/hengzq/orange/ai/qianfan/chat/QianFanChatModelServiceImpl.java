@@ -1,9 +1,9 @@
 package cn.hengzq.orange.ai.qianfan.chat;
 
 import cn.hengzq.orange.ai.common.biz.chat.dto.ChatModelConversationParam;
-import cn.hengzq.orange.ai.common.biz.chat.service.ChatModelService;
+import cn.hengzq.orange.ai.common.biz.chat.service.AbstractChatModelService;
 import cn.hengzq.orange.ai.common.biz.chat.vo.ConversationReplyVO;
-import cn.hengzq.orange.ai.common.biz.chat.vo.TokenUsageVO;
+import cn.hengzq.orange.ai.common.biz.model.vo.ModelVO;
 import cn.hengzq.orange.ai.common.constant.PlatformEnum;
 import cn.hengzq.orange.common.result.Result;
 import cn.hengzq.orange.common.result.ResultWrapper;
@@ -26,7 +26,7 @@ import java.util.Objects;
 
 @Slf4j
 @AllArgsConstructor
-public class QianFanChatModelServiceImpl implements ChatModelService {
+public class QianFanChatModelServiceImpl extends AbstractChatModelService {
 
     private final QianFanChatModel chatModel;
 
@@ -36,17 +36,12 @@ public class QianFanChatModelServiceImpl implements ChatModelService {
     }
 
     @Override
-    public ChatModel getChatModel() {
-        return this.chatModel;
-    }
-
-    @Override
     public Flux<Result<ConversationReplyVO>> conversationStream(ChatModelConversationParam param) {
         List<Message> messages = CollUtil.isEmpty(param.getMessages()) ? new ArrayList<>() : new ArrayList<>(param.getMessages());
         messages.add(new UserMessage(param.getPrompt()));
 
         Prompt prompt = new Prompt(messages, QianFanChatOptions.builder()
-                .model(param.getModel())
+                .model(param.getModel().getModelName())
                 .build());
         Flux<ChatResponse> stream = chatModel.stream(prompt);
         return stream
@@ -57,17 +52,21 @@ public class QianFanChatModelServiceImpl implements ChatModelService {
                         log.debug("chatResponse: {}", chatResponse);
                     }
                     Usage usage = chatResponse.getMetadata().getUsage();
-                    String content = chatResponse.getResult().getOutput().getContent();
+                    String content = chatResponse.getResult().getOutput().getText();
                     ConversationReplyVO replyVO = ConversationReplyVO.builder()
                             .content(content)
-                            .tokenUsage(TokenUsageVO.builder()
-                                    .promptTokens(usage.getPromptTokens())
-                                    .generationTokens(usage.getGenerationTokens())
-                                    .totalTokens(usage.getTotalTokens())
-                                    .build())
+//                            .tokenUsage(TokenUsageVO.builder()
+//                                    .promptTokens(usage.getPromptTokens())
+//                                    .generationTokens(usage.getGenerationTokens())
+//                                    .totalTokens(usage.getTotalTokens())
+//                                    .build())
                             .build();
                     return ResultWrapper.ok(replyVO);
                 });
     }
 
+    @Override
+    protected ChatModel createChatModel(ModelVO model) {
+        return null;
+    }
 }

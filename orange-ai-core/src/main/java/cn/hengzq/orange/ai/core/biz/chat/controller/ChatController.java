@@ -1,8 +1,9 @@
 package cn.hengzq.orange.ai.core.biz.chat.controller;
 
-import cn.hengzq.orange.ai.common.constant.AIConstant;
 import cn.hengzq.orange.ai.common.biz.chat.vo.ConversationReplyVO;
+import cn.hengzq.orange.ai.common.biz.chat.vo.param.CompletionsParam;
 import cn.hengzq.orange.ai.common.biz.chat.vo.param.ConversationParam;
+import cn.hengzq.orange.ai.common.constant.AIConstant;
 import cn.hengzq.orange.ai.core.biz.chat.service.ChatService;
 import cn.hengzq.orange.common.result.Result;
 import cn.hengzq.orange.common.result.ResultWrapper;
@@ -11,7 +12,9 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 import reactor.core.publisher.Flux;
 
 
@@ -35,4 +38,12 @@ public class ChatController {
     public Flux<Result<ConversationReplyVO>> conversationStream(@RequestBody ConversationParam param) {
         return chatService.conversationStream(param);
     }
+
+
+    @Operation(summary = "跟AI进行对话交流（流式）", description = "流式返回，响应较快")
+    @PostMapping(value = "/completions", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
+    public SseEmitter completions(@RequestBody @Validated CompletionsParam param) {
+        return chatService.completions(param);
+    }
+
 }

@@ -14,7 +14,7 @@ import java.util.List;
 public class TextToImageVO extends BaseTenantDTO {
 
     @Schema(description = "主键", accessMode = Schema.AccessMode.READ_ONLY)
-    private Long id;
+    private String id;
 
     @Schema(description = "模型所属平台")
     private PlatformEnum platform;

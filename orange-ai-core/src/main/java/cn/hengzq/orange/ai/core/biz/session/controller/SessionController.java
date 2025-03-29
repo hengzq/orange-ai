@@ -32,25 +32,25 @@ public class SessionController {
 
     @Operation(summary = "新建", operationId = "orange-ai:session:add")
     @PostMapping
-    public Result<Long> add(@RequestBody @Validated AddSessionParam request) {
+    public Result<String> add(@RequestBody @Validated AddSessionParam request) {
         return ResultWrapper.ok(sessionService.add(request));
     }
 
     @Operation(summary = "根据ID删除", operationId = "orange-ai:session:delete")
     @DeleteMapping("/{id}")
-    public Result<Boolean> deleteById(@PathVariable("id") Long id) {
+    public Result<Boolean> deleteById(@PathVariable("id") String id) {
         return ResultWrapper.ok(sessionService.deleteById(id));
     }
 
     @Operation(summary = "根据ID更新", operationId = "orange-ai:session:update")
     @PutMapping("/{id}")
-    public Result<Boolean> updateById(@PathVariable("id") Long id, @RequestBody @Validated UpdateSessionParam param) {
+    public Result<Boolean> updateById(@PathVariable("id") String id, @RequestBody @Validated UpdateSessionParam param) {
         return ResultWrapper.ok(sessionService.updateById(id, param));
     }
 
     @Operation(summary = "根据ID查询", operationId = "orange-ai:session:get")
     @GetMapping("/{id}")
-    public Result<SessionVO> getById(@PathVariable("id") Long id) {
+    public Result<SessionVO> getById(@PathVariable("id") String id) {
         return ResultWrapper.ok(sessionService.getById(id));
     }
 

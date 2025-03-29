@@ -1,10 +1,12 @@
 package cn.hengzq.orange.ai.deepseek.chat;
 
 import cn.hengzq.orange.ai.common.biz.chat.dto.ChatModelConversationParam;
-import cn.hengzq.orange.ai.common.biz.chat.service.ChatModelService;
+import cn.hengzq.orange.ai.common.biz.chat.service.AbstractChatModelService;
 import cn.hengzq.orange.ai.common.biz.chat.vo.ConversationReplyVO;
+import cn.hengzq.orange.ai.common.biz.model.vo.ModelVO;
 import cn.hengzq.orange.ai.common.constant.PlatformEnum;
 import cn.hengzq.orange.ai.deepseek.config.DeepSeekStorageProperties;
+import cn.hengzq.orange.ai.deepseek.constant.ChatModelEnum;
 import cn.hengzq.orange.ai.deepseek.constant.DeepSeekContent;
 import cn.hengzq.orange.ai.deepseek.dto.ChatCompletionsParam;
 import cn.hengzq.orange.ai.deepseek.dto.ChatCompletionsResponse;
@@ -32,7 +34,7 @@ import java.util.List;
 
 @Slf4j
 @AllArgsConstructor
-public class DeepSeekChatModelServiceImpl implements ChatModelService {
+public class DeepSeekChatModelServiceImpl extends AbstractChatModelService {
 
     private final DeepSeekStorageProperties deepSeekStorageProperties;
 
@@ -41,10 +43,6 @@ public class DeepSeekChatModelServiceImpl implements ChatModelService {
         return PlatformEnum.DEEP_SEEK;
     }
 
-    @Override
-    public ChatModel getChatModel() {
-        return null;
-    }
 
     @Override
     public Flux<Result<ConversationReplyVO>> conversationStream(ChatModelConversationParam param) {
@@ -104,21 +102,30 @@ public class DeepSeekChatModelServiceImpl implements ChatModelService {
         if (CollUtil.isNotEmpty(param.getMessages())) {
             for (Message record : param.getMessages()) {
                 if (MessageType.USER.equals(record.getMessageType())) {
-                    messages.add(MessageItem.builder().role(MessageType.USER.getValue()).content(record.getContent()).build());
+                    messages.add(MessageItem.builder().role(MessageType.USER.getValue()).content(record.getText()).build());
                     continue;
                 }
                 if (MessageType.ASSISTANT.equals(record.getMessageType())) {
-                    messages.add(MessageItem.builder().role(MessageType.ASSISTANT.getValue()).content(record.getContent()).build());
+                    messages.add(MessageItem.builder().role(MessageType.ASSISTANT.getValue()).content(record.getText()).build());
                 }
             }
         }
         messages.add(MessageItem.builder().role(MessageType.USER.getValue()).content(param.getPrompt()).build());
 
         return ChatCompletionsParam.builder()
-                .model(param.getModel())
+                .model(param.getModel().getModelName())
                 .messages(messages)
                 .stream(Boolean.TRUE)
                 .build();
     }
 
+    @Override
+    protected ChatModel createChatModel(ModelVO model) {
+        return null;
+    }
+
+    @Override
+    public List<String> listModel() {
+        return ChatModelEnum.getModelList();
+    }
 }

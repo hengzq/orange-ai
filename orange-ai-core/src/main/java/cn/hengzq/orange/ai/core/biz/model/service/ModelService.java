@@ -9,21 +9,24 @@ import cn.hengzq.orange.ai.common.biz.model.vo.param.UpdateModelParam;
 import cn.hengzq.orange.common.dto.PageDTO;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author hengzq
  */
 public interface ModelService {
 
-    Long add(AddModelParam request);
+    String add(AddModelParam request);
 
-    Boolean removeById(Long id);
+    Boolean removeById(String id);
 
-    Boolean updateById(Long id, UpdateModelParam request);
+    Boolean updateById(String id, UpdateModelParam request);
 
-    ModelVO getById(Long id);
+    ModelVO getById(String id);
 
     List<ModelVO> list(ModelListParam query);
 
     PageDTO<ModelVO> page(ModelPageParam param);
+
+    Map<String, ModelVO> mapModelByIds(List<String> modelIds);
 }

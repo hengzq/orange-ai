@@ -11,7 +11,7 @@ import lombok.Getter;
 @Getter
 public enum ModelTypeEnum implements BaseEnum<String> {
 
-    CHAT("聊天模型"),
+    CHAT("大语言模型"),
 
     TEXT_TO_IMAGE("文生图模型"),
 

@@ -22,7 +22,7 @@
         <!-- 智谱 AI 依赖 -->
         <dependency>
             <groupId>org.springframework.ai</groupId>
-            <artifactId>spring-ai-zhipuai-spring-boot-starter</artifactId>
+            <artifactId>spring-ai-zhipuai</artifactId>
         </dependency>
 
         <dependency>

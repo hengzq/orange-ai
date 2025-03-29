@@ -1,6 +1,6 @@
 package cn.hengzq.orange.ai.common.biz.session.vo.param;
 
-import cn.hengzq.orange.ai.common.biz.session.constant.SessionSourceEnum;
+import cn.hengzq.orange.ai.common.biz.session.constant.SessionTypeEnum;
 import cn.hengzq.orange.common.dto.param.PageParam;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
@@ -18,7 +18,7 @@ public class SessionPageParam extends PageParam {
     private String name;
 
     @Schema(description = "会话来源")
-    private SessionSourceEnum source;
+    private SessionTypeEnum sessionType;
 
     @Schema(description = "模型ID")
     private String modelId;

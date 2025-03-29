@@ -1,30 +1,12 @@
-/*
- * Copyright 2023-2024 the original author or authors.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      https://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
 package cn.hengzq.orange.ai.vectorstore.milvus.config;
 
+import lombok.Getter;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
 import java.util.concurrent.TimeUnit;
 
-/**
- * Spring AI 定义配置.
- *
- * @author Christian Tzolov
- */
+
+@Getter
 @ConfigurationProperties(MilvusServiceClientProperties.CONFIG_PREFIX)
 public class MilvusServiceClientProperties {
 
@@ -131,144 +113,69 @@ public class MilvusServiceClientProperties {
      */
     private String password = "milvus";
 
-    public String getHost() {
-        return this.host;
-    }
-
     public void setHost(String host) {
         this.host = host;
-    }
-
-    public int getPort() {
-        return this.port;
     }
 
     public void setPort(int port) {
         this.port = port;
     }
 
-    public String getUri() {
-        return this.uri;
-    }
-
     public void setUri(String uri) {
         this.uri = uri;
-    }
-
-    public String getToken() {
-        return this.token;
     }
 
     public void setToken(String token) {
         this.token = token;
     }
 
-    public long getConnectTimeoutMs() {
-        return this.connectTimeoutMs;
-    }
-
     public void setConnectTimeoutMs(long connectTimeoutMs) {
         this.connectTimeoutMs = connectTimeoutMs;
-    }
-
-    public long getKeepAliveTimeMs() {
-        return this.keepAliveTimeMs;
     }
 
     public void setKeepAliveTimeMs(long keepAliveTimeMs) {
         this.keepAliveTimeMs = keepAliveTimeMs;
     }
 
-    public long getKeepAliveTimeoutMs() {
-        return this.keepAliveTimeoutMs;
-    }
-
     public void setKeepAliveTimeoutMs(long keepAliveTimeoutMs) {
         this.keepAliveTimeoutMs = keepAliveTimeoutMs;
     }
 
-    // public boolean isKeepAliveWithoutCalls() {
-    // return keepAliveWithoutCalls;
-    // }
-
-    // public void setKeepAliveWithoutCalls(boolean keepAliveWithoutCalls) {
-    // this.keepAliveWithoutCalls = keepAliveWithoutCalls;
-    // }
-
-    public long getRpcDeadlineMs() {
-        return this.rpcDeadlineMs;
-    }
 
     public void setRpcDeadlineMs(long rpcDeadlineMs) {
         this.rpcDeadlineMs = rpcDeadlineMs;
-    }
-
-    public String getClientKeyPath() {
-        return this.clientKeyPath;
     }
 
     public void setClientKeyPath(String clientKeyPath) {
         this.clientKeyPath = clientKeyPath;
     }
 
-    public String getClientPemPath() {
-        return this.clientPemPath;
-    }
-
     public void setClientPemPath(String clientPemPath) {
         this.clientPemPath = clientPemPath;
-    }
-
-    public String getCaPemPath() {
-        return this.caPemPath;
     }
 
     public void setCaPemPath(String caPemPath) {
         this.caPemPath = caPemPath;
     }
 
-    public String getServerPemPath() {
-        return this.serverPemPath;
-    }
-
     public void setServerPemPath(String serverPemPath) {
         this.serverPemPath = serverPemPath;
-    }
-
-    public String getServerName() {
-        return this.serverName;
     }
 
     public void setServerName(String serverName) {
         this.serverName = serverName;
     }
 
-    public boolean isSecure() {
-        return this.secure;
-    }
-
     public void setSecure(boolean secure) {
         this.secure = secure;
-    }
-
-    public long getIdleTimeoutMs() {
-        return this.idleTimeoutMs;
     }
 
     public void setIdleTimeoutMs(long idleTimeoutMs) {
         this.idleTimeoutMs = idleTimeoutMs;
     }
 
-    public String getUsername() {
-        return this.username;
-    }
-
     public void setUsername(String username) {
         this.username = username;
-    }
-
-    public String getPassword() {
-        return this.password;
     }
 
     public void setPassword(String password) {

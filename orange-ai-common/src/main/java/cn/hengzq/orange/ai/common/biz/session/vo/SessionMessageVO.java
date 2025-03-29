@@ -12,7 +12,7 @@ import lombok.EqualsAndHashCode;
 public class SessionMessageVO extends BaseTenantDTO {
 
     @Schema(description = "主键")
-    private Long id;
+    private String id;
 
     @Schema(description = "用户ID")
     private Long userId;

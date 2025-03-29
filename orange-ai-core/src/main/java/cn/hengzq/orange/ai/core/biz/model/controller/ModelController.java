@@ -32,25 +32,25 @@ public class ModelController {
 
     @Operation(summary = "新建", operationId = "orange-ai:model:add")
     @PostMapping
-    public Result<Long> add(@RequestBody @Validated AddModelParam request) {
+    public Result<String> add(@RequestBody @Validated AddModelParam request) {
         return ResultWrapper.ok(modelService.add(request));
     }
 
     @Operation(summary = "根据ID删除", operationId = "orange-ai:model:delete")
     @DeleteMapping("/{id}")
-    public Result<Boolean> removeById(@PathVariable("id") Long id) {
+    public Result<Boolean> removeById(@PathVariable("id") String id) {
         return ResultWrapper.ok(modelService.removeById(id));
     }
 
     @Operation(summary = "根据ID更新", operationId = "orange-ai:model:update")
     @PutMapping("/{id}")
-    public Result<Boolean> updateById(@PathVariable("id") Long id, @RequestBody @Validated UpdateModelParam request) {
+    public Result<Boolean> updateById(@PathVariable("id") String id, @RequestBody @Validated UpdateModelParam request) {
         return ResultWrapper.ok(modelService.updateById(id, request));
     }
 
     @Operation(summary = "根据ID查询", operationId = "orange-ai:model:get")
     @GetMapping("/{id}")
-    public Result<ModelVO> getById(@PathVariable("id") Long id) {
+    public Result<ModelVO> getById(@PathVariable("id") String id) {
         return ResultWrapper.ok(modelService.getById(id));
     }
 

@@ -9,7 +9,7 @@ import java.util.List;
 
 public interface VectorDataService {
 
-    Long add(AddVectorDataParam param);
+    String add(AddVectorDataParam param);
 
     List<Document> list(VectorDataListParam param);
 

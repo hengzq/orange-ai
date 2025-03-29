@@ -11,7 +11,7 @@ public interface SessionMessageService {
 
     List<SessionMessageVO> list(SessionMessageListParam param);
 
-    Long add(AddSessionMessageParam param);
+    String add(AddSessionMessageParam param);
 
-    Boolean rateById(Long id, SessionMessageRateParam param);
+    Boolean rateById(String id, SessionMessageRateParam param);
 }

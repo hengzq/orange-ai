@@ -21,14 +21,14 @@ public class QianFanAutoConfiguration {
         log.info("init {} completed.", this.getClass().getSimpleName());
     }
 
-    @Bean
-    public ChatModelService qianFanChatModelService(QianFanChatModel qianFanChatModel) {
-        return new QianFanChatModelServiceImpl(qianFanChatModel);
-    }
-
-    @Bean
-    public ImageModelService qianFanImageModelService(QianFanImageModel qianFanImageModel) {
-        return new QianFanImageModelServiceImpl(qianFanImageModel);
-    }
+//    @Bean
+//    public ChatModelService qianFanChatModelService(QianFanChatModel qianFanChatModel) {
+//        return new QianFanChatModelServiceImpl(qianFanChatModel);
+//    }
+//
+//    @Bean
+//    public ImageModelService qianFanImageModelService(QianFanImageModel qianFanImageModel) {
+//        return new QianFanImageModelServiceImpl(qianFanImageModel);
+//    }
 
 }

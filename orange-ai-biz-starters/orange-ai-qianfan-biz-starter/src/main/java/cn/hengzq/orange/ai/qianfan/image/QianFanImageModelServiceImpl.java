@@ -23,16 +23,15 @@ public class QianFanImageModelServiceImpl implements ImageModelService {
     }
 
     /**
-     *
      * {@link org.springframework.ai.qianfan.api.QianFanImageApi.ImageModel}
      */
     @Override
     public ImageResponse textToImage(GenerateImageParam param) {
         ImageOptions options = QianFanImageOptions.builder()
-                .withModel(param.getModelCode())
-                .withHeight(param.getHeight())
-                .withWidth(param.getWidth())
-                .withN(param.getQuantity())
+                .model(param.getModelCode())
+                .height(param.getHeight())
+                .width(param.getWidth())
+                .N(param.getQuantity())
                 .build();
 
         ImagePrompt imagePrompt = new ImagePrompt(param.getPrompt(), options);

@@ -36,7 +36,7 @@ public class SessionMessageController {
 
     @Operation(summary = "评价", operationId = "orange-ai:session-message:rate")
     @PutMapping("/rate/{id}")
-    public Result<Boolean> rateById(@PathVariable("id") Long id, @RequestBody @Validated SessionMessageRateParam param) {
+    public Result<Boolean> rateById(@PathVariable("id") String id, @RequestBody @Validated SessionMessageRateParam param) {
         return ResultWrapper.ok(sessionMessageService.rateById(id, param));
     }
 }

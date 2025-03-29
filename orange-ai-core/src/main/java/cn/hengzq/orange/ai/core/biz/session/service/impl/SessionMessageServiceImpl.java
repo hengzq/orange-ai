@@ -36,13 +36,13 @@ public class SessionMessageServiceImpl implements SessionMessageService {
     }
 
     @Override
-    public Long add(AddSessionMessageParam param) {
+    public String add(AddSessionMessageParam param) {
         SessionMessageEntity entity = SessionMessageConverter.INSTANCE.toEntity(param);
         return sessionMessageMapper.insertOne(entity);
     }
 
     @Override
-    public Boolean rateById(Long id, SessionMessageRateParam param) {
+    public Boolean rateById(String id, SessionMessageRateParam param) {
         SessionMessageEntity entity = sessionMessageMapper.selectById(id);
         if (Objects.isNull(entity)) {
             throw new ServiceException(GlobalErrorCodeConstant.GLOBAL_PARAMETER_ID_IS_INVALID);

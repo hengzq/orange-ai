@@ -22,10 +22,10 @@ import java.util.List;
 public class TextToImageEntity extends BaseTenantEntity {
 
     @TableId(type = IdType.ASSIGN_ID)
-    private Long id;
+    private String id;
 
     @TableField(value = "user_id")
-    private Long userId;
+    private String userId;
 
     @TableField(value = "platform")
     private PlatformEnum platform;
