@@ -1,6 +1,5 @@
 package cn.hengzq.orange.ai.core.biz.session.entity;
 
-import cn.hengzq.orange.ai.common.biz.chat.constant.MessageTypeEnum;
 import cn.hengzq.orange.mybatis.entity.BaseTenantEntity;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
@@ -15,21 +14,15 @@ import lombok.EqualsAndHashCode;
  */
 @EqualsAndHashCode(callSuper = true)
 @Data
-@TableName(value = "ai_session_message")
-public class SessionMessageEntity extends BaseTenantEntity {
+@TableName(value = "ai_session_model")
+public class SessionModelEntity extends BaseTenantEntity {
 
     @TableId(type = IdType.ASSIGN_ID)
     private String id;
 
-    @TableField(value = "parent_id")
-    private String parentId;
-
     @TableField(value = "session_id")
     private String sessionId;
 
-    @TableField(value = "role")
-    private MessageTypeEnum role;
-
-    private String content;
-
+    @TableField(value = "model_id")
+    private String modelId;
 }

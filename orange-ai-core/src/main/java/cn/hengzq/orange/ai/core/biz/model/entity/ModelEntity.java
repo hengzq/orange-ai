@@ -42,6 +42,8 @@ public class ModelEntity extends BaseTenantEntity {
 
     private Integer sort;
 
+    @TableField(value = "base_url")
+    private String baseUrl;
 
     @TableField(value = "api_key")
     private String apiKey;

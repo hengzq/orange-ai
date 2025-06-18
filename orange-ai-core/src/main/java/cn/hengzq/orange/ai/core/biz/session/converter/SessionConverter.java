@@ -1,7 +1,7 @@
 package cn.hengzq.orange.ai.core.biz.session.converter;
 
 
-import cn.hengzq.orange.ai.common.biz.chat.vo.param.ConversationParam;
+import cn.hengzq.orange.ai.common.biz.chat.vo.param.ConversationStreamParam;
 import cn.hengzq.orange.ai.common.biz.session.vo.SessionVO;
 import cn.hengzq.orange.ai.common.biz.session.vo.param.AddSessionParam;
 import cn.hengzq.orange.ai.common.biz.session.vo.param.UpdateSessionParam;
@@ -39,5 +39,5 @@ public interface SessionConverter extends Converter {
     PageDTO<SessionVO> toPage(PageDTO<SessionEntity> page);
 
     @Mapping(source = "param.prompt", target = "name")
-    SessionEntity toEntity(ConversationParam param);
+    SessionEntity toEntity(ConversationStreamParam param);
 }

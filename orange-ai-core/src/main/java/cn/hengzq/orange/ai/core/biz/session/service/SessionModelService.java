@@ -9,19 +9,6 @@ import cn.hengzq.orange.common.dto.PageDTO;
 
 import java.util.List;
 
-public interface SessionService {
+public interface SessionModelService {
 
-    String add(AddSessionParam param);
-
-    String getOrCreateSessionId(String sessionId, AddSessionParam param);
-
-    Boolean deleteById(String id);
-
-    Boolean updateById(String id, UpdateSessionParam param);
-
-    SessionVO getById(String id);
-
-    PageDTO<SessionVO> page(SessionPageParam param);
-
-    List<SessionVO> list(SessionListParam param);
 }

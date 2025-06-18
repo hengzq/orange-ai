@@ -134,6 +134,7 @@ public class KnowledgeDocServiceImpl implements KnowledgeDocService {
         slice.setBaseId(param.getBaseId());
         slice.setDocId(docId);
         slice.setContent(param.getContent());
+        slice.setEmbStatus(SliceEmbStatus.PENDING);
         knowledgeDocSliceMapper.insert(slice);
 
         // 发送新增文档事件

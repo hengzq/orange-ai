@@ -14,12 +14,14 @@ import cn.hengzq.orange.ai.core.biz.session.service.SessionService;
 import cn.hengzq.orange.common.dto.PageDTO;
 import cn.hengzq.orange.context.GlobalContextHelper;
 import cn.hengzq.orange.mybatis.query.CommonWrappers;
+import cn.hutool.core.util.StrUtil;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Objects;
 
 /**
  * @author hengzq
@@ -39,6 +41,18 @@ public class SessionServiceImpl implements SessionService {
         SessionEntity entity = SessionConverter.INSTANCE.toEntity(param);
         entity.setUserId(GlobalContextHelper.getUserId());
         return sessionMapper.insertOne(entity);
+    }
+
+    @Override
+    public String getOrCreateSessionId(String sessionId, AddSessionParam param) {
+        if (StrUtil.isBlank(sessionId)) {
+            return add(param);
+        }
+        SessionEntity session = sessionMapper.selectById(sessionId);
+        if (Objects.nonNull(session)) {
+            return session.getId();
+        }
+        return add(param);
     }
 
     @Transactional(rollbackFor = Exception.class)

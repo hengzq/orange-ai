@@ -7,7 +7,6 @@ import cn.hengzq.orange.ai.common.biz.chat.constant.ConverstationEventEnum;
 import cn.hengzq.orange.ai.common.biz.chat.constant.MessageTypeEnum;
 import cn.hengzq.orange.ai.common.biz.chat.service.ChatModelService;
 import cn.hengzq.orange.ai.common.biz.embedding.service.EmbeddingModelService;
-import cn.hengzq.orange.ai.common.biz.knowledge.constant.KnowledgeConstant;
 import cn.hengzq.orange.ai.common.biz.knowledge.vo.KnowledgeBaseVO;
 import cn.hengzq.orange.ai.common.biz.knowledge.vo.param.KnowledgeBaseListParam;
 import cn.hengzq.orange.ai.common.biz.model.constant.AIModelErrorCode;
@@ -41,8 +40,8 @@ import cn.hutool.core.util.StrUtil;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.ai.chat.client.ChatClient;
+import org.springframework.ai.chat.client.RequestResponseAdvisor;
 import org.springframework.ai.chat.client.advisor.QuestionAnswerAdvisor;
-import org.springframework.ai.chat.client.advisor.api.Advisor;
 import org.springframework.ai.chat.messages.Message;
 import org.springframework.ai.chat.messages.UserMessage;
 import org.springframework.ai.chat.metadata.Usage;
@@ -52,8 +51,6 @@ import org.springframework.ai.chat.prompt.ChatOptions;
 import org.springframework.ai.chat.prompt.Prompt;
 import org.springframework.ai.vectorstore.SearchRequest;
 import org.springframework.ai.vectorstore.VectorStore;
-import org.springframework.ai.vectorstore.filter.Filter;
-import org.springframework.ai.vectorstore.filter.FilterExpressionBuilder;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 
@@ -201,7 +198,7 @@ public class AgentServiceImpl implements AgentService {
 
         VectorStoreService vectorStoreService = vectorStoreServiceFactory.getVectorStoreService(VectorDatabaseEnum.MILVUS);
 
-        List<Advisor> advisors = new ArrayList<>();
+        List<RequestResponseAdvisor> advisors = new ArrayList<>();
         if (CollUtil.isNotEmpty(baseList)) {
             for (KnowledgeBaseVO base : baseList) {
                 ModelVO embeddingModel = base.getEmbeddingModel();

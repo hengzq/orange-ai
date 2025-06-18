@@ -32,6 +32,7 @@ public interface ModelConverter extends Converter {
     @Mapping(source = "entity.id", target = "id")
     @Mapping(source = "param.name", target = "name")
     @Mapping(source = "param.modelName", target = "modelName")
+    @Mapping(source = "param.baseUrl", target = "baseUrl")
     @Mapping(source = "param.sort", target = "sort")
     @Mapping(source = "param.description", target = "description")
     ModelEntity toUpdateEntity(ModelEntity entity, UpdateModelParam param);

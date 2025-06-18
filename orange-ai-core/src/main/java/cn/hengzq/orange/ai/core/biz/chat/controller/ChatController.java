@@ -1,8 +1,9 @@
 package cn.hengzq.orange.ai.core.biz.chat.controller;
 
-import cn.hengzq.orange.ai.common.biz.chat.vo.ConversationReplyVO;
+import cn.hengzq.orange.ai.common.biz.chat.vo.ConversationResponse;
+import cn.hengzq.orange.ai.common.biz.chat.vo.param.AgentConversationStreamParam;
 import cn.hengzq.orange.ai.common.biz.chat.vo.param.CompletionsParam;
-import cn.hengzq.orange.ai.common.biz.chat.vo.param.ConversationParam;
+import cn.hengzq.orange.ai.common.biz.chat.vo.param.ConversationStreamParam;
 import cn.hengzq.orange.ai.common.constant.AIConstant;
 import cn.hengzq.orange.ai.core.biz.chat.service.ChatService;
 import cn.hengzq.orange.common.result.Result;
@@ -29,21 +30,21 @@ public class ChatController {
 
     @Operation(summary = "跟AI进行对话交流(内容一次性返回)")
     @GetMapping("/conversation")
-    public Result<ConversationReplyVO> conversation(@RequestBody ConversationParam param) {
+    public Result<ConversationResponse> conversation(@RequestBody ConversationStreamParam param) {
         return ResultWrapper.ok(chatService.conversation(param));
     }
 
-    @Operation(summary = "跟AI进行对话交流（流式）", description = "流式返回，响应较快")
+    @Operation(summary = "指定模型AI进行对话交流（流式返回）", description = "流式返回，响应较快")
     @PostMapping(value = "/conversation-stream", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
-    public Flux<Result<ConversationReplyVO>> conversationStream(@RequestBody ConversationParam param) {
+    public Flux<Result<ConversationResponse>> conversationStream(@RequestBody ConversationStreamParam param) {
         return chatService.conversationStream(param);
     }
 
-
-    @Operation(summary = "跟AI进行对话交流（流式）", description = "流式返回，响应较快")
-    @PostMapping(value = "/completions", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
-    public SseEmitter completions(@RequestBody @Validated CompletionsParam param) {
-        return chatService.completions(param);
+    @Operation(summary = "智能体进行对话交流（流式返回）", description = "流式返回，响应较快")
+    @PostMapping(value = "/agent-conversation-stream", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
+    public Flux<Result<ConversationResponse>> agentConversationStream(@RequestBody AgentConversationStreamParam param) {
+        return chatService.agentConversationStream(param);
     }
+
 
 }

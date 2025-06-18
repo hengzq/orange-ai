@@ -169,7 +169,7 @@ public class KnowledgeBaseServiceImpl implements KnowledgeBaseService {
         }
         ModelVO model = modelService.getById(entity.getEmbeddingModelId());
         EmbeddingModelService embeddingModelService = embeddingModelServiceFactory.getEmbeddingModelService(model.getPlatform());
-        EmbeddingModel embeddingModel = embeddingModelService.getOrCreateEmbeddingModel(model.getModelName(), model.getApiKey());
+        EmbeddingModel embeddingModel = embeddingModelService.getOrCreateEmbeddingModel(model);
         VectorStoreService vectorStoreService = vectorStoreServiceFactory.getVectorStoreService(VectorDatabaseEnum.MILVUS);
         return vectorStoreService.getOrCreateVectorStore(entity.getVectorCollectionName(), embeddingModel);
     }

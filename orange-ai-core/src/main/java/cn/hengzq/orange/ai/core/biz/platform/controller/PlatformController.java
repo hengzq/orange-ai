@@ -9,6 +9,7 @@ import cn.hengzq.orange.ai.common.constant.ModelTypeEnum;
 import cn.hengzq.orange.ai.common.constant.PlatformEnum;
 import cn.hengzq.orange.ai.core.biz.chat.service.ChatModelServiceFactory;
 import cn.hengzq.orange.ai.core.biz.embedding.service.EmbeddingModelServiceFactory;
+import cn.hengzq.orange.ai.core.biz.image.service.ImageModelServiceFactory;
 import cn.hengzq.orange.common.result.Result;
 import cn.hengzq.orange.common.result.ResultWrapper;
 import io.swagger.v3.oas.annotations.Operation;
@@ -35,6 +36,8 @@ public class PlatformController {
 
     private final EmbeddingModelServiceFactory embeddingModelServiceFactory;
 
+    private final ImageModelServiceFactory imageModelServiceFactory;
+
     @PostMapping(value = "/list")
     @Operation(summary = "查询所有的数据", operationId = "orange-ai:platform:list", description = "返回所有的数据")
     public Result<List<PlatformVO>> list(@RequestBody PlatformListParam param) {
@@ -57,7 +60,7 @@ public class PlatformController {
     }
 
     @GetMapping(value = "/list-model/{platform}/{modelType}")
-    @Operation(summary = "根据供应商和模型类型，查询模型", operationId = "orange-ai:platform:list", description = "返回所有的数据")
+    @Operation(summary = "根据供应商和模型类型，查询支持的模型", operationId = "orange-ai:platform:list", description = "返回所有的数据")
     public Result<List<String>> listModel(@PathVariable("platform") PlatformEnum platform,
                                           @PathVariable("modelType") ModelTypeEnum modelType) {
         List<String> modelList = List.of();
@@ -65,6 +68,8 @@ public class PlatformController {
             modelList = chatModelServiceFactory.getChatModelService(platform).listModel();
         } else if (ModelTypeEnum.EMBEDDING.equals(modelType)) {
             modelList = embeddingModelServiceFactory.getEmbeddingModelService(platform).listModel();
+        } else if (ModelTypeEnum.TEXT_TO_IMAGE.equals(modelType)) {
+            modelList = imageModelServiceFactory.getImageModelService(platform).listModel();
         }
         return ResultWrapper.ok(modelList);
     }

@@ -21,43 +21,31 @@
         <!--  阿里AI大模型      -->
         <dependency>
             <groupId>cn.hengzq.orange</groupId>
-            <artifactId>orange-ai-alibaba-biz-starter</artifactId>
+            <artifactId>spring-ai-orange-starter-model-alibaba</artifactId>
         </dependency>
 
         <!--  ollama 大模型-->
         <dependency>
             <groupId>cn.hengzq.orange</groupId>
-            <artifactId>orange-ai-ollama-biz-starter</artifactId>
-        </dependency>
-
-        <!-- 智谱 AI -->
-        <dependency>
-            <groupId>cn.hengzq.orange</groupId>
-            <artifactId>orange-ai-zhipu-biz-starter</artifactId>
-        </dependency>
-
-        <!-- 腾讯AI 依赖-->
-        <dependency>
-            <groupId>cn.hengzq.orange</groupId>
-            <artifactId>orange-ai-tencent-biz-starter</artifactId>
-        </dependency>
-
-        <!-- 百度智能云 千帆 AI 依赖 -->
-        <dependency>
-            <groupId>cn.hengzq.orange</groupId>
-            <artifactId>orange-ai-qianfan-biz-starter</artifactId>
+            <artifactId>spring-ai-orange-starter-model-ollama</artifactId>
         </dependency>
 
         <!-- DeepSeek AI 依赖    -->
         <dependency>
             <groupId>cn.hengzq.orange</groupId>
-            <artifactId>orange-ai-deepseek-biz-starter</artifactId>
+            <artifactId>spring-ai-orange-starter-model-deepseek</artifactId>
+        </dependency>
+
+        <!-- 智谱 AI -->
+        <dependency>
+            <groupId>cn.hengzq.orange</groupId>
+            <artifactId>spring-ai-orange-starter-model-zhipu</artifactId>
         </dependency>
 
         <dependency>
             <groupId>cn.hengzq.orange</groupId>
             <artifactId>orange-ai-milvus-store-biz-starter</artifactId>
-            <version>1.3.0-SNAPSHOT</version>
+            <version>${revision}</version>
         </dependency>
 
         <!--   HTML 解析的库  -->
