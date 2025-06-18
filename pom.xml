@@ -6,7 +6,7 @@
     <parent>
         <groupId>cn.hengzq.orange</groupId>
         <artifactId>orange-dependencies-parent</artifactId>
-        <version>1.3.0</version>
+        <version>1.4.0</version>
     </parent>
 
     <artifactId>orange-ai</artifactId>
@@ -19,12 +19,13 @@
     </description>
 
     <properties>
-        <revision>1.3.0</revision>
+        <revision>1.4.0</revision>
     </properties>
 
     <modules>
         <module>orange-ai-common</module>
-        <module>orange-ai-biz-starters</module>
+        <module>community/spring-ai-orange-starter-models</module>
+        <module>community/spring-ai-orange-starter-tool-calls</module>
         <module>orange-ai-vector-store-biz-starters</module>
         <module>orange-ai-core</module>
         <module>orange-ai-service</module>
@@ -38,39 +39,28 @@
                 <version>${revision}</version>
             </dependency>
 
+
             <dependency>
                 <groupId>cn.hengzq.orange</groupId>
-                <artifactId>orange-ai-alibaba-biz-starter</artifactId>
+                <artifactId>spring-ai-orange-starter-model-alibaba</artifactId>
                 <version>${revision}</version>
             </dependency>
 
             <dependency>
                 <groupId>cn.hengzq.orange</groupId>
-                <artifactId>orange-ai-ollama-biz-starter</artifactId>
+                <artifactId>spring-ai-orange-starter-model-ollama</artifactId>
                 <version>${revision}</version>
             </dependency>
 
             <dependency>
                 <groupId>cn.hengzq.orange</groupId>
-                <artifactId>orange-ai-zhipu-biz-starter</artifactId>
+                <artifactId>spring-ai-orange-starter-model-deepseek</artifactId>
                 <version>${revision}</version>
             </dependency>
 
             <dependency>
                 <groupId>cn.hengzq.orange</groupId>
-                <artifactId>orange-ai-tencent-biz-starter</artifactId>
-                <version>${revision}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>cn.hengzq.orange</groupId>
-                <artifactId>orange-ai-qianfan-biz-starter</artifactId>
-                <version>${revision}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>cn.hengzq.orange</groupId>
-                <artifactId>orange-ai-deepseek-biz-starter</artifactId>
+                <artifactId>spring-ai-orange-starter-model-zhipu</artifactId>
                 <version>${revision}</version>
             </dependency>
 

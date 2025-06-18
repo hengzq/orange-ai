@@ -92,4 +92,7 @@ values (100300, @t_id, 1021, '新增', 'orange-ai:model:add', 1, 1, @u_id),
 INSERT INTO sys_menu (id, tenant_id, parent_id, name, permission, preset, path, icon, hidden, sort, created_by)
 VALUES (1022, @t_id, 1020, 'AI 会话管理', 'orange-ai:session:view', 0, 'large-model/session', 'system-people-circle', 0, 50, @u_id);
 
+INSERT INTO sys_menu (id, tenant_id, parent_id, name, permission, preset, path, icon, hidden, sort, created_by)
+VALUES (1023, @t_id, 1020, 'MCP 服务管理', 'orange-ai:mcp-server:view', 0, 'large-model/mcp-server', 'system-people-circle', 0, 50, @u_id);
+
 COMMIT;

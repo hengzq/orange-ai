@@ -18,6 +18,7 @@ CREATE TABLE IF NOT EXISTS `ai_model`
     `model_type`  varchar(256) NOT NULL COMMENT '模型类型',
     `enabled`     tinyint(1)            DEFAULT 1 COMMENT '启用状态 1 启用 0 禁用',
     `sort`        int                   DEFAULT 1 COMMENT '显示顺序',
+    `base_url`    varchar(1024)         DEFAULT NULL COMMENT '基础URL路径：eg:ollama路径http://localhost:11434',
     `api_key`     varchar(1024)         DEFAULT NULL COMMENT '模型密钥KEY',
     `description` text                  DEFAULT NULL COMMENT '模型描述',
     `created_by`  varchar(36)  NOT NULL COMMENT '创建人',
@@ -160,6 +161,7 @@ CREATE TABLE IF NOT EXISTS `ai_session_message`
     `tenant_id`  varchar(36) NOT NULL COMMENT '租户id',
     `parent_id`  varchar(36) NOT NULL COMMENT '父级ID -1表示顶级',
     `session_id` varchar(36) NOT NULL COMMENT '会话id',
+    `model_id`   varchar(36) NOT NULL COMMENT '模型ID',
     `role`       varchar(32) NOT NULL COMMENT '消息类型',
     `content`    text                 DEFAULT NULL COMMENT '会话内容',
     `created_by` varchar(36)          DEFAULT NULL COMMENT '创建人',
@@ -169,3 +171,54 @@ CREATE TABLE IF NOT EXISTS `ai_session_message`
     PRIMARY KEY (`id`)
 ) ENGINE = InnoDB COMMENT = '聊天会话记录管理';
 
+
+-- ----------------------------
+-- 会话时使用的模型
+-- ----------------------------
+CREATE TABLE IF NOT EXISTS `ai_session_model`
+(
+    `id`         varchar(36) NOT NULL COMMENT '表的主键',
+    `tenant_id`  varchar(36) NOT NULL COMMENT '租户id',
+    `session_id` varchar(36) NOT NULL COMMENT '会话ID',
+    `model_id`   varchar(36) NOT NULL COMMENT '模型ID',
+    `created_by` varchar(36)          DEFAULT NULL COMMENT '创建人',
+    `created_at` datetime    NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+    `updated_by` varchar(36)          DEFAULT NULL COMMENT '更新人',
+    `updated_at` datetime    NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+    PRIMARY KEY (`id`)
+) ENGINE = InnoDB COMMENT = '会话时使用的模型管理';
+
+-- ----------------------------
+-- MCP Server
+-- ----------------------------
+CREATE TABLE IF NOT EXISTS `ai_mcp_server`
+(
+    `id`                 varchar(36)  NOT NULL COMMENT '表的主键',
+    `tenant_id`          varchar(36)  NOT NULL COMMENT '租户id',
+    `name`               varchar(512) NOT NULL COMMENT '服务名称',
+    `transport_protocol` varchar(36)  NOT NULL COMMENT '传输协议，SSE，STDIO',
+    `connection_url`     varchar(1024)         DEFAULT NULL COMMENT 'SSE协议时，服务端连接地址',
+    `description`        varchar(2048)         DEFAULT NULL COMMENT '描述',
+    `created_by`         varchar(36)  NOT NULL COMMENT '创建人',
+    `created_at`         datetime     NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+    `updated_by`         varchar(36)           DEFAULT NULL COMMENT '更新人',
+    `updated_at`         datetime     NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+    PRIMARY KEY (`id`)
+) ENGINE = InnoDB COMMENT = 'MCP Server';
+
+-- ----------------------------
+-- Prompt模板
+-- ----------------------------
+CREATE TABLE IF NOT EXISTS `ai_prompt_template`
+(
+    `id`               varchar(36)  NOT NULL COMMENT '表的主键',
+    `tenant_id`        varchar(36)  NOT NULL COMMENT '租户id',
+    `name`             varchar(512) NOT NULL COMMENT '模板名称',
+    `template_type`    varchar(36)  NOT NULL COMMENT '模板类型',
+    `template_content` text                  DEFAULT NULL COMMENT '完整的模板内容',
+    `created_by`       varchar(36)  NOT NULL COMMENT '创建人',
+    `created_at`       datetime     NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+    `updated_by`       varchar(36)           DEFAULT NULL COMMENT '更新人',
+    `updated_at`       datetime     NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+    PRIMARY KEY (`id`)
+) ENGINE = InnoDB COMMENT = 'Prompt模板';

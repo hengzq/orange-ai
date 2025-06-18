@@ -87,6 +87,20 @@ VALUES (100300, @t_id, 1, '解析中', 'PARSING', 'ai_knowledge_doc_status', 1, 
 ;
 
 
+
+-- ------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+--  MCP SERVER 传输协议  ai_mcp_server_transport_protocol      type ID范围 [1004]  data ID范围 [100400 - 100500）
+-- ------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+-- 新增字典类型
+INSERT INTO sys_dict_type (id, tenant_id, name, dict_type, enabled, preset, description, created_by)
+VALUES (1004, @t_id, 'AI - MCP SERVER 传输协议', 'ai_mcp_server_transport_protocol', 1, 1, 'AI - MCP SERVER 传输协议', @u_id);
+
+-- 新增字典数据
+INSERT INTO sys_dict_data (id, tenant_id, sort, dict_label, dict_value, dict_type, preset, show_style, enabled, description, created_by)
+VALUES (100400, @t_id, 1, 'SSE', 'SSE', 'ai_mcp_server_transport_protocol', 1, '#409eff', 1, 'SSE', @u_id)
+;
+
+
 COMMIT;
 
 
