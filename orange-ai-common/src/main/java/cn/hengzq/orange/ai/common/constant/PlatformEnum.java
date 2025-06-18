@@ -16,13 +16,13 @@ public enum PlatformEnum implements BaseEnum<String> {
 
     ALI_BAI_LIAN("阿里云百炼", 10, List.of(ModelTypeEnum.CHAT, ModelTypeEnum.TEXT_TO_IMAGE, ModelTypeEnum.EMBEDDING)),
 
-    OLLAMA("OLLAMA", 20, List.of(ModelTypeEnum.CHAT)),
+    OLLAMA("OLLAMA", 20, List.of(ModelTypeEnum.CHAT, ModelTypeEnum.EMBEDDING)),
 
     ZHI_PU("智谱AI", 30, List.of(ModelTypeEnum.CHAT)),
 
-    TENCENT("腾讯混元", 40, List.of(ModelTypeEnum.CHAT)),
-
-    QIAN_FAN("百度智能云-千帆ModelBuilder", 50, List.of(ModelTypeEnum.CHAT, ModelTypeEnum.TEXT_TO_IMAGE)),
+//    TENCENT("腾讯混元", 40, List.of(ModelTypeEnum.CHAT)),
+//
+//    QIAN_FAN("百度智能云-千帆ModelBuilder", 50, List.of(ModelTypeEnum.CHAT, ModelTypeEnum.TEXT_TO_IMAGE)),
 
     DEEP_SEEK("DeepSeek", 60, List.of(ModelTypeEnum.CHAT)),
 
@@ -36,8 +36,6 @@ public enum PlatformEnum implements BaseEnum<String> {
     private final Integer sort;
 
     private final List<ModelTypeEnum> modelTypes;
-
-
 
 
     PlatformEnum(String description, Integer sort, List<ModelTypeEnum> modelTypes) {

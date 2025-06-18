@@ -36,6 +36,9 @@ public class ModelVO extends BaseTenantDTO {
     @Schema(description = "排序")
     private Integer sort;
 
+    @Schema(description = "基础URL eg:ollama路径为http://localhost:11434")
+    private String baseUrl;
+
     @Schema(description = "API KEY")
     private String apiKey;
 

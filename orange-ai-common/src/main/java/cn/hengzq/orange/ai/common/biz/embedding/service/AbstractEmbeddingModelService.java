@@ -16,7 +16,7 @@ public abstract class AbstractEmbeddingModelService implements EmbeddingModelSer
      */
     protected static final Cache<String, EmbeddingModel> embeddingModelCache = CacheUtil.newLFUCache(100);
 
-    protected abstract EmbeddingModel createEmbeddingModel(String model, String apiKey);
+    protected abstract EmbeddingModel createEmbeddingModel(ModelVO model);
 
     @Override
     public EmbeddingModel getOrCreateEmbeddingModel(ModelVO model) {
@@ -24,18 +24,7 @@ public abstract class AbstractEmbeddingModelService implements EmbeddingModelSer
         if (embeddingModelCache.containsKey(key)) {
             return embeddingModelCache.get(key);
         }
-        EmbeddingModel chatModel = createEmbeddingModel(model.getModelName(), model.getApiKey());
-        embeddingModelCache.put(key, chatModel);
-        return chatModel;
-    }
-
-    @Override
-    public EmbeddingModel getOrCreateEmbeddingModel(String model, String apiKey) {
-        String key = model + "_" + apiKey;
-        if (embeddingModelCache.containsKey(key)) {
-            return embeddingModelCache.get(key);
-        }
-        EmbeddingModel chatModel = createEmbeddingModel(model, apiKey);
+        EmbeddingModel chatModel = createEmbeddingModel(model);
         embeddingModelCache.put(key, chatModel);
         return chatModel;
     }

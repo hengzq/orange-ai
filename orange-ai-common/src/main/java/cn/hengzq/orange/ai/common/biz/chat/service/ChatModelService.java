@@ -1,7 +1,7 @@
 package cn.hengzq.orange.ai.common.biz.chat.service;
 
 import cn.hengzq.orange.ai.common.biz.chat.dto.ChatModelConversationParam;
-import cn.hengzq.orange.ai.common.biz.chat.vo.ConversationReplyVO;
+import cn.hengzq.orange.ai.common.biz.chat.vo.ConversationResponse;
 import cn.hengzq.orange.ai.common.biz.model.vo.ModelVO;
 import cn.hengzq.orange.ai.common.constant.PlatformEnum;
 import cn.hengzq.orange.common.result.Result;
@@ -12,6 +12,9 @@ import java.util.List;
 
 public interface ChatModelService {
 
+    /**
+     * 获取当前ChatMode所属平台类型。
+     */
     PlatformEnum getPlatform();
 
     /**
@@ -27,7 +30,7 @@ public interface ChatModelService {
     /**
      * 根据上下文对话,返回信息
      */
-    Flux<Result<ConversationReplyVO>> conversationStream(ChatModelConversationParam param);
+    Flux<Result<ConversationResponse>> conversationStream(ChatModelConversationParam param);
 
 
 }

@@ -15,8 +15,6 @@ public interface EmbeddingModelService {
 
     EmbeddingModel getOrCreateEmbeddingModel(ModelVO model);
 
-    EmbeddingModel getOrCreateEmbeddingModel(String model, String apiKey);
-
     /**
      * 模型列表
      */

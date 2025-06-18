@@ -10,7 +10,7 @@ import java.io.Serializable;
 @Data
 @Builder
 @Schema(description = "对话回复 VO")
-public class ConversationReplyVO implements Serializable {
+public class ConversationResponse implements Serializable {
 
     @Schema(description = "消息Id")
     private String sessionId;

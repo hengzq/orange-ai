@@ -1,12 +1,11 @@
 package cn.hengzq.orange.ai.common.biz.chat.vo.param;
 
-import cn.hengzq.orange.ai.common.constant.PlatformEnum;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
 @Data
 @Schema(description = "对话交流参数 VO")
-public class ConversationParam {
+public class ConversationStreamParam {
 
     @Schema(description = "回话ID")
     private String sessionId;
@@ -14,6 +13,6 @@ public class ConversationParam {
     @Schema(description = "模型ID")
     private String modelId;
 
-    @Schema(description = "生成图片的提示")
+    @Schema(description = "提示词")
     private String prompt;
 }

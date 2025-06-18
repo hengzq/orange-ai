@@ -18,6 +18,9 @@ public class UpdateModelParam implements Serializable {
     @Schema(description = "原始模型名称 ")
     private String modelName;
 
+    @Schema(description = "基础URL eg:ollama路径为http://localhost:11434")
+    private String baseUrl;
+
     @Schema(description = "排序")
     private Integer sort;
 
