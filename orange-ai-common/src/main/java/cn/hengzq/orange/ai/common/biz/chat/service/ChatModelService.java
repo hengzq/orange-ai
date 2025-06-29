@@ -28,9 +28,19 @@ public interface ChatModelService {
     ChatModel getOrCreateChatModel(ModelVO model);
 
     /**
+     * 获取对话模型
+     */
+    ChatModel getOrCreateChatModel(String model, String baseUrl, String apiKey);
+
+    /**
      * 根据上下文对话,返回信息
      */
     Flux<Result<ConversationResponse>> conversationStream(ChatModelConversationParam param);
 
+
+    /**
+     * 根据上下文对话,返回信息
+     */
+    ConversationResponse conversation(ChatModelConversationParam param);
 
 }

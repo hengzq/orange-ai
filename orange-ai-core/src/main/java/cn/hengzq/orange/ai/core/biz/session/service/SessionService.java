@@ -17,6 +17,8 @@ public interface SessionService {
 
     Boolean deleteById(String id);
 
+    Boolean deleteByIds(List<String> ids);
+
     Boolean updateById(String id, UpdateSessionParam param);
 
     SessionVO getById(String id);
@@ -24,4 +26,5 @@ public interface SessionService {
     PageDTO<SessionVO> page(SessionPageParam param);
 
     List<SessionVO> list(SessionListParam param);
+
 }

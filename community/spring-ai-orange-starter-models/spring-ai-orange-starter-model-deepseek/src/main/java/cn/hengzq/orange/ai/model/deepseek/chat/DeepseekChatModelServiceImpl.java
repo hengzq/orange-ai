@@ -1,6 +1,6 @@
 package cn.hengzq.orange.ai.model.deepseek.chat;
 
-import cn.hengzq.orange.ai.common.biz.chat.dto.ChatModelConversationParam;
+import cn.hengzq.orange.ai.common.biz.chat.dto.ChatModelOptions;
 import cn.hengzq.orange.ai.common.biz.chat.service.AbstractChatModelService;
 import cn.hengzq.orange.ai.common.biz.model.constant.ModelConstant;
 import cn.hengzq.orange.ai.common.biz.model.vo.ModelVO;
@@ -49,9 +49,20 @@ public class DeepseekChatModelServiceImpl extends AbstractChatModelService {
     }
 
     @Override
-    protected ChatOptions createChatOptions(ChatModelConversationParam param) {
+    protected ChatModel createChatModel(String model, String baseUrl, String apiKey) {
+        apiKey = SecureUtil.des(ModelConstant.SECRET_KEY.getBytes(StandardCharsets.UTF_8)).decryptStr(apiKey);
+        return DeepSeekChatModel.builder()
+                .deepSeekApi(DeepSeekApi.builder().apiKey(apiKey).build())
+                .defaultOptions(DeepSeekChatOptions.builder()
+                        .model(model)
+                        .build())
+                .build();
+    }
+
+    @Override
+    protected ChatOptions createChatOptions(ChatModelOptions options) {
         return DeepSeekChatOptions.builder()
-                .model(param.getModel().getModelName())
+                .model(options.getModel())
                 .build();
     }
 

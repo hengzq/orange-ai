@@ -16,5 +16,7 @@ public class KnowledgeBasePageParam extends PageParam {
     @Schema(description = "知识库名称,模糊匹配")
     private String name;
 
+    @Schema(description = "嵌入式模型ID")
+    private String embeddingModelId;
 
 }

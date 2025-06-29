@@ -15,6 +15,10 @@ public interface AIChatErrorCode {
     String CHAT_SESSION_TYPE_IS_ERROR_KEY = PREFIX + ".0003";
     ErrorCode CHAT_SESSION_TYPE_IS_ERROR = new ErrorCode(CHAT_SESSION_TYPE_IS_ERROR_KEY, "会话类型错误。");
 
+    String CHAT_CONVERSATION_IS_ERROR_KEY = PREFIX + ".0004";
+    ErrorCode CHAT_CONVERSATION_IS_ERROR = new ErrorCode(CHAT_CONVERSATION_IS_ERROR_KEY, "服务器繁忙，请稍后再试。");
+
+
     String CHAT_TENCENT_CALL_ERROR_CODE = PREFIX + ".1100";
     ErrorCode CHAT_TENCENT_CALL_ERROR = new ErrorCode(CHAT_TENCENT_CALL_ERROR_CODE, "调用腾讯聊天大模型异常。");
 

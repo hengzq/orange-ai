@@ -19,6 +19,7 @@
         <module>spring-ai-orange-starter-model-alibaba</module>
         <module>spring-ai-orange-starter-model-deepseek</module>
         <module>spring-ai-orange-starter-model-zhipu</module>
+        <module>spring-ai-orange-starter-model-minimax</module>
     </modules>
 
 </project>

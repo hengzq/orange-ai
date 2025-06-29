@@ -143,6 +143,7 @@ public class KnowledgeBaseServiceImpl implements KnowledgeBaseService {
     @Override
     public PageDTO<KnowledgeBaseVO> page(KnowledgeBasePageParam param) {
         PageDTO<KnowledgeBaseEntity> page = knowledgeBaseMapper.selectPage(param, CommonWrappers.<KnowledgeBaseEntity>lambdaQuery()
+                .eqIfPresent(KnowledgeBaseEntity::getEmbeddingModelId, param.getEmbeddingModelId())
                 .likeIfPresent(KnowledgeBaseEntity::getName, param.getName())
                 .orderByDesc(KnowledgeBaseEntity::getSort, BaseEntity::getCreatedAt));
         return KnowledgeBaseConverter.INSTANCE.toPage(page);

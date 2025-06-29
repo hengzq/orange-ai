@@ -46,10 +46,10 @@ public abstract class AbstractImageModelService implements ImageModelService {
         ImageModel imageModel = this.getOrCreateImageModel(param.getModel());
 
         ImageOptions options = ImageOptionsBuilder.builder()
-                .withModel(param.getModel().getModelName())
-                .withHeight(param.getHeight())
-                .withHeight(param.getWidth())
-                .withN(param.getQuantity())
+                .model(param.getModel().getModelName())
+                .height(param.getHeight())
+                .width(param.getWidth())
+                .N(param.getQuantity())
                 .build();
 
         ImagePrompt imagePrompt = new ImagePrompt(param.getPrompt(), options);

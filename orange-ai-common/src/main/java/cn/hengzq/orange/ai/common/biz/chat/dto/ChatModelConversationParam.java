@@ -19,9 +19,19 @@ public class ChatModelConversationParam {
     private String prompt;
 
     /**
+     * 系统提示词
+     */
+    private String systemPrompt;
+
+    /**
      * 上下文对话信息
      */
     List<Message> messages = Collections.emptyList();
+
+    /**
+     * 模型参数
+     */
+    private ChatModelOptions options;
 
     /**
      * 模型

@@ -9,6 +9,7 @@ import cn.hengzq.orange.ai.common.biz.session.vo.param.UpdateSessionParam;
 import cn.hengzq.orange.ai.common.constant.AIConstant;
 import cn.hengzq.orange.ai.core.biz.session.service.SessionService;
 import cn.hengzq.orange.common.dto.PageDTO;
+import cn.hengzq.orange.common.dto.param.IdsParam;
 import cn.hengzq.orange.common.result.Result;
 import cn.hengzq.orange.common.result.ResultWrapper;
 import io.swagger.v3.oas.annotations.Operation;
@@ -40,6 +41,12 @@ public class SessionController {
     @DeleteMapping("/{id}")
     public Result<Boolean> deleteById(@PathVariable("id") String id) {
         return ResultWrapper.ok(sessionService.deleteById(id));
+    }
+
+    @Operation(summary = "根据ID删除", operationId = "orange-ai:session:batch-delete")
+    @PostMapping("/batch-delete")
+    public Result<Boolean> deleteByIds(@RequestBody @Validated IdsParam param) {
+        return ResultWrapper.ok(sessionService.deleteByIds(param.getIds()));
     }
 
     @Operation(summary = "根据ID更新", operationId = "orange-ai:session:update")

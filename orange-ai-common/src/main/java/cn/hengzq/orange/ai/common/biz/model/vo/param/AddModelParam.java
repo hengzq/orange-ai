@@ -1,8 +1,10 @@
 package cn.hengzq.orange.ai.common.biz.model.vo.param;
 
+import cn.hengzq.orange.ai.common.biz.model.constant.AIModelErrorCode;
 import cn.hengzq.orange.ai.common.constant.ModelTypeEnum;
 import cn.hengzq.orange.ai.common.constant.PlatformEnum;
 import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -14,6 +16,7 @@ import java.io.Serializable;
 @Schema(description = "模型管理 - 新增参数")
 public class AddModelParam implements Serializable {
 
+    @NotNull(message = AIModelErrorCode.MODEL_PLATFORM_CANNOT_NULL_KEY)
     @Schema(description = "模型所属平台")
     private PlatformEnum platform;
 

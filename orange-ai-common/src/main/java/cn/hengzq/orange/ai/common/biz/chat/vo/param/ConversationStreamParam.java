@@ -15,4 +15,10 @@ public class ConversationStreamParam {
 
     @Schema(description = "提示词")
     private String prompt;
+
+    @Schema(description = "系统提示词")
+    private String systemPrompt;
+
+    @Schema(description = "温度")
+    private Double temperature;
 }

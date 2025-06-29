@@ -26,6 +26,11 @@ public enum PlatformEnum implements BaseEnum<String> {
 
     DEEP_SEEK("DeepSeek", 60, List.of(ModelTypeEnum.CHAT)),
 
+    /**
+     * <a href="https://www.minimaxi.com/">MiniMax 官网</a>
+     */
+    MINI_MAX("MiniMax", 70, List.of(ModelTypeEnum.CHAT)),
+
     ;
 
     private final String description;

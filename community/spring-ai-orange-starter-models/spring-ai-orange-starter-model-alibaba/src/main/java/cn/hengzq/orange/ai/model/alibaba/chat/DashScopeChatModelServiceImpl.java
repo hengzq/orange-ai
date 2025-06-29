@@ -1,11 +1,14 @@
 package cn.hengzq.orange.ai.model.alibaba.chat;
 
+import cn.hengzq.orange.ai.common.biz.chat.constant.AIChatErrorCode;
 import cn.hengzq.orange.ai.common.biz.chat.dto.ChatModelConversationParam;
+import cn.hengzq.orange.ai.common.biz.chat.dto.ChatModelOptions;
 import cn.hengzq.orange.ai.common.biz.chat.service.AbstractChatModelService;
 import cn.hengzq.orange.ai.common.biz.model.constant.ModelConstant;
 import cn.hengzq.orange.ai.common.biz.model.vo.ModelVO;
 import cn.hengzq.orange.ai.common.constant.PlatformEnum;
 import cn.hengzq.orange.ai.model.alibaba.constant.ChatModelEnum;
+import cn.hengzq.orange.common.exception.ServiceException;
 import cn.hutool.crypto.SecureUtil;
 import com.alibaba.cloud.ai.dashscope.api.DashScopeApi;
 import com.alibaba.cloud.ai.dashscope.chat.DashScopeChatModel;
@@ -17,6 +20,7 @@ import org.springframework.ai.chat.prompt.ChatOptions;
 
 import java.nio.charset.StandardCharsets;
 import java.util.List;
+import java.util.Objects;
 
 @Slf4j
 @AllArgsConstructor
@@ -49,8 +53,23 @@ public class DashScopeChatModelServiceImpl extends AbstractChatModelService {
     }
 
     @Override
-    protected ChatOptions createChatOptions(ChatModelConversationParam param) {
-        return DashScopeChatOptions.builder().withModel(param.getModel().getModelName()).build();
+    protected ChatModel createChatModel(String model, String baseUrl, String apiKey) {
+        apiKey = SecureUtil.des(ModelConstant.SECRET_KEY.getBytes(StandardCharsets.UTF_8)).decryptStr(apiKey);
+        DashScopeApi dashScopeApi = DashScopeApi.builder().apiKey(apiKey).build();
+        return DashScopeChatModel.builder()
+                .dashScopeApi(dashScopeApi)
+                .defaultOptions(DashScopeChatOptions.builder()
+                        .withModel(model)
+                        .build())
+                .build();
+    }
+
+    @Override
+    protected ChatOptions createChatOptions(ChatModelOptions options) {
+        return DashScopeChatOptions.builder()
+                .withModel(options.getModel())
+                .withTemperature(options.getTemperature())
+                .build();
     }
 
 

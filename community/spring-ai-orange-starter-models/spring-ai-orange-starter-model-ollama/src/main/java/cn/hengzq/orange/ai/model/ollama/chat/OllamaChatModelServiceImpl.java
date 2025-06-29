@@ -1,6 +1,7 @@
 package cn.hengzq.orange.ai.model.ollama.chat;
 
 import cn.hengzq.orange.ai.common.biz.chat.dto.ChatModelConversationParam;
+import cn.hengzq.orange.ai.common.biz.chat.dto.ChatModelOptions;
 import cn.hengzq.orange.ai.common.biz.chat.service.AbstractChatModelService;
 import cn.hengzq.orange.ai.common.biz.model.vo.ModelVO;
 import cn.hengzq.orange.ai.common.constant.PlatformEnum;
@@ -36,9 +37,21 @@ public class OllamaChatModelServiceImpl extends AbstractChatModelService {
     }
 
     @Override
-    protected ChatOptions createChatOptions(ChatModelConversationParam param) {
+    protected ChatModel createChatModel(String model, String baseUrl, String apiKey) {
+        OllamaApi ollamaApi = OllamaApi.builder().baseUrl(baseUrl).build();
+        return OllamaChatModel.builder()
+                .ollamaApi(ollamaApi)
+                .defaultOptions(OllamaOptions.builder()
+                        .model(model)
+                        .build())
+                .build();
+    }
+
+    @Override
+    protected ChatOptions createChatOptions(ChatModelOptions options) {
         return OllamaOptions.builder()
-                .model(param.getModel().getModelName())
+                .model(options.getModel())
+                .temperature(options.getTemperature())
                 .build();
     }
 

@@ -1,14 +1,18 @@
 package cn.hengzq.orange.ai.common.biz.chat.service;
 
+import cn.hengzq.orange.ai.common.biz.chat.constant.AIChatErrorCode;
 import cn.hengzq.orange.ai.common.biz.chat.constant.ConverstationEventEnum;
 import cn.hengzq.orange.ai.common.biz.chat.dto.ChatModelConversationParam;
+import cn.hengzq.orange.ai.common.biz.chat.dto.ChatModelOptions;
 import cn.hengzq.orange.ai.common.biz.chat.vo.ConversationResponse;
 import cn.hengzq.orange.ai.common.biz.model.vo.ModelVO;
+import cn.hengzq.orange.common.exception.ServiceException;
 import cn.hengzq.orange.common.result.Result;
 import cn.hengzq.orange.common.result.ResultWrapper;
 import cn.hutool.cache.Cache;
 import cn.hutool.cache.CacheUtil;
 import cn.hutool.core.collection.CollUtil;
+import cn.hutool.core.util.StrUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.ai.chat.messages.Message;
@@ -40,15 +44,20 @@ public abstract class AbstractChatModelService implements ChatModelService {
     protected abstract ChatModel createChatModel(ModelVO model);
 
     /**
+     * 创建ChatModel
+     *
+     * @param model   模型
+     * @param baseUrl 模型基础URL
+     * @param apiKey  模型密钥
+     * @return 返回 ChatModel
+     */
+    protected abstract ChatModel createChatModel(String model, String baseUrl, String apiKey);
+
+    /**
      * 创建ChatOptions
      */
-    protected abstract ChatOptions createChatOptions(ChatModelConversationParam param);
+    protected abstract ChatOptions createChatOptions(ChatModelOptions param);
 
-
-    @Override
-    public List<String> listModel() {
-        return List.of();
-    }
 
     /**
      * 获取或创建聊天模型。
@@ -67,27 +76,50 @@ public abstract class AbstractChatModelService implements ChatModelService {
     }
 
     @Override
+    public ChatModel getOrCreateChatModel(String model, String baseUrl, String apiKey) {
+        if (chatModelMap.containsKey(apiKey)) {
+            return chatModelMap.get(apiKey);
+        }
+        ChatModel chatModel = createChatModel(model, baseUrl, apiKey);
+        chatModelMap.put(apiKey, chatModel);
+        return chatModel;
+    }
+
+    public ChatOptions getOrCreateChatOptions(ChatModelConversationParam param) {
+        ChatModelOptions options = param.getOptions();
+        if (Objects.isNull(options)) {
+            log.warn("options is null");
+            throw new ServiceException(AIChatErrorCode.CHAT_SESSION_TYPE_IS_ERROR);
+        }
+        return createChatOptions(options);
+    }
+
+    @Override
     public Flux<Result<ConversationResponse>> conversationStream(ChatModelConversationParam param) {
         List<Message> messages = CollUtil.isEmpty(param.getMessages()) ? new ArrayList<>() : new ArrayList<>(param.getMessages());
         messages.add(new UserMessage(param.getPrompt()));
 
-        Prompt prompt = new Prompt(messages, this.createChatOptions(param));
+        Prompt prompt = new Prompt(messages, this.getOrCreateChatOptions(param));
         ChatModel chatModel = this.getOrCreateChatModel(param.getModel());
 
-
 //        McpSchema.Implementation clientInfo = new McpSchema.Implementation(
-//                "h-test-001", "1.0.0");
+//                "amap-amap-sse", "1.0.0");
 //
-//        HttpClientSseClientTransport transport = new HttpClientSseClientTransport(
-//                HttpClient.newBuilder(),
-//                "http://localhost:8080",
-//                new ObjectMapper());
+//        HttpClientSseClientTransport transport = HttpClientSseClientTransport.builder("https://mcp.amap.com")
+//                .sseEndpoint("/sse?key=")
+//                .clientBuilder(HttpClient.newBuilder())
+//                .objectMapper(new ObjectMapper())
+//                .build();
+//
 //        McpSyncClient client = McpClient.sync(transport).clientInfo(clientInfo).build();
 //        client.initialize();
 
         ChatClient.Builder chatClientBuilder = ChatClient.builder(chatModel);
 //                .defaultTools(McpToolUtils.getToolCallbacksFromSyncClients(List.of(client)));
-//                .defaultSystem(StrUtil.isNotBlank(agent.getSystemPrompt()) ? agent.getSystemPrompt() : DEFAULT_SYSTEM_PROMPT);
+        // 设置系统提示词
+        if (StrUtil.isNotBlank(param.getSystemPrompt())) {
+            chatClientBuilder.defaultSystem(param.getSystemPrompt());
+        }
 
         // 使用知识库
         if (CollUtil.isNotEmpty(param.getBaseList())) {
@@ -105,11 +137,10 @@ public abstract class AbstractChatModelService implements ChatModelService {
         }
 
 
-//        Flux<ChatResponse> stream = this.getOrCreateChatModel(param.getModel()).stream(prompt);
-        ChatClient.ChatClientRequest.StreamPromptResponseSpec streamResponseSpec = chatClientBuilder.build()
+        ChatClient.StreamResponseSpec stream = chatClientBuilder.build()
                 .prompt(prompt)
                 .stream();
-        return streamResponseSpec
+        return stream
                 .chatResponse()
                 .takeWhile(chatResponse -> Objects.nonNull(chatResponse) && Objects.nonNull(chatResponse.getResult())
                         && Objects.nonNull(chatResponse.getResult().getOutput()))
@@ -118,7 +149,7 @@ public abstract class AbstractChatModelService implements ChatModelService {
                         log.debug("chatResponse: {}", chatResponse);
                     }
                     Usage usage = chatResponse.getMetadata().getUsage();
-                    String content = chatResponse.getResult().getOutput().getContent();
+                    String content = chatResponse.getResult().getOutput().getText();
                     String finishReason = chatResponse.getResult().getMetadata().getFinishReason();
 
                     ConversationResponse replyVO = ConversationResponse.builder()
@@ -132,5 +163,15 @@ public abstract class AbstractChatModelService implements ChatModelService {
                             .build();
                     return ResultWrapper.ok(replyVO);
                 });
+    }
+
+    @Override
+    public ConversationResponse conversation(ChatModelConversationParam param) {
+        ChatModel chatModel = this.getOrCreateChatModel(param.getModel());
+        String message = chatModel.call(param.getPrompt());
+        return ConversationResponse.builder()
+                .event(ConverstationEventEnum.FINISHED)
+                .content(message)
+                .build();
     }
 }

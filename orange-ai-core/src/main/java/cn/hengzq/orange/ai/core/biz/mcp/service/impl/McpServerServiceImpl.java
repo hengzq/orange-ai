@@ -78,7 +78,7 @@ public class McpServerServiceImpl implements McpServerService {
     @Override
     public PageDTO<McpServerVO> page(McpServerPageParam param) {
         PageDTO<McpServerEntity> page = mcpServerMapper.selectPage(param, CommonWrappers.<McpServerEntity>lambdaQuery()
-                .eqIfPresent(McpServerEntity::getName, param.getName())
+                .likeIfPresent(McpServerEntity::getName, param.getName())
                 .orderByDesc(McpServerEntity::getCreatedAt));
         return McpServerConverter.INSTANCE.toPage(page);
     }

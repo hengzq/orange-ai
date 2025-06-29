@@ -1,8 +1,10 @@
 package cn.hengzq.orange.ai.core.biz.chat.service.impl;
 
 import cn.hengzq.orange.ai.common.biz.agent.vo.AgentVO;
+import cn.hengzq.orange.ai.common.biz.chat.constant.AIChatErrorCode;
 import cn.hengzq.orange.ai.common.biz.chat.constant.MessageTypeEnum;
 import cn.hengzq.orange.ai.common.biz.chat.dto.ChatModelConversationParam;
+import cn.hengzq.orange.ai.common.biz.chat.dto.ChatModelOptions;
 import cn.hengzq.orange.ai.common.biz.chat.service.ChatModelService;
 import cn.hengzq.orange.ai.common.biz.chat.vo.ConversationResponse;
 import cn.hengzq.orange.ai.common.biz.chat.vo.TokenUsageVO;
@@ -35,6 +37,7 @@ import reactor.core.publisher.Mono;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.concurrent.atomic.AtomicReference;
 
 @Slf4j
 @Service
@@ -55,7 +58,13 @@ public class ChatServiceImpl implements ChatService {
 
     @Override
     public ConversationResponse conversation(ConversationStreamParam param) {
-        return null;
+        ModelVO model = getModel(param.getModelId());
+        ChatModelService chatModelService = chatModelServiceFactory.getChatModelService(model.getPlatform());
+        ChatModelConversationParam chatModelConversationParam = ChatModelConversationParam.builder()
+                .model(model)
+                .prompt(param.getPrompt())
+                .build();
+        return chatModelService.conversation(chatModelConversationParam);
     }
 
     @Override
@@ -69,8 +78,15 @@ public class ChatServiceImpl implements ChatService {
                 .sessionType(SessionTypeEnum.CHAT_EXPERIENCE)
                 .name(param.getPrompt())
                 .build());
-        ChatModelConversationParam.ChatModelConversationParamBuilder paramBuilder = ChatModelConversationParam.builder().model(model).prompt(param.getPrompt());
 
+        ChatModelConversationParam.ChatModelConversationParamBuilder paramBuilder = ChatModelConversationParam.builder()
+                .model(model)
+                .options(ChatModelOptions.builder()
+                        .model(model.getModelName())
+                        .temperature(param.getTemperature())
+                        .build())
+                .prompt(param.getPrompt())
+                .systemPrompt(param.getSystemPrompt());
 
         // 获取对话上下文记录
 //        List<ChatSessionRecordEntity> entityList = chatSessionRecordMapper.selectListBySessionId(sessionId);
@@ -93,7 +109,13 @@ public class ChatServiceImpl implements ChatService {
         ModelVO model = getModel(agent.getModelId());
 
         // 构建对话参数
-        ChatModelConversationParam.ChatModelConversationParamBuilder paramBuilder = ChatModelConversationParam.builder().model(model).prompt(param.getPrompt());
+        ChatModelConversationParam.ChatModelConversationParamBuilder paramBuilder = ChatModelConversationParam.builder()
+                .prompt(param.getPrompt())
+                .systemPrompt(agent.getSystemPrompt())
+                .model(model)
+                .options(ChatModelOptions.builder()
+                        .model(model.getModelName())
+                        .build());
 
         // 3. 创建或者获取已有的会话
         String sessionId = sessionService.getOrCreateSessionId(param.getSessionId(), AddSessionParam.builder()
@@ -124,11 +146,11 @@ public class ChatServiceImpl implements ChatService {
 
     private @NotNull Flux<Result<ConversationResponse>> stream(ChatModelConversationParam param, ModelVO model, String sessionId, String questionId) {
         ChatModelService chatModelService = chatModelServiceFactory.getChatModelService(model.getPlatform());
-        StringBuilder content = new StringBuilder();
+        AtomicReference<StringBuffer> content = new AtomicReference<>(new StringBuffer());
         return chatModelService.conversationStream(param)
                 .filter(Objects::nonNull)
                 .map(result -> {
-                    content.append(result.getData().getContent());
+                    content.get().append(result.getData().getContent());
                     TokenUsageVO tokenUsage = result.getData().getTokenUsage();
                     if (Objects.nonNull(tokenUsage)) {
 //                        userRecord.setTokenQuantity(result.getData().getTokenUsage().getPromptTokens());
@@ -139,15 +161,22 @@ public class ChatServiceImpl implements ChatService {
                     return result;
                 })
                 .doOnComplete(() -> {
+                    if (log.isDebugEnabled()) {
+                        log.info("Conversation completed. Content: {}", content);
+                    }
+                }).onErrorResume(error -> {
+                    log.error("An error occurred: {}", error.getMessage(), error);
+                    content.set(new StringBuffer());
+                    content.get().append(AIChatErrorCode.CHAT_CONVERSATION_IS_ERROR.getMsg());
+                    return Mono.just(ResultWrapper.fail(AIChatErrorCode.CHAT_CONVERSATION_IS_ERROR));
+                }).doFinally(signalType -> {
                     sessionMessageService.add(AddSessionMessageParam.builder()
                             .sessionId(sessionId)
                             .parentId(questionId)
                             .role(MessageTypeEnum.ASSISTANT)
                             .content(content.toString())
                             .build());
-                }).onErrorResume(error -> {
-                    log.error("An error occurred: {}", error.getMessage(), error);
-                    return Mono.just(ResultWrapper.fail());
+                    log.info("Conversation completed.");
                 });
     }
 

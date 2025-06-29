@@ -62,6 +62,14 @@ public class SessionServiceImpl implements SessionService {
         return sessionMapper.deleteOneById(id);
     }
 
+    @Transactional(rollbackFor = Exception.class)
+    @Override
+    public Boolean deleteByIds(List<String> ids) {
+        sessionMessageMapper.delete(CommonWrappers.<SessionMessageEntity>lambdaQuery().in(SessionMessageEntity::getSessionId, ids));
+        sessionMapper.deleteByIds(ids);
+        return true;
+    }
+
     @Override
     public Boolean updateById(String id, UpdateSessionParam param) {
         SessionEntity entity = sessionMapper.selectById(id);

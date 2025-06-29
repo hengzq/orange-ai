@@ -161,7 +161,6 @@ CREATE TABLE IF NOT EXISTS `ai_session_message`
     `tenant_id`  varchar(36) NOT NULL COMMENT '租户id',
     `parent_id`  varchar(36) NOT NULL COMMENT '父级ID -1表示顶级',
     `session_id` varchar(36) NOT NULL COMMENT '会话id',
-    `model_id`   varchar(36) NOT NULL COMMENT '模型ID',
     `role`       varchar(32) NOT NULL COMMENT '消息类型',
     `content`    text                 DEFAULT NULL COMMENT '会话内容',
     `created_by` varchar(36)          DEFAULT NULL COMMENT '创建人',

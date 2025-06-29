@@ -144,16 +144,17 @@ public class KnowledgeDocServiceImpl implements KnowledgeDocService {
 
     @Override
     public List<KnowledgeDocSplitVO> split(KnowledgeDocSplitParam param) {
-        List<KnowledgeDocSplitVO> result = new ArrayList<>();
+        List<KnowledgeDocSplitVO> list = new ArrayList<>();
         for (FileInfo info : param.getFileList()) {
             KnowledgeDocSplitVO vo = new KnowledgeDocSplitVO();
             vo.setFileInfo(info);
             FileSliceStrategy strategy = fileSliceStrategyFactory.getFileSliceStrategy(FileTypeEnum.getByName(FileUtil.extName(info.getFileName())));
-            result.add(KnowledgeDocSplitVO.builder().fileInfo(info)
-                    .sliceList(strategy.split(info.getFileName()))
+            list.add(KnowledgeDocSplitVO.builder()
+                    .fileInfo(info)
+                    .sliceList(strategy.split(info.getFilePath()))
                     .build());
         }
-        return result;
+        return list;
     }
 
     @Override

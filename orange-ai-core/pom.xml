@@ -44,6 +44,12 @@
 
         <dependency>
             <groupId>cn.hengzq.orange</groupId>
+            <artifactId>spring-ai-orange-starter-model-minimax</artifactId>
+        </dependency>
+
+        <!-- Milvus 向量数据库 -->
+        <dependency>
+            <groupId>cn.hengzq.orange</groupId>
             <artifactId>orange-ai-milvus-store-biz-starter</artifactId>
             <version>${revision}</version>
         </dependency>

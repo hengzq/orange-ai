@@ -6,7 +6,7 @@
     <parent>
         <groupId>cn.hengzq.orange</groupId>
         <artifactId>orange-dependencies-parent</artifactId>
-        <version>1.4.0</version>
+        <version>1.5.0</version>
     </parent>
 
     <artifactId>orange-ai</artifactId>
@@ -19,7 +19,7 @@
     </description>
 
     <properties>
-        <revision>1.4.0</revision>
+        <revision>1.5.0</revision>
     </properties>
 
     <modules>
@@ -38,7 +38,6 @@
                 <artifactId>orange-ai-common</artifactId>
                 <version>${revision}</version>
             </dependency>
-
 
             <dependency>
                 <groupId>cn.hengzq.orange</groupId>
@@ -61,6 +60,12 @@
             <dependency>
                 <groupId>cn.hengzq.orange</groupId>
                 <artifactId>spring-ai-orange-starter-model-zhipu</artifactId>
+                <version>${revision}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>cn.hengzq.orange</groupId>
+                <artifactId>spring-ai-orange-starter-model-minimax</artifactId>
                 <version>${revision}</version>
             </dependency>
 
