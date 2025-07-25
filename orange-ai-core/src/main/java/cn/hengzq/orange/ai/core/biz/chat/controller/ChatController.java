@@ -1,7 +1,6 @@
 package cn.hengzq.orange.ai.core.biz.chat.controller;
 
 import cn.hengzq.orange.ai.common.biz.chat.vo.ConversationResponse;
-import cn.hengzq.orange.ai.common.biz.chat.vo.param.AgentConversationStreamParam;
 import cn.hengzq.orange.ai.common.biz.chat.vo.param.ConversationStreamParam;
 import cn.hengzq.orange.ai.common.constant.AIConstant;
 import cn.hengzq.orange.ai.core.biz.chat.service.ChatService;
@@ -39,12 +38,5 @@ public class ChatController {
     public Flux<Result<ConversationResponse>> conversationStream(@RequestBody ConversationStreamParam param) {
         return chatService.conversationStream(param);
     }
-
-    @Operation(summary = "智能体进行对话交流（流式返回）", description = "流式返回，响应较快")
-    @PostMapping(value = "/agent-conversation-stream", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
-    public Flux<Result<ConversationResponse>> agentConversationStream(@RequestBody AgentConversationStreamParam param) {
-        return chatService.agentConversationStream(param);
-    }
-
 
 }

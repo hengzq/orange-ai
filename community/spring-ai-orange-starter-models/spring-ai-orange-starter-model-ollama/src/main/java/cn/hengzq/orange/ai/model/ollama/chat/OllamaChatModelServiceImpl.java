@@ -26,17 +26,6 @@ public class OllamaChatModelServiceImpl extends AbstractChatModelService {
     }
 
     @Override
-    protected ChatModel createChatModel(ModelVO model) {
-        OllamaApi ollamaApi = OllamaApi.builder().baseUrl(model.getBaseUrl()).build();
-        return OllamaChatModel.builder()
-                .ollamaApi(ollamaApi)
-                .defaultOptions(OllamaOptions.builder()
-                        .model(model.getModelName())
-                        .build())
-                .build();
-    }
-
-    @Override
     protected ChatModel createChatModel(String model, String baseUrl, String apiKey) {
         OllamaApi ollamaApi = OllamaApi.builder().baseUrl(baseUrl).build();
         return OllamaChatModel.builder()

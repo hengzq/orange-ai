@@ -38,5 +38,4 @@ public class SessionEntity extends BaseTenantEntity {
     @TableField(value = "session_type")
     private SessionTypeEnum sessionType;
 
-
 }

@@ -1,7 +1,8 @@
 package cn.hengzq.orange.ai.common.biz.chat.dto;
 
 import cn.hengzq.orange.ai.common.biz.knowledge.vo.KnowledgeBaseVO;
-import cn.hengzq.orange.ai.common.biz.model.vo.ModelVO;
+import cn.hengzq.orange.ai.common.biz.mcp.vo.McpServerVO;
+import cn.hengzq.orange.ai.common.biz.session.constant.SessionTypeEnum;
 import lombok.Builder;
 import lombok.Data;
 import org.springframework.ai.chat.messages.Message;
@@ -12,6 +13,21 @@ import java.util.List;
 @Data
 @Builder
 public class ChatModelConversationParam {
+
+    /**
+     * 回话ID
+     */
+    private String sessionId;
+
+    /**
+     * 回话关联外键ID，eg：应用ID
+     */
+    private String sessionAssociationId;
+
+    /**
+     * 会话类型
+     */
+    private SessionTypeEnum sessionType;
 
     /**
      * 提示词
@@ -31,15 +47,17 @@ public class ChatModelConversationParam {
     /**
      * 模型参数
      */
-    private ChatModelOptions options;
+    private ChatModelOptions modelOptions;
 
-    /**
-     * 模型
-     */
-    private ModelVO model;
 
     /**
      * 对话使用到的知识库
      */
     private List<KnowledgeBaseVO> baseList;
+
+    /**
+     * MCP 服务
+     */
+    private List<McpServerVO> mcpServerList;
+
 }

@@ -25,11 +25,6 @@ public interface ChatModelService {
     /**
      * 获取对话模型
      */
-    ChatModel getOrCreateChatModel(ModelVO model);
-
-    /**
-     * 获取对话模型
-     */
     ChatModel getOrCreateChatModel(String model, String baseUrl, String apiKey);
 
     /**

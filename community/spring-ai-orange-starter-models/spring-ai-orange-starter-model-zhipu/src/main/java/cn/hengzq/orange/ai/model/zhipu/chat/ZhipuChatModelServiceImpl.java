@@ -3,7 +3,6 @@ package cn.hengzq.orange.ai.model.zhipu.chat;
 import cn.hengzq.orange.ai.common.biz.chat.dto.ChatModelOptions;
 import cn.hengzq.orange.ai.common.biz.chat.service.AbstractChatModelService;
 import cn.hengzq.orange.ai.common.biz.model.constant.ModelConstant;
-import cn.hengzq.orange.ai.common.biz.model.vo.ModelVO;
 import cn.hengzq.orange.ai.common.constant.PlatformEnum;
 import cn.hengzq.orange.ai.model.zhipu.constant.ChatModelEnum;
 import cn.hutool.crypto.SecureUtil;
@@ -25,15 +24,6 @@ public class ZhipuChatModelServiceImpl extends AbstractChatModelService {
     @Override
     public PlatformEnum getPlatform() {
         return PlatformEnum.ZHI_PU;
-    }
-
-    @Override
-    protected ChatModel createChatModel(ModelVO model) {
-        String apiKey = SecureUtil.des(ModelConstant.SECRET_KEY.getBytes(StandardCharsets.UTF_8)).decryptStr(model.getApiKey());
-        ZhiPuAiApi zhiPuAiApi = new ZhiPuAiApi(apiKey);
-        return new ZhiPuAiChatModel(zhiPuAiApi, ZhiPuAiChatOptions.builder()
-                .model(model.getModelName())
-                .build());
     }
 
     @Override

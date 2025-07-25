@@ -1,6 +1,5 @@
 package cn.hengzq.orange.ai.core.biz.chat.service.impl;
 
-import cn.hengzq.orange.ai.common.biz.agent.vo.AgentVO;
 import cn.hengzq.orange.ai.common.biz.chat.constant.AIChatErrorCode;
 import cn.hengzq.orange.ai.common.biz.chat.constant.MessageTypeEnum;
 import cn.hengzq.orange.ai.common.biz.chat.dto.ChatModelConversationParam;
@@ -8,16 +7,12 @@ import cn.hengzq.orange.ai.common.biz.chat.dto.ChatModelOptions;
 import cn.hengzq.orange.ai.common.biz.chat.service.ChatModelService;
 import cn.hengzq.orange.ai.common.biz.chat.vo.ConversationResponse;
 import cn.hengzq.orange.ai.common.biz.chat.vo.TokenUsageVO;
-import cn.hengzq.orange.ai.common.biz.chat.vo.param.AgentConversationStreamParam;
 import cn.hengzq.orange.ai.common.biz.chat.vo.param.ConversationStreamParam;
-import cn.hengzq.orange.ai.common.biz.knowledge.vo.KnowledgeBaseVO;
-import cn.hengzq.orange.ai.common.biz.knowledge.vo.param.KnowledgeBaseListParam;
 import cn.hengzq.orange.ai.common.biz.model.constant.AIModelErrorCode;
 import cn.hengzq.orange.ai.common.biz.model.vo.ModelVO;
 import cn.hengzq.orange.ai.common.biz.session.constant.SessionTypeEnum;
 import cn.hengzq.orange.ai.common.biz.session.vo.param.AddSessionMessageParam;
 import cn.hengzq.orange.ai.common.biz.session.vo.param.AddSessionParam;
-import cn.hengzq.orange.ai.core.biz.agent.service.AgentService;
 import cn.hengzq.orange.ai.core.biz.chat.service.ChatModelServiceFactory;
 import cn.hengzq.orange.ai.core.biz.chat.service.ChatService;
 import cn.hengzq.orange.ai.core.biz.knowledge.service.KnowledgeBaseService;
@@ -27,7 +22,6 @@ import cn.hengzq.orange.ai.core.biz.session.service.SessionService;
 import cn.hengzq.orange.common.exception.ServiceException;
 import cn.hengzq.orange.common.result.Result;
 import cn.hengzq.orange.common.result.ResultWrapper;
-import cn.hutool.core.collection.CollUtil;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.jetbrains.annotations.NotNull;
@@ -35,7 +29,6 @@ import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -52,8 +45,6 @@ public class ChatServiceImpl implements ChatService {
 
     private final ModelService modelService;
 
-    private final AgentService agentService;
-
     private final KnowledgeBaseService knowledgeBaseService;
 
     @Override
@@ -61,7 +52,12 @@ public class ChatServiceImpl implements ChatService {
         ModelVO model = getModel(param.getModelId());
         ChatModelService chatModelService = chatModelServiceFactory.getChatModelService(model.getPlatform());
         ChatModelConversationParam chatModelConversationParam = ChatModelConversationParam.builder()
-                .model(model)
+                .modelOptions(ChatModelOptions.builder()
+                        .model(model.getModelName())
+                        .temperature(param.getTemperature())
+                        .baseUrl(model.getBaseUrl())
+                        .apiKey(model.getApiKey())
+                        .build())
                 .prompt(param.getPrompt())
                 .build();
         return chatModelService.conversation(chatModelConversationParam);
@@ -80,10 +76,11 @@ public class ChatServiceImpl implements ChatService {
                 .build());
 
         ChatModelConversationParam.ChatModelConversationParamBuilder paramBuilder = ChatModelConversationParam.builder()
-                .model(model)
-                .options(ChatModelOptions.builder()
+                .modelOptions(ChatModelOptions.builder()
                         .model(model.getModelName())
                         .temperature(param.getTemperature())
+                        .baseUrl(model.getBaseUrl())
+                        .apiKey(model.getApiKey())
                         .build())
                 .prompt(param.getPrompt())
                 .systemPrompt(param.getSystemPrompt());
@@ -102,46 +99,56 @@ public class ChatServiceImpl implements ChatService {
     }
 
     @Override
-    public Flux<Result<ConversationResponse>> agentConversationStream(AgentConversationStreamParam param) {
-        // 1. 加载Agent
-        AgentVO agent = getAgent(param.getAgentId());
-        // 2. 加载模型
-        ModelVO model = getModel(agent.getModelId());
-
-        // 构建对话参数
-        ChatModelConversationParam.ChatModelConversationParamBuilder paramBuilder = ChatModelConversationParam.builder()
-                .prompt(param.getPrompt())
-                .systemPrompt(agent.getSystemPrompt())
-                .model(model)
-                .options(ChatModelOptions.builder()
-                        .model(model.getModelName())
-                        .build());
-
-        // 3. 创建或者获取已有的会话
+    public Flux<Result<ConversationResponse>> stream(ChatModelConversationParam param) {
+        ChatModelOptions modelOptions = param.getModelOptions();
+        // 1.获取或创建回话
         String sessionId = sessionService.getOrCreateSessionId(param.getSessionId(), AddSessionParam.builder()
-                .modelId(model.getId())
-                .associationId(param.getAgentId())
-                .sessionType(SessionTypeEnum.AGENT)
+                .modelId(modelOptions.getModelId())
+                .associationId(param.getSessionAssociationId())
+                .sessionType(param.getSessionType())
                 .name(param.getPrompt())
                 .build());
 
-        //  4. 保存用户问题
+        // 2. 保存用户问题
         String questionId = sessionMessageService.add(AddSessionMessageParam.builder()
                 .sessionId(sessionId)
                 .role(MessageTypeEnum.USER)
                 .content(param.getPrompt())
                 .build());
 
-        // 5. 加载知识库
-        List<String> baseIds = agent.getBaseIds();
-        if (CollUtil.isNotEmpty(baseIds)) {
-            List<KnowledgeBaseVO> baseList = knowledgeBaseService.list(KnowledgeBaseListParam.builder().ids(baseIds).build());
-            if (CollUtil.isNotEmpty(baseList)) {
-                paramBuilder.baseList(baseList);
-            }
-        }
-
-        return stream(paramBuilder.build(), model, sessionId, questionId);
+        ChatModelService chatModelService = chatModelServiceFactory.getChatModelService(modelOptions.getPlatform());
+        AtomicReference<StringBuffer> content = new AtomicReference<>(new StringBuffer());
+        return chatModelService.conversationStream(param)
+                .filter(Objects::nonNull)
+                .map(result -> {
+                    content.get().append(result.getData().getContent());
+                    TokenUsageVO tokenUsage = result.getData().getTokenUsage();
+                    if (Objects.nonNull(tokenUsage)) {
+//                        userRecord.setTokenQuantity(result.getData().getTokenUsage().getPromptTokens());
+//                        assistantRecord.setTokenQuantity(result.getData().getTokenUsage().getGenerationTokens());
+                    }
+                    // 封装消息ID
+                    result.getData().setSessionId(sessionId);
+                    return result;
+                })
+                .doOnComplete(() -> {
+                    if (log.isDebugEnabled()) {
+                        log.info("Conversation completed. Content: {}", content);
+                    }
+                }).onErrorResume(error -> {
+                    log.error("An error occurred: {}", error.getMessage(), error);
+                    content.set(new StringBuffer());
+                    content.get().append(AIChatErrorCode.CHAT_CONVERSATION_IS_ERROR.getMsg());
+                    return Mono.just(ResultWrapper.fail(AIChatErrorCode.CHAT_CONVERSATION_IS_ERROR));
+                }).doFinally(signalType -> {
+                    sessionMessageService.add(AddSessionMessageParam.builder()
+                            .sessionId(sessionId)
+                            .parentId(questionId)
+                            .role(MessageTypeEnum.ASSISTANT)
+                            .content(content.toString())
+                            .build());
+                    log.info("Conversation completed.");
+                });
     }
 
     private @NotNull Flux<Result<ConversationResponse>> stream(ChatModelConversationParam param, ModelVO model, String sessionId, String questionId) {
@@ -187,15 +194,6 @@ public class ChatServiceImpl implements ChatService {
             throw new ServiceException(AIModelErrorCode.MODEL_DATA_NOT_EXIST);
         }
         return model;
-    }
-
-    private @NotNull AgentVO getAgent(String agentId) {
-        AgentVO agent = agentService.getById(agentId);
-        if (Objects.isNull(agent)) {
-            log.error("智能体不存在 modelId: {}", agentId);
-            throw new ServiceException(AIModelErrorCode.MODEL_DATA_NOT_EXIST);
-        }
-        return agent;
     }
 
 }

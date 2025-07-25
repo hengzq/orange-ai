@@ -5,7 +5,7 @@ import cn.hengzq.orange.ai.common.biz.chat.constant.ConverstationEventEnum;
 import cn.hengzq.orange.ai.common.biz.chat.dto.ChatModelConversationParam;
 import cn.hengzq.orange.ai.common.biz.chat.dto.ChatModelOptions;
 import cn.hengzq.orange.ai.common.biz.chat.vo.ConversationResponse;
-import cn.hengzq.orange.ai.common.biz.model.vo.ModelVO;
+import cn.hengzq.orange.ai.common.biz.mcp.vo.McpServerVO;
 import cn.hengzq.orange.common.exception.ServiceException;
 import cn.hengzq.orange.common.result.Result;
 import cn.hengzq.orange.common.result.ResultWrapper;
@@ -13,6 +13,10 @@ import cn.hutool.cache.Cache;
 import cn.hutool.cache.CacheUtil;
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.StrUtil;
+import io.modelcontextprotocol.client.McpClient;
+import io.modelcontextprotocol.client.McpSyncClient;
+import io.modelcontextprotocol.client.transport.HttpClientSseClientTransport;
+import io.modelcontextprotocol.spec.McpSchema;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.ai.chat.messages.Message;
@@ -21,6 +25,8 @@ import org.springframework.ai.chat.metadata.Usage;
 import org.springframework.ai.chat.model.ChatModel;
 import org.springframework.ai.chat.prompt.ChatOptions;
 import org.springframework.ai.chat.prompt.Prompt;
+import org.springframework.ai.mcp.McpToolUtils;
+import org.springframework.ai.tool.ToolCallback;
 import reactor.core.publisher.Flux;
 
 import java.util.ArrayList;
@@ -36,12 +42,6 @@ public abstract class AbstractChatModelService implements ChatModelService {
      * value：基于KEY创建的ChatModel
      */
     protected static final Cache<String, ChatModel> chatModelMap = CacheUtil.newLFUCache(100);
-
-
-    /**
-     * 创建ChatModel
-     */
-    protected abstract ChatModel createChatModel(ModelVO model);
 
     /**
      * 创建ChatModel
@@ -59,22 +59,6 @@ public abstract class AbstractChatModelService implements ChatModelService {
     protected abstract ChatOptions createChatOptions(ChatModelOptions param);
 
 
-    /**
-     * 获取或创建聊天模型。
-     *
-     * @param model 需要获取或创建的模型对象。
-     * @return 如果模型已存在，返回对应的聊天模型；否则，创建新的聊天模型并返回。
-     */
-    @Override
-    public ChatModel getOrCreateChatModel(ModelVO model) {
-        if (chatModelMap.containsKey(model.getApiKey())) {
-            return chatModelMap.get(model.getApiKey());
-        }
-        ChatModel chatModel = createChatModel(model);
-        chatModelMap.put(model.getApiKey(), chatModel);
-        return chatModel;
-    }
-
     @Override
     public ChatModel getOrCreateChatModel(String model, String baseUrl, String apiKey) {
         if (chatModelMap.containsKey(apiKey)) {
@@ -85,37 +69,20 @@ public abstract class AbstractChatModelService implements ChatModelService {
         return chatModel;
     }
 
-    public ChatOptions getOrCreateChatOptions(ChatModelConversationParam param) {
-        ChatModelOptions options = param.getOptions();
-        if (Objects.isNull(options)) {
-            log.warn("options is null");
-            throw new ServiceException(AIChatErrorCode.CHAT_SESSION_TYPE_IS_ERROR);
-        }
-        return createChatOptions(options);
-    }
-
     @Override
     public Flux<Result<ConversationResponse>> conversationStream(ChatModelConversationParam param) {
         List<Message> messages = CollUtil.isEmpty(param.getMessages()) ? new ArrayList<>() : new ArrayList<>(param.getMessages());
         messages.add(new UserMessage(param.getPrompt()));
 
-        Prompt prompt = new Prompt(messages, this.getOrCreateChatOptions(param));
-        ChatModel chatModel = this.getOrCreateChatModel(param.getModel());
-
-//        McpSchema.Implementation clientInfo = new McpSchema.Implementation(
-//                "amap-amap-sse", "1.0.0");
-//
-//        HttpClientSseClientTransport transport = HttpClientSseClientTransport.builder("https://mcp.amap.com")
-//                .sseEndpoint("/sse?key=")
-//                .clientBuilder(HttpClient.newBuilder())
-//                .objectMapper(new ObjectMapper())
-//                .build();
-//
-//        McpSyncClient client = McpClient.sync(transport).clientInfo(clientInfo).build();
-//        client.initialize();
+        ChatModelOptions options = param.getModelOptions();
+        if (Objects.isNull(options)) {
+            log.warn("options is null");
+            throw new ServiceException(AIChatErrorCode.CHAT_SESSION_TYPE_IS_ERROR);
+        }
+        Prompt prompt = new Prompt(messages, createChatOptions(options));
+        ChatModel chatModel = this.getOrCreateChatModel(options.getModel(), options.getBaseUrl(), options.getApiKey());
 
         ChatClient.Builder chatClientBuilder = ChatClient.builder(chatModel);
-//                .defaultTools(McpToolUtils.getToolCallbacksFromSyncClients(List.of(client)));
         // 设置系统提示词
         if (StrUtil.isNotBlank(param.getSystemPrompt())) {
             chatClientBuilder.defaultSystem(param.getSystemPrompt());
@@ -136,6 +103,15 @@ public abstract class AbstractChatModelService implements ChatModelService {
 //            chatClientBuilder.defaultAdvisors(context.getAdvisors());
         }
 
+        // 加载 MCP服务
+        if (CollUtil.isNotEmpty(param.getMcpServerList())) {
+            List<ToolCallback> callbacks = getToolCallbacksFromSyncClients(getMcpSyncClients(param.getMcpServerList()));
+            if (CollUtil.isNotEmpty(callbacks)) {
+                chatClientBuilder.defaultToolCallbacks(callbacks);
+            } else {
+                log.warn("clients is null");
+            }
+        }
 
         ChatClient.StreamResponseSpec stream = chatClientBuilder.build()
                 .prompt(prompt)
@@ -167,11 +143,54 @@ public abstract class AbstractChatModelService implements ChatModelService {
 
     @Override
     public ConversationResponse conversation(ChatModelConversationParam param) {
-        ChatModel chatModel = this.getOrCreateChatModel(param.getModel());
+        ChatModelOptions options = param.getModelOptions();
+        ChatModel chatModel = this.getOrCreateChatModel(options.getModel(), options.getBaseUrl(), options.getApiKey());
         String message = chatModel.call(param.getPrompt());
         return ConversationResponse.builder()
                 .event(ConverstationEventEnum.FINISHED)
                 .content(message)
                 .build();
+    }
+
+    private final static Cache<String, McpSyncClient> MCP_SYNC_CLIENT_CACHE = CacheUtil.newLFUCache(100);
+
+    private List<ToolCallback> getToolCallbacksFromSyncClients(List<McpSyncClient> clients) {
+        if (CollUtil.isEmpty(clients)) {
+            return List.of();
+        }
+        try {
+            return McpToolUtils.getToolCallbacksFromSyncClients(clients);
+        } catch (Exception e) {
+            log.error("getToolCallbacksFromSyncClients error", e);
+            return List.of();
+        }
+    }
+
+    public List<McpSyncClient> getMcpSyncClients(List<McpServerVO> mcpServerList) {
+        if (CollUtil.isEmpty(mcpServerList)) {
+            return List.of();
+        }
+        List<McpSyncClient> clients = new ArrayList<>();
+        for (McpServerVO vo : mcpServerList) {
+            if (Objects.isNull(vo) || Objects.isNull(vo.getConnectionUrl())) {
+                continue;
+            }
+            if (MCP_SYNC_CLIENT_CACHE.containsKey(vo.getId())) {
+                clients.add(MCP_SYNC_CLIENT_CACHE.get(vo.getId()));
+                continue;
+            }
+            try {
+                McpSchema.Implementation clientInfo = new McpSchema.Implementation(
+                        vo.getName(), "1.0.0");
+                HttpClientSseClientTransport transport = HttpClientSseClientTransport.builder(vo.getConnectionUrl()).sseEndpoint(vo.getSseEndpoint()).build();
+                McpSyncClient client = McpClient.sync(transport).clientInfo(clientInfo).build();
+                client.initialize();
+                MCP_SYNC_CLIENT_CACHE.put(vo.getId(), client);
+                clients.add(client);
+            } catch (Exception e) {
+                log.error("McpSyncClient error. mcp server name: {}", vo.getName(), e);
+            }
+        }
+        return clients;
     }
 }

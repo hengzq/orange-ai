@@ -37,21 +37,6 @@ public class DashScopeChatModelServiceImpl extends AbstractChatModelService {
         return PlatformEnum.ALI_BAI_LIAN;
     }
 
-
-    /**
-     * 创建聊天模型。
-     *
-     * @return 返回一个新的DashScopeChatModel实例，该实例使用指定的API密钥进行初始化。
-     */
-    @Override
-    protected ChatModel createChatModel(ModelVO model) {
-        String apiKey = SecureUtil.des(ModelConstant.SECRET_KEY.getBytes(StandardCharsets.UTF_8)).decryptStr(model.getApiKey());
-        DashScopeApi dashScopeApi = DashScopeApi.builder().apiKey(apiKey).build();
-        return DashScopeChatModel.builder()
-                .dashScopeApi(dashScopeApi)
-                .build();
-    }
-
     @Override
     protected ChatModel createChatModel(String model, String baseUrl, String apiKey) {
         apiKey = SecureUtil.des(ModelConstant.SECRET_KEY.getBytes(StandardCharsets.UTF_8)).decryptStr(apiKey);

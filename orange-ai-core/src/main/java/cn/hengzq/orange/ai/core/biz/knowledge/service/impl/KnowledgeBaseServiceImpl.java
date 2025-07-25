@@ -12,8 +12,6 @@ import cn.hengzq.orange.ai.common.biz.model.constant.AIModelErrorCode;
 import cn.hengzq.orange.ai.common.biz.model.vo.ModelVO;
 import cn.hengzq.orange.ai.common.biz.vectorstore.constant.VectorDatabaseEnum;
 import cn.hengzq.orange.ai.common.biz.vectorstore.service.VectorStoreService;
-import cn.hengzq.orange.ai.core.biz.agent.entity.AgentEntity;
-import cn.hengzq.orange.ai.core.biz.agent.mapper.AgentMapper;
 import cn.hengzq.orange.ai.core.biz.embedding.service.EmbeddingModelServiceFactory;
 import cn.hengzq.orange.ai.core.biz.knowledge.converter.KnowledgeBaseConverter;
 import cn.hengzq.orange.ai.core.biz.knowledge.entity.KnowledgeBaseEntity;
@@ -23,7 +21,6 @@ import cn.hengzq.orange.ai.core.biz.model.service.ModelService;
 import cn.hengzq.orange.ai.core.biz.vectorstore.service.VectorStoreServiceFactory;
 import cn.hengzq.orange.common.constant.GlobalErrorCodeConstant;
 import cn.hengzq.orange.common.dto.PageDTO;
-import cn.hengzq.orange.common.exception.ServiceException;
 import cn.hengzq.orange.common.util.Assert;
 import cn.hengzq.orange.common.util.CollUtils;
 import cn.hengzq.orange.mybatis.entity.BaseEntity;
@@ -60,8 +57,6 @@ public class KnowledgeBaseServiceImpl implements KnowledgeBaseService {
 
     private final EmbeddingModelServiceFactory embeddingModelServiceFactory;
 
-    private final AgentMapper agentMapper;
-
     @Override
     public Boolean removeById(String id) {
         KnowledgeBaseEntity entity = knowledgeBaseMapper.selectById(id);
@@ -69,8 +64,8 @@ public class KnowledgeBaseServiceImpl implements KnowledgeBaseService {
             return Boolean.TRUE;
         }
         // 检查知识库是否被使用
-        List<AgentEntity> agentEntityList = agentMapper.selectList(Wrappers.<AgentEntity>lambdaQuery().like(AgentEntity::getBaseIds, id));
-        Assert.isEmpty(agentEntityList, KnowledgeErrorCode.KNOWLEDGE_BASE_DELETE_FAILED);
+//        List<AgentEntity> agentEntityList = agentMapper.selectList(Wrappers.<AgentEntity>lambdaQuery().like(AgentEntity::getBaseIds, id));
+//        Assert.isEmpty(agentEntityList, KnowledgeErrorCode.KNOWLEDGE_BASE_DELETE_FAILED);
         knowledgeBaseMapper.deleteById(id);
         return Boolean.TRUE;
     }

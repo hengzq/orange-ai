@@ -28,15 +28,6 @@ public class MiniMaxChatModelServiceImpl extends AbstractChatModelService {
     }
 
     @Override
-    protected ChatModel createChatModel(ModelVO model) {
-        String apiKey = SecureUtil.des(ModelConstant.SECRET_KEY.getBytes(StandardCharsets.UTF_8)).decryptStr(model.getApiKey());
-        MiniMaxApi miniMaxApi = new MiniMaxApi(apiKey);
-        return new MiniMaxChatModel(miniMaxApi, MiniMaxChatOptions.builder()
-                .model(model.getModelName())
-                .build());
-    }
-
-    @Override
     protected ChatModel createChatModel(String model, String baseUrl, String apiKey) {
         apiKey = SecureUtil.des(ModelConstant.SECRET_KEY.getBytes(StandardCharsets.UTF_8)).decryptStr(apiKey);
         MiniMaxApi miniMaxApi = new MiniMaxApi(apiKey);
