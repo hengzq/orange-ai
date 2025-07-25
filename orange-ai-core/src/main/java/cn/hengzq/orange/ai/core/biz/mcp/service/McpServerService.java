@@ -22,6 +22,8 @@ public interface McpServerService {
 
     Boolean updateById(String id, UpdateMcpServerParam request);
 
+    Boolean updateEnabledById(String id, boolean enabled);
+
     McpServerVO getById(String id);
 
     List<McpServerVO> list(McpServerListParam query);

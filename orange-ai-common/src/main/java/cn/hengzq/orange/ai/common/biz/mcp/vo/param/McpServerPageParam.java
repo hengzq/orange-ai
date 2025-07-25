@@ -15,4 +15,8 @@ public class McpServerPageParam extends PageParam {
 
     @Schema(description = "服务名称，模糊查询")
     private String name;
+
+    @Schema(description = "启用状态 true:启用 false：不启用")
+    private Boolean enabled;
+
 }

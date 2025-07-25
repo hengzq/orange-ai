@@ -6,15 +6,13 @@ import cn.hengzq.orange.ai.common.biz.mcp.vo.param.AddMcpServerParam;
 import cn.hengzq.orange.ai.common.biz.mcp.vo.param.McpServerListParam;
 import cn.hengzq.orange.ai.common.biz.mcp.vo.param.McpServerPageParam;
 import cn.hengzq.orange.ai.common.biz.mcp.vo.param.UpdateMcpServerParam;
-import cn.hengzq.orange.ai.common.biz.model.vo.param.AddModelParam;
-import cn.hengzq.orange.ai.common.biz.model.vo.param.ModelListParam;
-import cn.hengzq.orange.ai.common.biz.model.vo.param.ModelPageParam;
 import cn.hengzq.orange.ai.common.constant.AIConstant;
 import cn.hengzq.orange.ai.core.biz.mcp.service.McpServerService;
 import cn.hengzq.orange.common.dto.PageDTO;
 import cn.hengzq.orange.common.result.Result;
 import cn.hengzq.orange.common.result.ResultWrapper;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;
 import org.springframework.validation.annotation.Validated;
@@ -49,6 +47,13 @@ public class McpServerController {
     @PutMapping("/{id}")
     public Result<Boolean> updateById(@PathVariable("id") String id, @RequestBody @Validated UpdateMcpServerParam request) {
         return ResultWrapper.ok(mcpServerService.updateById(id, request));
+    }
+
+    @Operation(summary = "根据ID启用或禁用", operationId = "orange-ai:mcp-server:update")
+    @PutMapping("/{id}/{enabled}")
+    public Result<Boolean> updateEnabledById(@Parameter(description = "版本ID") @PathVariable("id") String id,
+                                             @Parameter(description = "启用状态 true:启用 false：不启用") @PathVariable("enabled") boolean enabled) {
+        return ResultWrapper.ok(mcpServerService.updateEnabledById(id, enabled));
     }
 
     @Operation(summary = "根据ID查询", operationId = "orange-ai:mcp-server:get")

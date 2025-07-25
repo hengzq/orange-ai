@@ -33,5 +33,10 @@ public class McpServerEntity extends BaseTenantEntity {
     @TableField(value = "connection_url")
     private String connectionUrl;
 
+    @TableField(value = "sse_endpoint")
+    private String sseEndpoint;
+
+    private Boolean enabled;
+
     private String description;
 }

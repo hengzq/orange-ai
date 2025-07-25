@@ -1,7 +1,5 @@
 package cn.hengzq.orange.ai.common.biz.mcp.vo.param;
 
-import cn.hengzq.orange.ai.common.constant.ModelTypeEnum;
-import cn.hengzq.orange.ai.common.constant.PlatformEnum;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -23,5 +21,11 @@ public class McpServerListParam implements Serializable {
 
     @Schema(description = "服务名称，模糊查询")
     private String name;
+
+    @Schema(description = "IDS")
+    private List<String> ids;
+
+    @Schema(description = "启用状态 true:启用 false：不启用")
+    private Boolean enabled;
 
 }

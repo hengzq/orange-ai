@@ -30,7 +30,6 @@ import java.util.Objects;
 @AllArgsConstructor
 public class McpServerServiceImpl implements McpServerService {
 
-
     private final McpServerMapper mcpServerMapper;
 
     @Override
@@ -58,6 +57,14 @@ public class McpServerServiceImpl implements McpServerService {
     }
 
     @Override
+    public Boolean updateEnabledById(String id, boolean enabled) {
+        McpServerEntity entity = mcpServerMapper.selectById(id);
+        Assert.nonNull(entity, AIModelErrorCode.GLOBAL_DATA_NOT_EXIST);
+        entity.setEnabled(enabled);
+        return mcpServerMapper.updateOneById(entity);
+    }
+
+    @Override
     public McpServerVO getById(String id) {
         if (Objects.isNull(id)) {
             return null;
@@ -69,7 +76,9 @@ public class McpServerServiceImpl implements McpServerService {
     public List<McpServerVO> list(McpServerListParam param) {
         List<McpServerEntity> entityList = mcpServerMapper.selectList(
                 CommonWrappers.<McpServerEntity>lambdaQuery()
-                        .eqIfPresent(McpServerEntity::getName, param.getName())
+                        .eqIfPresent(McpServerEntity::getEnabled, param.getEnabled())
+                        .inIfPresent(McpServerEntity::getId, param.getIds())
+                        .likeIfPresent(McpServerEntity::getName, param.getName())
                         .orderByDesc(BaseEntity::getCreatedAt)
         );
         return McpServerConverter.INSTANCE.toListVO(entityList);
@@ -78,10 +87,9 @@ public class McpServerServiceImpl implements McpServerService {
     @Override
     public PageDTO<McpServerVO> page(McpServerPageParam param) {
         PageDTO<McpServerEntity> page = mcpServerMapper.selectPage(param, CommonWrappers.<McpServerEntity>lambdaQuery()
+                .eqIfPresent(McpServerEntity::getEnabled, param.getEnabled())
                 .likeIfPresent(McpServerEntity::getName, param.getName())
                 .orderByDesc(McpServerEntity::getCreatedAt));
         return McpServerConverter.INSTANCE.toPage(page);
     }
-
-
 }

@@ -26,6 +26,12 @@ public class McpServerVO extends BaseTenantDTO {
     @Schema(description = "SSE 服务连接地址")
     private String connectionUrl;
 
+    @Schema(description = "SSE 协议端点")
+    private String sseEndpoint;
+
+    @Schema(description = "启用状态 true:启用 false：不启用")
+    private boolean enabled;
+
     @Schema(description = "备注")
     private String description;
 }

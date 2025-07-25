@@ -32,6 +32,8 @@ public interface McpServerConverter extends Converter {
     @Mapping(source = "entity.id", target = "id")
     @Mapping(source = "param.name", target = "name")
     @Mapping(source = "param.connectionUrl", target = "connectionUrl")
+    @Mapping(source = "param.sseEndpoint", target = "sseEndpoint")
+    @Mapping(source = "param.enabled", target = "enabled")
     @Mapping(source = "param.description", target = "description")
     McpServerEntity toUpdateEntity(McpServerEntity entity, UpdateMcpServerParam param);
 
