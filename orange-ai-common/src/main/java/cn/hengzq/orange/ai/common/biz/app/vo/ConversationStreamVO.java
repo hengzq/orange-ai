@@ -1,4 +1,4 @@
-package cn.hengzq.orange.ai.common.biz.agent.vo;
+package cn.hengzq.orange.ai.common.biz.app.vo;
 
 import cn.hengzq.orange.ai.common.biz.chat.constant.ConverstationEventEnum;
 import cn.hengzq.orange.ai.common.biz.chat.vo.TokenUsageVO;
