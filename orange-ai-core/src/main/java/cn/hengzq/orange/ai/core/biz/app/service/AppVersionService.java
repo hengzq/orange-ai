@@ -45,4 +45,6 @@ public interface AppVersionService {
     PageDTO<AppVersionVO> page(AppVersionPageParam param);
 
     List<AppVersionVO> listByAppId(String appId);
+
+    Boolean deleteByAppId(String appId);
 }

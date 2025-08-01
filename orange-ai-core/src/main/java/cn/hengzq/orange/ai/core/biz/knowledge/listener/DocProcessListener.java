@@ -3,7 +3,7 @@ package cn.hengzq.orange.ai.core.biz.knowledge.listener;
 import cn.hengzq.orange.ai.common.biz.knowledge.constant.DocRefreshType;
 import cn.hengzq.orange.ai.common.biz.knowledge.event.DocRefreshEvent;
 import cn.hengzq.orange.ai.common.biz.knowledge.event.DocRefreshParam;
-import cn.hengzq.orange.ai.core.biz.knowledge.service.KnowledgeDocRefreshService;
+import cn.hengzq.orange.ai.core.biz.knowledge.service.VectorSyncService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.event.EventListener;
@@ -18,7 +18,7 @@ import org.springframework.stereotype.Component;
 @AllArgsConstructor
 public class DocProcessListener {
 
-    private final KnowledgeDocRefreshService knowledgeDocRefreshService;
+    private final VectorSyncService vectorSyncService;
 
     /**
      * 切片向量化
@@ -29,7 +29,7 @@ public class DocProcessListener {
         try {
             if (event.getSource() instanceof DocRefreshParam param) {
                 if (DocRefreshType.ADD.equals(param.getType())) {
-                    knowledgeDocRefreshService.refreshDocByDocIds(param.getDocIds());
+                    vectorSyncService.refreshDocByDocIds(param.getDocIds());
                 } else {
                     log.warn("params type error.param:{}", event.getSource());
                 }

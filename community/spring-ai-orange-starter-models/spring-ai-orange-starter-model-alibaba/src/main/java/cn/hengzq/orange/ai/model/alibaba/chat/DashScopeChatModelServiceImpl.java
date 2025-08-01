@@ -1,14 +1,10 @@
 package cn.hengzq.orange.ai.model.alibaba.chat;
 
-import cn.hengzq.orange.ai.common.biz.chat.constant.AIChatErrorCode;
-import cn.hengzq.orange.ai.common.biz.chat.dto.ChatModelConversationParam;
 import cn.hengzq.orange.ai.common.biz.chat.dto.ChatModelOptions;
 import cn.hengzq.orange.ai.common.biz.chat.service.AbstractChatModelService;
 import cn.hengzq.orange.ai.common.biz.model.constant.ModelConstant;
-import cn.hengzq.orange.ai.common.biz.model.vo.ModelVO;
 import cn.hengzq.orange.ai.common.constant.PlatformEnum;
 import cn.hengzq.orange.ai.model.alibaba.constant.ChatModelEnum;
-import cn.hengzq.orange.common.exception.ServiceException;
 import cn.hutool.crypto.SecureUtil;
 import com.alibaba.cloud.ai.dashscope.api.DashScopeApi;
 import com.alibaba.cloud.ai.dashscope.chat.DashScopeChatModel;
@@ -20,7 +16,6 @@ import org.springframework.ai.chat.prompt.ChatOptions;
 
 import java.nio.charset.StandardCharsets;
 import java.util.List;
-import java.util.Objects;
 
 @Slf4j
 @AllArgsConstructor

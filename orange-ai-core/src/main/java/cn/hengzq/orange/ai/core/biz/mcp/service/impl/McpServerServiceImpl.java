@@ -1,6 +1,7 @@
 package cn.hengzq.orange.ai.core.biz.mcp.service.impl;
 
 import cn.hengzq.orange.ai.common.biz.mcp.vo.McpServerVO;
+import cn.hengzq.orange.ai.common.biz.mcp.vo.McpToolVO;
 import cn.hengzq.orange.ai.common.biz.mcp.vo.param.AddMcpServerParam;
 import cn.hengzq.orange.ai.common.biz.mcp.vo.param.McpServerListParam;
 import cn.hengzq.orange.ai.common.biz.mcp.vo.param.McpServerPageParam;
@@ -9,11 +10,14 @@ import cn.hengzq.orange.ai.common.biz.model.constant.AIModelErrorCode;
 import cn.hengzq.orange.ai.core.biz.mcp.converter.McpServerConverter;
 import cn.hengzq.orange.ai.core.biz.mcp.entity.McpServerEntity;
 import cn.hengzq.orange.ai.core.biz.mcp.mapper.McpServerMapper;
+import cn.hengzq.orange.ai.core.biz.mcp.service.McpClientComponent;
 import cn.hengzq.orange.ai.core.biz.mcp.service.McpServerService;
 import cn.hengzq.orange.common.dto.PageDTO;
 import cn.hengzq.orange.common.util.Assert;
 import cn.hengzq.orange.mybatis.entity.BaseEntity;
 import cn.hengzq.orange.mybatis.query.CommonWrappers;
+import io.modelcontextprotocol.client.McpSyncClient;
+import io.modelcontextprotocol.spec.McpSchema;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -31,6 +35,8 @@ import java.util.Objects;
 public class McpServerServiceImpl implements McpServerService {
 
     private final McpServerMapper mcpServerMapper;
+
+    private final McpClientComponent mcpClientComponent;
 
     @Override
     public Boolean removeById(String id) {
@@ -91,5 +97,20 @@ public class McpServerServiceImpl implements McpServerService {
                 .likeIfPresent(McpServerEntity::getName, param.getName())
                 .orderByDesc(McpServerEntity::getCreatedAt));
         return McpServerConverter.INSTANCE.toPage(page);
+    }
+
+    @Override
+    public List<McpToolVO> listToolById(String id) {
+        McpServerVO mcpServer = getById(id);
+        if (Objects.isNull(mcpServer)) {
+            return List.of();
+        }
+        McpSyncClient client = mcpClientComponent.getMcpSyncClient(mcpServer);
+        if (Objects.isNull(client)) {
+            return List.of();
+        }
+        McpSchema.ListToolsResult result = client.listTools();
+        return McpServerConverter.INSTANCE.toListTool(result.tools());
+
     }
 }

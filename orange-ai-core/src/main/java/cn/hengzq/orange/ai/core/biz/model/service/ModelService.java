@@ -22,6 +22,8 @@ public interface ModelService {
 
     Boolean updateById(String id, UpdateModelParam request);
 
+    Boolean updateEnabledById(String id, boolean enabled);
+
     ModelVO getById(String id);
 
     List<ModelVO> list(ModelListParam query);
@@ -29,4 +31,5 @@ public interface ModelService {
     PageDTO<ModelVO> page(ModelPageParam param);
 
     Map<String, ModelVO> mapModelByIds(List<String> modelIds);
+
 }

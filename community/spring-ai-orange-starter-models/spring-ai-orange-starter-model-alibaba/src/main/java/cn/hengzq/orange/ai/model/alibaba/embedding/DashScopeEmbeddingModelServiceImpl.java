@@ -39,6 +39,18 @@ public class DashScopeEmbeddingModelServiceImpl extends AbstractEmbeddingModelSe
     }
 
     @Override
+    protected EmbeddingModel createEmbeddingModel(String model, String baseUrl, String apiKey) {
+        apiKey = SecureUtil.des(ModelConstant.SECRET_KEY.getBytes(StandardCharsets.UTF_8)).decryptStr(apiKey);
+        DashScopeApi dashScopeApi = DashScopeApi.builder().apiKey(apiKey).build();
+        return new DashScopeEmbeddingModel(dashScopeApi,
+                MetadataMode.EMBED,
+                DashScopeEmbeddingOptions.builder()
+                        .withModel(model)
+                        .withTextType(DashScopeApi.EmbeddingTextType.DOCUMENT.getValue())
+                        .build());
+    }
+
+    @Override
     public List<String> listModel() {
         return EmbeddingModelEnum.getModelList();
     }

@@ -2,6 +2,7 @@ package cn.hengzq.orange.ai.core.biz.mcp.service;
 
 
 import cn.hengzq.orange.ai.common.biz.mcp.vo.McpServerVO;
+import cn.hengzq.orange.ai.common.biz.mcp.vo.McpToolVO;
 import cn.hengzq.orange.ai.common.biz.mcp.vo.param.AddMcpServerParam;
 import cn.hengzq.orange.ai.common.biz.mcp.vo.param.McpServerListParam;
 import cn.hengzq.orange.ai.common.biz.mcp.vo.param.McpServerPageParam;
@@ -30,4 +31,5 @@ public interface McpServerService {
 
     PageDTO<McpServerVO> page(McpServerPageParam param);
 
+    List<McpToolVO> listToolById(String id);
 }

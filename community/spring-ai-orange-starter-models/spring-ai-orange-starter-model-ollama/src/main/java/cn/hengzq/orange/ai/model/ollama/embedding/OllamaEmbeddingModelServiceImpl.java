@@ -7,6 +7,7 @@ import cn.hengzq.orange.ai.model.ollama.constant.EmbeddingModelEnum;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.ai.embedding.EmbeddingModel;
+import org.springframework.ai.ollama.OllamaChatModel;
 import org.springframework.ai.ollama.OllamaEmbeddingModel;
 import org.springframework.ai.ollama.api.OllamaApi;
 import org.springframework.ai.ollama.api.OllamaOptions;
@@ -31,6 +32,17 @@ public class OllamaEmbeddingModelServiceImpl extends AbstractEmbeddingModelServi
                 .ollamaApi(ollamaApi)
                 .defaultOptions(OllamaOptions.builder()
                         .model(model.getModelName())
+                        .build())
+                .build();
+    }
+
+    @Override
+    protected EmbeddingModel createEmbeddingModel(String model, String baseUrl, String apiKey) {
+        OllamaApi ollamaApi = OllamaApi.builder().baseUrl(baseUrl).build();
+        return OllamaEmbeddingModel.builder()
+                .ollamaApi(ollamaApi)
+                .defaultOptions(OllamaOptions.builder()
+                        .model(model)
                         .build())
                 .build();
     }

@@ -1,8 +1,8 @@
 package cn.hengzq.orange.ai.common.biz.chat.service;
 
 import cn.hengzq.orange.ai.common.biz.chat.dto.ChatModelConversationParam;
+import cn.hengzq.orange.ai.common.biz.chat.dto.ChatParam;
 import cn.hengzq.orange.ai.common.biz.chat.vo.ConversationResponse;
-import cn.hengzq.orange.ai.common.biz.model.vo.ModelVO;
 import cn.hengzq.orange.ai.common.constant.PlatformEnum;
 import cn.hengzq.orange.common.result.Result;
 import org.springframework.ai.chat.model.ChatModel;
@@ -30,7 +30,10 @@ public interface ChatModelService {
     /**
      * 根据上下文对话,返回信息
      */
-    Flux<Result<ConversationResponse>> conversationStream(ChatModelConversationParam param);
+    Flux<Result<ConversationResponse>> stream(ChatModelConversationParam param);
+
+
+    Flux<Result<ConversationResponse>> stream(ChatParam param);
 
 
     /**

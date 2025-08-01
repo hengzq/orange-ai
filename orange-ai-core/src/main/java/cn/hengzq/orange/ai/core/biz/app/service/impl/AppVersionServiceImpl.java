@@ -178,5 +178,12 @@ public class AppVersionServiceImpl implements AppVersionService {
         return AppVersionConverter.INSTANCE.toListVO(entityList);
     }
 
+    @Override
+    public Boolean deleteByAppId(String appId) {
+        int delete = appVersionMapper.delete(CommonWrappers.<AppVersionEntity>lambdaQuery()
+                .eq(AppVersionEntity::getAppId, appId));
+        return delete > 0;
+    }
+
 
 }

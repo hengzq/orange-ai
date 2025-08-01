@@ -23,7 +23,7 @@ public class UpdateDocSliceParam implements Serializable {
     private String docId;
 
     @Schema(description = "切片内容")
-    private String content;
+    private String text;
 
 
 }

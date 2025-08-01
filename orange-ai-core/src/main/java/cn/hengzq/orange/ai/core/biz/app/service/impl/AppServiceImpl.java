@@ -4,15 +4,9 @@ import cn.hengzq.orange.ai.common.biz.app.constant.AppStatusEnum;
 import cn.hengzq.orange.ai.common.biz.app.vo.AppVO;
 import cn.hengzq.orange.ai.common.biz.app.vo.AppVersionVO;
 import cn.hengzq.orange.ai.common.biz.app.vo.param.*;
-import cn.hengzq.orange.ai.common.biz.chat.dto.ChatModelConversationParam;
-import cn.hengzq.orange.ai.common.biz.chat.dto.ChatModelOptions;
 import cn.hengzq.orange.ai.common.biz.chat.vo.ConversationResponse;
-import cn.hengzq.orange.ai.common.biz.knowledge.vo.KnowledgeBaseVO;
-import cn.hengzq.orange.ai.common.biz.knowledge.vo.param.KnowledgeBaseListParam;
-import cn.hengzq.orange.ai.common.biz.mcp.vo.McpServerVO;
-import cn.hengzq.orange.ai.common.biz.mcp.vo.param.McpServerListParam;
+import cn.hengzq.orange.ai.common.biz.chat.vo.param.ChatConversationParam;
 import cn.hengzq.orange.ai.common.biz.model.constant.AIModelErrorCode;
-import cn.hengzq.orange.ai.common.biz.model.vo.ModelVO;
 import cn.hengzq.orange.ai.common.biz.session.constant.SessionTypeEnum;
 import cn.hengzq.orange.ai.core.biz.app.converter.AppConverter;
 import cn.hengzq.orange.ai.core.biz.app.converter.AppVersionConverter;
@@ -21,7 +15,7 @@ import cn.hengzq.orange.ai.core.biz.app.mapper.AppMapper;
 import cn.hengzq.orange.ai.core.biz.app.service.AppService;
 import cn.hengzq.orange.ai.core.biz.app.service.AppVersionService;
 import cn.hengzq.orange.ai.core.biz.chat.service.ChatService;
-import cn.hengzq.orange.ai.core.biz.knowledge.service.KnowledgeBaseService;
+import cn.hengzq.orange.ai.core.biz.knowledge.service.BaseService;
 import cn.hengzq.orange.ai.core.biz.mcp.service.McpServerService;
 import cn.hengzq.orange.ai.core.biz.model.service.ModelService;
 import cn.hengzq.orange.common.dto.PageDTO;
@@ -55,7 +49,7 @@ public class AppServiceImpl implements AppService {
 
     private final ModelService modelService;
 
-    private final KnowledgeBaseService knowledgeBaseService;
+    private final BaseService baseService;
 
     private final AppVersionService appVersionService;
 
@@ -73,6 +67,8 @@ public class AppServiceImpl implements AppService {
             return Boolean.TRUE;
         }
         appMapper.deleteById(id);
+        // 删除关联版本数据
+        appVersionService.deleteByAppId(id);
         return Boolean.TRUE;
     }
 
@@ -135,45 +131,20 @@ public class AppServiceImpl implements AppService {
 
     @Override
     public Flux<Result<ConversationResponse>> conversationStream(AppConversationStreamParam param) {
-
         AppVO app = getLatestById(param.getAppId(), SessionTypeEnum.AGENT.equals(param.getSessionType()));
         AppVersionVO latestVersion = app.getLatestVersion();
-        ModelVO model = modelService.getById(latestVersion.getModelId());
 
         // 构建对话参数
-        ChatModelConversationParam.ChatModelConversationParamBuilder paramBuilder = ChatModelConversationParam.builder()
+        ChatConversationParam.ChatConversationParamBuilder paramBuilder = ChatConversationParam.builder()
                 .prompt(param.getPrompt())
                 .sessionId(param.getSessionId())
                 .sessionAssociationId(param.getAppId())
                 .sessionType(param.getSessionType())
                 .systemPrompt(latestVersion.getSystemPrompt())
-                .modelOptions(ChatModelOptions.builder()
-                        .modelId(model.getId())
-                        .model(model.getModelName())
-                        .platform(model.getPlatform())
-                        .apiKey(model.getApiKey())
-                        .baseUrl(model.getBaseUrl())
-                        .build());
-
-        // 加载知识库
-        List<String> baseIds = latestVersion.getBaseIds();
-        if (CollUtil.isNotEmpty(baseIds)) {
-            List<KnowledgeBaseVO> baseList = knowledgeBaseService.list(KnowledgeBaseListParam.builder().ids(baseIds).build());
-            if (CollUtil.isNotEmpty(baseList)) {
-                paramBuilder.baseList(baseList);
-            }
-        }
-
-        // 加载MCP 服务
-        List<String> mcpIds = latestVersion.getMcpIds();
-        if (CollUtil.isNotEmpty(mcpIds)) {
-            List<McpServerVO> mcpServerList = mcpServerService.list(McpServerListParam.builder().ids(mcpIds).build());
-            if (CollUtil.isNotEmpty(mcpServerList)) {
-                paramBuilder.mcpServerList(mcpServerList);
-            }
-        }
-
-        return chatService.stream(paramBuilder.build());
+                .modelId(latestVersion.getModelId())
+                .baseIds(latestVersion.getBaseIds())
+                .mcpIds(latestVersion.getMcpIds());
+        return chatService.conversationStream(paramBuilder.build());
     }
 
     @Override

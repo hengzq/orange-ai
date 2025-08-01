@@ -1,8 +1,11 @@
 package cn.hengzq.orange.ai.core.biz.knowledge.service;
 
 import cn.hengzq.orange.ai.common.biz.knowledge.constant.FileTypeEnum;
-import cn.hengzq.orange.ai.common.biz.knowledge.vo.SliceInfo;
+import cn.hengzq.orange.ai.common.biz.knowledge.vo.ChunkVO;
+import org.springframework.ai.document.Document;
+import org.springframework.ai.document.DocumentReader;
 
+import java.io.File;
 import java.util.List;
 
 /**
@@ -15,5 +18,11 @@ public interface FileSliceStrategy {
     /**
      * 文件切片策略
      */
-    List<SliceInfo> split(String fileName);
+    List<ChunkVO> split(String fileName);
+
+    List<Document> read(String fileName);
+
+    DocumentReader getDocumentReader(String fileName);
+
+    DocumentReader getDocumentReader(File file);
 }

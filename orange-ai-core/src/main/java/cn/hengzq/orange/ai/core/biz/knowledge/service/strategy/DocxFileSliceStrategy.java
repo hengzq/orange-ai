@@ -1,20 +1,23 @@
 package cn.hengzq.orange.ai.core.biz.knowledge.service.strategy;
 
 import cn.hengzq.orange.ai.common.biz.knowledge.constant.FileTypeEnum;
-import cn.hengzq.orange.ai.common.biz.knowledge.vo.SliceInfo;
+import cn.hengzq.orange.ai.common.biz.knowledge.vo.ChunkVO;
 import cn.hengzq.orange.storage.StorageService;
 import cn.hengzq.orange.storage.StorageServiceFactory;
 import cn.hutool.core.util.StrUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
 import org.apache.poi.xwpf.usermodel.XWPFParagraph;
+import org.springframework.ai.document.DocumentReader;
 import org.springframework.stereotype.Service;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 
 @Slf4j
 @Service
@@ -25,10 +28,10 @@ public class DocxFileSliceStrategy extends AbstractFileSliceStrategy {
     }
 
     @Override
-    public List<SliceInfo> split(String fileName) {
+    public List<ChunkVO> split(String fileName) {
         StorageService storageService = StorageServiceFactory.getDefaultStorageService();
         File file = storageService.getFileByFileName(fileName);
-        List<SliceInfo> sliceList = new ArrayList<>();
+        List<ChunkVO> sliceList = new ArrayList<>();
         try (FileInputStream inputStream = new FileInputStream(file)) {
             XWPFDocument document = new XWPFDocument(inputStream);
             List<XWPFParagraph> paragraphs = document.getParagraphs();
@@ -39,7 +42,7 @@ public class DocxFileSliceStrategy extends AbstractFileSliceStrategy {
                 String text = paragraph.getText();
                 content.append(StrUtil.isBlank(text) ? "" : text);
                 if (content.length() >= MAX_SLICE_SIZE || i == paragraphs.size() - 1) {
-                    sliceList.add(SliceInfo.builder().content(content.toString()).build());
+                    sliceList.add(ChunkVO.builder().text(content.toString()).build());
                     content = new StringBuilder();
                 }
             }
@@ -47,8 +50,14 @@ public class DocxFileSliceStrategy extends AbstractFileSliceStrategy {
             document.close();
         } catch (IOException e) {
             log.error("slice docx file error", e);
-            sliceList.add(SliceInfo.builder().content("文件解析失败").build());
+            sliceList.add(ChunkVO.builder().text("文件解析失败").build());
         }
         return sliceList;
+    }
+
+
+    @Override
+    public DocumentReader getDocumentReader(File file) {
+        return null;
     }
 }

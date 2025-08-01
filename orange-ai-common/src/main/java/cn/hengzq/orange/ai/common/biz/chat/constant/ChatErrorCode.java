@@ -1,0 +1,28 @@
+package cn.hengzq.orange.ai.common.biz.chat.constant;
+
+import cn.hengzq.orange.common.exception.ErrorCode;
+
+public interface ChatErrorCode {
+    String PREFIX = "AIChatErrorCode.";
+
+
+    String CHAT_NON_STREAM_RESPONSE_ERROR_CODE = PREFIX + ".0001";
+    ErrorCode CHAT_NON_STREAM_RESPONSE_ERROR = new ErrorCode(CHAT_NON_STREAM_RESPONSE_ERROR_CODE, "期望一个流，但收到一个非流响应。");
+
+    String CHAT_SESSION_TYPE_CANNOT_NULL_KEY = PREFIX + ".0002";
+    ErrorCode CHAT_SESSION_TYPE_CANNOT_NULL = new ErrorCode(CHAT_SESSION_TYPE_CANNOT_NULL_KEY, "会话类型不能为空。");
+
+    String CHAT_SESSION_TYPE_IS_ERROR_KEY = PREFIX + ".0003";
+    ErrorCode CHAT_SESSION_TYPE_IS_ERROR = new ErrorCode(CHAT_SESSION_TYPE_IS_ERROR_KEY, "会话类型错误。");
+
+    String CHAT_CONVERSATION_IS_ERROR_KEY = PREFIX + ".0004";
+    ErrorCode CHAT_CONVERSATION_IS_ERROR = new ErrorCode(CHAT_CONVERSATION_IS_ERROR_KEY, "服务器繁忙，请稍后再试。");
+
+    String CHAT_NO_CONFIG_MODEL_ERROR_KEY = PREFIX + ".0005";
+    ErrorCode CHAT_NO_CONFIG_MODEL_ERROR = new ErrorCode(CHAT_NO_CONFIG_MODEL_ERROR_KEY, "抱歉，没有配置 AI 模型，请先配置 AI 模型。");
+
+
+    String CHAT_TENCENT_CALL_ERROR_CODE = PREFIX + ".1100";
+    ErrorCode CHAT_TENCENT_CALL_ERROR = new ErrorCode(CHAT_TENCENT_CALL_ERROR_CODE, "调用腾讯聊天大模型异常。");
+
+}

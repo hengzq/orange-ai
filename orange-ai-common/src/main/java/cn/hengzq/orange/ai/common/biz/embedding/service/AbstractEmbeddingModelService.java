@@ -18,6 +18,16 @@ public abstract class AbstractEmbeddingModelService implements EmbeddingModelSer
 
     protected abstract EmbeddingModel createEmbeddingModel(ModelVO model);
 
+    /**
+     * 创建 EmbeddingModel
+     *
+     * @param model   模型
+     * @param baseUrl 模型基础URL
+     * @param apiKey  模型密钥
+     * @return 返回 EmbeddingModel
+     */
+    protected abstract EmbeddingModel createEmbeddingModel(String model, String baseUrl, String apiKey);
+
     @Override
     public EmbeddingModel getOrCreateEmbeddingModel(ModelVO model) {
         String key = model.getModelName() + "_" + model.getApiKey();
@@ -27,6 +37,17 @@ public abstract class AbstractEmbeddingModelService implements EmbeddingModelSer
         EmbeddingModel chatModel = createEmbeddingModel(model);
         embeddingModelCache.put(key, chatModel);
         return chatModel;
+    }
+
+    @Override
+    public EmbeddingModel getOrCreateEmbeddingModel(String model, String baseUrl, String apiKey) {
+        String key = model + "_" + apiKey;
+        if (embeddingModelCache.containsKey(key)) {
+            return embeddingModelCache.get(key);
+        }
+        EmbeddingModel embeddingModel = createEmbeddingModel(model, baseUrl, apiKey);
+        embeddingModelCache.put(key, embeddingModel);
+        return embeddingModel;
     }
 
     @Override

@@ -1,10 +1,10 @@
 package cn.hengzq.orange.ai.core.biz.model.converter;
 
 
-import cn.hengzq.orange.ai.core.biz.model.entity.ModelEntity;
 import cn.hengzq.orange.ai.common.biz.model.vo.ModelVO;
 import cn.hengzq.orange.ai.common.biz.model.vo.param.AddModelParam;
 import cn.hengzq.orange.ai.common.biz.model.vo.param.UpdateModelParam;
+import cn.hengzq.orange.ai.core.biz.model.entity.ModelEntity;
 import cn.hengzq.orange.common.converter.Converter;
 import cn.hengzq.orange.common.dto.PageDTO;
 import org.mapstruct.Mapper;
@@ -31,6 +31,7 @@ public interface ModelConverter extends Converter {
 
     @Mapping(source = "entity.id", target = "id")
     @Mapping(source = "param.name", target = "name")
+    @Mapping(source = "param.enabled", target = "enabled")
     @Mapping(source = "param.modelName", target = "modelName")
     @Mapping(source = "param.baseUrl", target = "baseUrl")
     @Mapping(source = "param.sort", target = "sort")

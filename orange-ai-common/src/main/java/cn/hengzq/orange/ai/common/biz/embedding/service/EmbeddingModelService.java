@@ -16,6 +16,11 @@ public interface EmbeddingModelService {
     EmbeddingModel getOrCreateEmbeddingModel(ModelVO model);
 
     /**
+     * 获取或创建向量模型
+     */
+    EmbeddingModel getOrCreateEmbeddingModel(String model, String baseUrl, String apiKey);
+
+    /**
      * 模型列表
      */
     List<String> listModel();

@@ -2,6 +2,7 @@ package cn.hengzq.orange.ai.core.biz.mcp.controller;
 
 
 import cn.hengzq.orange.ai.common.biz.mcp.vo.McpServerVO;
+import cn.hengzq.orange.ai.common.biz.mcp.vo.McpToolVO;
 import cn.hengzq.orange.ai.common.biz.mcp.vo.param.AddMcpServerParam;
 import cn.hengzq.orange.ai.common.biz.mcp.vo.param.McpServerListParam;
 import cn.hengzq.orange.ai.common.biz.mcp.vo.param.McpServerPageParam;
@@ -73,6 +74,13 @@ public class McpServerController {
     @Operation(summary = "查询所有的数据", operationId = "orange-ai:mcp-server:list", description = "返回所有的数据")
     public Result<List<McpServerVO>> list(@RequestBody McpServerListParam query) {
         List<McpServerVO> list = mcpServerService.list(query);
+        return ResultWrapper.ok(list);
+    }
+
+    @PostMapping(value = "/list-tools/{id}")
+    @Operation(summary = "根据MCP Server ID查询所拥有的工具", operationId = "orange-ai:mcp-server:list", description = "返回所有的数据")
+    public Result<List<McpToolVO>> listToolById(@PathVariable("id") String id) {
+        List<McpToolVO> list = mcpServerService.listToolById(id);
         return ResultWrapper.ok(list);
     }
 }

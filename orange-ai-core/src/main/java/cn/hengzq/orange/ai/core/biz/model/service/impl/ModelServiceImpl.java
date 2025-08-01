@@ -1,6 +1,7 @@
 package cn.hengzq.orange.ai.core.biz.model.service.impl;
 
 import cn.hengzq.orange.ai.common.biz.chat.service.ChatModelService;
+import cn.hengzq.orange.ai.common.biz.embedding.service.EmbeddingModelService;
 import cn.hengzq.orange.ai.common.biz.model.constant.AIModelErrorCode;
 import cn.hengzq.orange.ai.common.biz.model.constant.ModelConstant;
 import cn.hengzq.orange.ai.common.biz.model.vo.ModelVO;
@@ -8,7 +9,9 @@ import cn.hengzq.orange.ai.common.biz.model.vo.param.AddModelParam;
 import cn.hengzq.orange.ai.common.biz.model.vo.param.ModelListParam;
 import cn.hengzq.orange.ai.common.biz.model.vo.param.ModelPageParam;
 import cn.hengzq.orange.ai.common.biz.model.vo.param.UpdateModelParam;
+import cn.hengzq.orange.ai.common.constant.ModelTypeEnum;
 import cn.hengzq.orange.ai.core.biz.chat.service.ChatModelServiceFactory;
+import cn.hengzq.orange.ai.core.biz.embedding.service.EmbeddingModelServiceFactory;
 import cn.hengzq.orange.ai.core.biz.model.converter.ModelConverter;
 import cn.hengzq.orange.ai.core.biz.model.entity.ModelEntity;
 import cn.hengzq.orange.ai.core.biz.model.mapper.ModelMapper;
@@ -25,6 +28,7 @@ import cn.hutool.crypto.SecureUtil;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.ai.chat.model.ChatModel;
+import org.springframework.ai.embedding.EmbeddingModel;
 import org.springframework.stereotype.Service;
 
 import java.nio.charset.StandardCharsets;
@@ -42,6 +46,8 @@ import java.util.Objects;
 public class ModelServiceImpl implements ModelService {
 
     private final ChatModelServiceFactory chatModelServiceFactory;
+
+    private final EmbeddingModelServiceFactory embeddingModelServiceFactory;
 
     private final ModelMapper modelMapper;
 
@@ -62,17 +68,30 @@ public class ModelServiceImpl implements ModelService {
             request.setApiKey(SecureUtil.des(ModelConstant.SECRET_KEY.getBytes(StandardCharsets.UTF_8)).encryptBase64(request.getApiKey()));
         }
         // 模型检测
-        try {
-            ChatModelService chatModelService = chatModelServiceFactory.getChatModelService(request.getPlatform());
-            ChatModel chatModel = chatModelService.getOrCreateChatModel(request.getModelName(), request.getBaseUrl(), request.getApiKey());
-            chatModel.call("你好!");
-        } catch (Exception e) {
-            log.error("模型检测异常", e);
+        if (!checkModel(request)) {
             throw new ServiceException(AIModelErrorCode.MODEL_PARAM_APIKEY_OR_BASEURL_IS_ERROR);
         }
 
         ModelEntity entity = ModelConverter.INSTANCE.toEntity(request);
         return modelMapper.insertOne(entity);
+    }
+
+    private boolean checkModel(AddModelParam request) {
+        try {
+            if (ModelTypeEnum.CHAT.equals(request.getModelType())) {
+                ChatModelService chatModelService = chatModelServiceFactory.getChatModelService(request.getPlatform());
+                ChatModel chatModel = chatModelService.getOrCreateChatModel(request.getModelName(), request.getBaseUrl(), request.getApiKey());
+                chatModel.call("你好!");
+            } else if (ModelTypeEnum.EMBEDDING.equals(request.getModelType())) {
+                EmbeddingModelService embeddingModelService = embeddingModelServiceFactory.getEmbeddingModelService(request.getPlatform());
+                EmbeddingModel embeddingModel = embeddingModelService.getOrCreateEmbeddingModel(request.getModelName(), request.getBaseUrl(), request.getApiKey());
+                embeddingModel.embed("你好");
+            }
+        } catch (Exception e) {
+            log.error("模型检测异常", e);
+            return Boolean.FALSE;
+        }
+        return Boolean.TRUE;
     }
 
     @Override
@@ -83,6 +102,14 @@ public class ModelServiceImpl implements ModelService {
         if (StrUtil.isNotBlank(entity.getApiKey())) {
             entity.setApiKey(SecureUtil.des(ModelConstant.SECRET_KEY.getBytes(StandardCharsets.UTF_8)).encryptBase64(entity.getApiKey()));
         }
+        return modelMapper.updateOneById(entity);
+    }
+
+    @Override
+    public Boolean updateEnabledById(String id, boolean enabled) {
+        ModelEntity entity = modelMapper.selectById(id);
+        Assert.nonNull(entity, AIModelErrorCode.GLOBAL_DATA_NOT_EXIST);
+        entity.setEnabled(enabled);
         return modelMapper.updateOneById(entity);
     }
 
