@@ -2,7 +2,7 @@ package cn.hengzq.orange.ai.core.biz.app.entity;
 
 import cn.hengzq.orange.ai.common.biz.app.constant.AppVersionStatusEnum;
 import cn.hengzq.orange.ai.common.biz.app.vo.AppBaseConfig;
-import cn.hengzq.orange.ai.common.biz.app.vo.AppModelConfig;
+import cn.hengzq.orange.ai.common.biz.model.vo.ModelConfig;
 import cn.hengzq.orange.mybatis.entity.BaseTenantEntity;
 import cn.hengzq.orange.mybatis.handler.ListToStringTypeHandler;
 import com.baomidou.mybatisplus.annotation.IdType;
@@ -42,7 +42,7 @@ public class AppVersionEntity extends BaseTenantEntity {
     private String modelId;
 
     @TableField(value = "model_config", typeHandler = JacksonTypeHandler.class)
-    private AppModelConfig modelConfig;
+    private ModelConfig modelConfig;
 
     @TableField(value = "base_ids", typeHandler = ListToStringTypeHandler.class)
     private List<String> baseIds;
@@ -52,6 +52,9 @@ public class AppVersionEntity extends BaseTenantEntity {
 
     @TableField(value = "mcp_ids", typeHandler = ListToStringTypeHandler.class)
     private List<String> mcpIds;
+
+    @TableField(value = "workflow_ids", typeHandler = ListToStringTypeHandler.class)
+    private List<String> workflowIds;
 
     @TableField(value = "version_status")
     private AppVersionStatusEnum versionStatus;

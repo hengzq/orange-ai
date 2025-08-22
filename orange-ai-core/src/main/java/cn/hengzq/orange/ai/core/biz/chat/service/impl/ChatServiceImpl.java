@@ -16,12 +16,13 @@ import cn.hengzq.orange.ai.common.biz.knowledge.vo.param.KnowledgeBaseListParam;
 import cn.hengzq.orange.ai.common.biz.mcp.vo.McpServerVO;
 import cn.hengzq.orange.ai.common.biz.mcp.vo.param.McpServerListParam;
 import cn.hengzq.orange.ai.common.biz.model.constant.AIModelErrorCode;
+import cn.hengzq.orange.ai.common.biz.model.vo.ModelConfig;
 import cn.hengzq.orange.ai.common.biz.model.vo.ModelVO;
 import cn.hengzq.orange.ai.common.biz.session.constant.SessionTypeEnum;
 import cn.hengzq.orange.ai.common.biz.session.vo.SessionMessageVO;
 import cn.hengzq.orange.ai.common.biz.session.vo.param.AddSessionMessageParam;
 import cn.hengzq.orange.ai.common.biz.session.vo.param.AddSessionParam;
-import cn.hengzq.orange.ai.common.biz.session.vo.param.SessionMessageListParam;
+import cn.hengzq.orange.ai.common.biz.session.vo.param.MessagePageParam;
 import cn.hengzq.orange.ai.common.biz.vectorstore.constant.VectorDatabaseEnum;
 import cn.hengzq.orange.ai.common.biz.vectorstore.service.VectorStoreService;
 import cn.hengzq.orange.ai.core.biz.chat.service.ChatModelServiceFactory;
@@ -34,11 +35,15 @@ import cn.hengzq.orange.ai.core.biz.session.converter.SessionMessageConverter;
 import cn.hengzq.orange.ai.core.biz.session.service.SessionMessageService;
 import cn.hengzq.orange.ai.core.biz.session.service.SessionService;
 import cn.hengzq.orange.ai.core.biz.vectorstore.service.VectorStoreServiceFactory;
+import cn.hengzq.orange.ai.core.biz.workflow.service.WorkflowRunService;
+import cn.hengzq.orange.ai.core.biz.workflow.service.WorkflowIntegrationService;
+import cn.hengzq.orange.common.dto.PageDTO;
 import cn.hengzq.orange.common.exception.ServiceException;
 import cn.hengzq.orange.common.result.Result;
 import cn.hengzq.orange.common.result.ResultWrapper;
 import cn.hutool.cache.Cache;
 import cn.hutool.cache.CacheUtil;
+import cn.hutool.cache.impl.TimedCache;
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.StrUtil;
 import io.modelcontextprotocol.client.McpClient;
@@ -48,17 +53,17 @@ import io.modelcontextprotocol.spec.McpSchema;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.jetbrains.annotations.NotNull;
+import org.springframework.ai.chat.messages.Message;
 import org.springframework.ai.mcp.McpToolUtils;
+import org.springframework.ai.support.ToolCallbacks;
 import org.springframework.ai.tool.ToolCallback;
 import org.springframework.ai.vectorstore.VectorStore;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import reactor.core.publisher.Sinks;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 import java.util.concurrent.atomic.AtomicReference;
 
 @Slf4j
@@ -81,6 +86,8 @@ public class ChatServiceImpl implements ChatService {
     private final BaseService baseService;
 
     private final McpServerService mcpServerService;
+
+    private static final TimedCache<String, Sinks.One<Void>> CANCEL_SINKS = CacheUtil.newTimedCache(60 * 1000);
 
 
     @Override
@@ -134,6 +141,8 @@ public class ChatServiceImpl implements ChatService {
         return stream(paramBuilder.build(), model, sessionId, questionId);
     }
 
+    private final WorkflowRunService workflowRunService;
+
     @Override
     public Flux<Result<ConversationResponse>> conversationStream(ChatConversationParam param) {
         ChatParam chatParam = ChatParam.builder()
@@ -149,12 +158,7 @@ public class ChatServiceImpl implements ChatService {
                 .name(param.getPrompt())
                 .build());
 
-        // 2. 加载历史会话信息
-        List<SessionMessageVO> messages = sessionMessageService.list(SessionMessageListParam.builder().sessionId(sessionId).build());
-        if (CollUtil.isNotEmpty(messages)) {
-            chatParam.setMessages(SessionMessageConverter.INSTANCE.toMessageList(messages));
-        }
-        // 3. 保存用户问题
+        // 2. 保存用户问题
         String questionId = sessionMessageService.add(AddSessionMessageParam.builder()
                 .sessionId(sessionId)
                 .role(MessageTypeEnum.USER)
@@ -163,10 +167,15 @@ public class ChatServiceImpl implements ChatService {
 
         AtomicReference<StringBuffer> content = new AtomicReference<>(new StringBuffer());
 
+        Sinks.One<Void> cancelSink = Sinks.one();
+        CANCEL_SINKS.put(param.getSessionId(), cancelSink);
         return Flux.defer(() -> {
                     // 加载模型
-                    ChatModelOptions chatModelOptions = getChatModelOptions(param.getModelId());
+                    ChatModelOptions chatModelOptions = getChatModelOptions(param.getModelId(), param.getModelConfig());
                     chatParam.setModelOptions(chatModelOptions);
+
+                    // 携带上下文轮数
+                    chatParam.setMessages(getSessionRounds(sessionId, param.getModelConfig()));
 
                     // 知识库加载
                     chatParam.setVectorStores(getVectorStore(param.getBaseIds()));
@@ -174,9 +183,15 @@ public class ChatServiceImpl implements ChatService {
                     // 加载MCP 服务
                     chatParam.setCallbacks(getCallbacks(param.getMcpIds()));
 
+                    // TODO 待优化
+                    chatParam.setCallbacks(Arrays.asList(ToolCallbacks.from(new WorkflowIntegrationService(workflowRunService))));
+
                     ChatModelService chatModelService = chatModelServiceFactory.getChatModelService(chatModelOptions.getPlatform());
-                    return chatModelService.stream(chatParam);
-                }).map(result -> {
+                    return chatModelService.stream(chatParam)
+                            .takeUntilOther(cancelSink.asMono()) // 监听取消
+                            ;
+                })
+                .map(result -> {
                     content.get().append(result.getData().getContent());
                     TokenUsageVO tokenUsage = result.getData().getTokenUsage();
                     if (Objects.nonNull(tokenUsage)) {
@@ -186,11 +201,6 @@ public class ChatServiceImpl implements ChatService {
                     // 封装消息ID
                     result.getData().setSessionId(sessionId);
                     return result;
-                })
-                .doOnComplete(() -> {
-                    if (log.isDebugEnabled()) {
-                        log.info("Conversation completed. Content: {}", content);
-                    }
                 }).onErrorResume(error -> {
                     log.error("An error occurred: {}", error.getMessage(), error);
                     content.set(new StringBuffer());
@@ -207,8 +217,37 @@ public class ChatServiceImpl implements ChatService {
                             .role(MessageTypeEnum.ASSISTANT)
                             .content(content.toString())
                             .build());
+                    CANCEL_SINKS.remove(sessionId);
                     log.info("Conversation completed.");
                 });
+    }
+
+    @Override
+    public Boolean stopBySessionId(String sessionId) {
+        if (StrUtil.isBlank(sessionId)) {
+            return Boolean.FALSE;
+        }
+        Sinks.One<Void> sink = CANCEL_SINKS.get(sessionId);
+        if (sink != null) {
+            // tryEmitEmpty 是幂等的，多次调用无副作用
+            Sinks.EmitResult result = sink.tryEmitEmpty();
+            if (result.isFailure()) {
+                log.debug("Failed to emit cancel signal for session: {}, result: {}", sessionId, result);
+            } else {
+                log.info("Cancel signal emitted for session: {}", sessionId);
+            }
+        }
+        return Boolean.TRUE;
+    }
+
+    private List<Message> getSessionRounds(String sessionId, ModelConfig modelConfig) {
+        if (StrUtil.isBlank(sessionId) || Objects.isNull(modelConfig) || Objects.isNull(modelConfig.getSessionRound())) {
+            return List.of();
+        }
+        MessagePageParam param = MessagePageParam.builder().sessionId(sessionId).build();
+        param.setPageSize(modelConfig.getSessionRound() * 2);
+        PageDTO<SessionMessageVO> page = sessionMessageService.page(param);
+        return SessionMessageConverter.INSTANCE.toMessageList(page.getRecords());
     }
 
     private List<ToolCallback> getCallbacks(List<String> mcpIds) {
@@ -242,7 +281,7 @@ public class ChatServiceImpl implements ChatService {
         return vectorStores;
     }
 
-    private ChatModelOptions getChatModelOptions(String modelId) {
+    private ChatModelOptions getChatModelOptions(String modelId, ModelConfig modelConfig) {
         if (StrUtil.isBlank(modelId)) {
             throw new ServiceException(ChatErrorCode.CHAT_NO_CONFIG_MODEL_ERROR);
         }
@@ -250,13 +289,20 @@ public class ChatServiceImpl implements ChatService {
         if (Objects.isNull(model)) {
             throw new ServiceException(ChatErrorCode.CHAT_NO_CONFIG_MODEL_ERROR);
         }
-        return ChatModelOptions.builder()
+        ChatModelOptions options = ChatModelOptions.builder()
                 .modelId(model.getId())
                 .model(model.getModelName())
                 .platform(model.getPlatform())
                 .apiKey(model.getApiKey())
                 .baseUrl(model.getBaseUrl())
                 .build();
+        if (Objects.isNull(modelConfig)) {
+            return options;
+        }
+        if (Objects.nonNull(modelConfig.getTemperature())) {
+            options.setTemperature(modelConfig.getTemperature());
+        }
+        return options;
     }
 
     private @NotNull Flux<Result<ConversationResponse>> stream(ChatModelConversationParam param, ModelVO model, String sessionId, String questionId) {
@@ -274,11 +320,6 @@ public class ChatServiceImpl implements ChatService {
                     // 封装消息ID
                     result.getData().setSessionId(sessionId);
                     return result;
-                })
-                .doOnComplete(() -> {
-                    if (log.isDebugEnabled()) {
-                        log.info("Conversation completed. Content: {}", content);
-                    }
                 }).onErrorResume(error -> {
                     log.error("An error occurred: {}", error.getMessage(), error);
                     content.set(new StringBuffer());

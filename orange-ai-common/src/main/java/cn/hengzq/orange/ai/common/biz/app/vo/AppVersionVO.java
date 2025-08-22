@@ -48,6 +48,9 @@ public class AppVersionVO extends BaseTenantDTO {
     @Schema(description = "MCP 服务IDS")
     private List<String> mcpIds;
 
+    @Schema(description = "工作流IDS")
+    private List<String> workflowIds;
+
     @Schema(description = "版本状态")
     private AppVersionStatusEnum versionStatus;
 

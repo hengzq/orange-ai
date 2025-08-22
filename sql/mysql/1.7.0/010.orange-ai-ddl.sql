@@ -55,7 +55,7 @@ CREATE TABLE IF NOT EXISTS `ai_text_to_image`
 -- ----------------------------
 -- 知识库管理
 -- ----------------------------
-CREATE TABLE IF NOT EXISTS `ai_knowledge_base`
+CREATE TABLE IF NOT EXISTS `ai_kb`
 (
     `id`                     varchar(36)  NOT NULL COMMENT '表的主键',
     `tenant_id`              varchar(36)  NOT NULL COMMENT '租户id',
@@ -76,7 +76,7 @@ CREATE TABLE IF NOT EXISTS `ai_knowledge_base`
 -- ----------------------------
 -- 知识库管理 - 文档
 -- ----------------------------
-CREATE TABLE IF NOT EXISTS `ai_knowledge_doc`
+CREATE TABLE IF NOT EXISTS `ai_kb_doc`
 (
     `id`          varchar(36)   NOT NULL COMMENT '表的主键',
     `tenant_id`   varchar(36)   NOT NULL COMMENT '租户id',
@@ -96,14 +96,14 @@ CREATE TABLE IF NOT EXISTS `ai_knowledge_doc`
 -- ----------------------------
 -- 知识库管理 - 文档切片
 -- ----------------------------
-CREATE TABLE IF NOT EXISTS `ai_knowledge_doc_slice`
+CREATE TABLE IF NOT EXISTS `ai_kb_doc_chunk`
 (
     `id`         varchar(36) NOT NULL COMMENT '表的主键',
     `tenant_id`  varchar(36) NOT NULL COMMENT '租户id',
     `base_id`    varchar(36) NOT NULL COMMENT '知识库ID',
     `doc_id`     varchar(36) NOT NULL COMMENT '文档ID',
     `emb_status` varchar(36) NOT NULL COMMENT '向量化状态',
-    `content`    text                 DEFAULT NULL COMMENT '段落内容',
+    `text`       text                 DEFAULT NULL COMMENT '段落内容',
     `created_by` varchar(36) NOT NULL COMMENT '创建人',
     `created_at` datetime    NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
     `updated_by` varchar(36)          DEFAULT NULL COMMENT '更新人',
@@ -145,6 +145,7 @@ CREATE TABLE IF NOT EXISTS `ai_app_version`
     `base_ids`       varchar(1024)         DEFAULT NULL COMMENT '关联知识库IDS, 多一个以","分割',
     `base_config`    text                  DEFAULT NULL COMMENT '知识库相关配置, JSON 字符串存储',
     `mcp_ids`        varchar(1024)         DEFAULT NULL COMMENT '关联MCP 服务IDS，多一个以","分割',
+    `workflow_ids`   varchar(1024)         DEFAULT NULL COMMENT '关联工作流服务IDS，多一个以","分割',
     `version_status` varchar(36)           DEFAULT NULL COMMENT '版本状态 DRAFT：草稿，PUBLISHED：已发布',
     `publish_by`     varchar(36)           DEFAULT NULL COMMENT '发布人',
     `publish_at`     datetime              DEFAULT NULL COMMENT '发布时间',
@@ -155,25 +156,6 @@ CREATE TABLE IF NOT EXISTS `ai_app_version`
     PRIMARY KEY (`id`)
 ) ENGINE = InnoDB COMMENT = '应用表 - 版本管理';
 
-
--- ----------------------------
--- 应用 - 模型管理
--- ----------------------------
-CREATE TABLE IF NOT EXISTS `ai_app_model`
-(
-    `id`             varchar(36) NOT NULL COMMENT '表的主键',
-    `tenant_id`      varchar(36) NOT NULL COMMENT '租户id',
-    `app_id`         varchar(36) NOT NULL COMMENT '应用ID',
-    `app_version_id` varchar(36) NOT NULL COMMENT '应用版本ID',
-    `model_id`       varchar(36)          DEFAULT NULL COMMENT '模型ID',
-    `created_by`     varchar(36) NOT NULL COMMENT '创建人',
-    `created_at`     datetime    NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-    `updated_by`     varchar(36)          DEFAULT NULL COMMENT '更新人',
-    `updated_at`     datetime    NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
-    PRIMARY KEY (`id`)
-) ENGINE = InnoDB COMMENT = '应用 - 模型管理';
-
-
 -- ----------------------------
 -- 聊天会话管理
 -- ----------------------------
@@ -182,7 +164,7 @@ CREATE TABLE IF NOT EXISTS `ai_session`
     `id`             varchar(36)  NOT NULL COMMENT '表的主键',
     `tenant_id`      varchar(36)  NOT NULL COMMENT '租户id',
     `user_id`        varchar(36)  NOT NULL COMMENT '用户id',
-    `model_id`       varchar(36)  NOT NULL COMMENT '模型ID',
+    `model_id`       varchar(36)           DEFAULT NULL COMMENT '模型ID',
     `name`           varchar(128) NOT NULL COMMENT '会话名称',
     `session_type`   varchar(64)           DEFAULT NULL COMMENT '会话类型',
     `association_id` varchar(36)           DEFAULT NULL COMMENT '关联ID，eg:智能体ID等',
@@ -247,3 +229,123 @@ CREATE TABLE IF NOT EXISTS `ai_prompt_template`
     `updated_at`       datetime     NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
     PRIMARY KEY (`id`)
 ) ENGINE = InnoDB COMMENT = 'Prompt模板';
+
+
+-- ----------------------------
+-- 工作流库表
+-- ----------------------------
+CREATE TABLE IF NOT EXISTS `ai_wf`
+(
+    `id`                   varchar(36) NOT NULL COMMENT '表的主键',
+    `tenant_id`            varchar(36) NOT NULL COMMENT '租户id',
+    `wf_status`            varchar(36)          DEFAULT NULL COMMENT '工作流：DRAFT：草稿，PUBLISHED：已发布，PUBLISHED_EDITING:已发布编辑中',
+    `draft_version_id`     varchar(36)          DEFAULT NULL COMMENT '草稿版ID',
+    `published_version_id` varchar(36)          DEFAULT NULL COMMENT '发布版ID',
+    `created_by`           varchar(36) NOT NULL COMMENT '创建人',
+    `created_at`           datetime    NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+    `updated_by`           varchar(36)          DEFAULT NULL COMMENT '更新人',
+    `updated_at`           datetime    NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+    PRIMARY KEY (`id`)
+) ENGINE = InnoDB COMMENT = '工作流库表';
+
+-- ----------------------------
+-- 工作流 - 版本管理
+-- ----------------------------
+CREATE TABLE IF NOT EXISTS `ai_wf_version`
+(
+    `id`             varchar(36)  NOT NULL COMMENT '表的主键',
+    `tenant_id`      varchar(36)  NOT NULL COMMENT '租户id',
+    `wf_id`          varchar(36)  NOT NULL COMMENT '工作流ID',
+    `name`           varchar(128) NOT NULL COMMENT '工作流名称',
+    `description`    varchar(2048)         DEFAULT NULL COMMENT '工作流描述',
+    `version_status` varchar(36)           DEFAULT NULL COMMENT '版本状态 DRAFT：草稿，PUBLISHED：已发布',
+    `publish_by`     varchar(36)           DEFAULT NULL COMMENT '发布人',
+    `publish_at`     datetime              DEFAULT NULL COMMENT '发布时间',
+    `created_by`     varchar(36)  NOT NULL COMMENT '创建人',
+    `created_at`     datetime     NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+    `updated_by`     varchar(36)           DEFAULT NULL COMMENT '更新人',
+    `updated_at`     datetime     NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+    PRIMARY KEY (`id`)
+) ENGINE = InnoDB COMMENT = '工作流 - 版本管理';
+
+-- ----------------------------
+-- 工作流 - 节点
+-- ----------------------------
+CREATE TABLE IF NOT EXISTS `ai_wf_node`
+(
+    `id`            varchar(36)  NOT NULL COMMENT '表的主键',
+    `tenant_id`     varchar(36)  NOT NULL COMMENT '租户id',
+    `wf_id`         varchar(36)  NOT NULL COMMENT '工作流ID',
+    `wf_version_id` varchar(36)  NOT NULL COMMENT '工作流版本ID',
+    `node_code`     VARCHAR(36)  NOT NULL COMMENT '节点编号，当前工作流中唯一 (例如: node_1, start_node)',
+    `name`          varchar(128)          DEFAULT NULL COMMENT '节点名称',
+    `node_type`     varchar(256) NOT NULL COMMENT '节点类型',
+    `description`   varchar(2048)         DEFAULT NULL COMMENT '节点描述',
+    `position`      JSON                  DEFAULT NULL COMMENT '位置坐标，JSON 字符串存储',
+    `input_config`  JSON                  DEFAULT NULL COMMENT '输入配置',
+    `output_config` JSON                  DEFAULT NULL COMMENT '输出配置',
+    `created_by`    varchar(36)  NOT NULL COMMENT '创建人',
+    `created_at`    datetime     NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+    `updated_by`    varchar(36)           DEFAULT NULL COMMENT '更新人',
+    `updated_at`    datetime     NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+    PRIMARY KEY (`id`)
+) ENGINE = InnoDB COMMENT = '工作流 - 节点';
+
+-- ----------------------------
+-- 工作流 - 边
+-- ----------------------------
+CREATE TABLE IF NOT EXISTS `ai_wf_edge`
+(
+    `id`             varchar(36) NOT NULL COMMENT '表的主键',
+    `tenant_id`      varchar(36) NOT NULL COMMENT '租户id',
+    `wf_id`          varchar(36) NOT NULL COMMENT '工作流ID',
+    `wf_version_id`  varchar(36) NOT NULL COMMENT '工作流版本ID',
+    `source_node_id` varchar(36) NOT NULL COMMENT '源节点ID',
+    `target_node_id` varchar(36) NOT NULL COMMENT '目标节点ID',
+    `created_by`     varchar(36) NOT NULL COMMENT '创建人',
+    `created_at`     datetime    NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+    `updated_by`     varchar(36)          DEFAULT NULL COMMENT '更新人',
+    `updated_at`     datetime    NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+    PRIMARY KEY (`id`)
+) ENGINE = InnoDB COMMENT = '工作流 - 边';
+
+-- ----------------------------
+-- 工作流 - 执行
+-- ----------------------------
+CREATE TABLE IF NOT EXISTS `ai_wf_run`
+(
+    `id`            varchar(36) NOT NULL COMMENT '表的主键',
+    `tenant_id`     varchar(36) NOT NULL COMMENT '租户id',
+    `wf_id`         varchar(36) NOT NULL COMMENT '工作流ID',
+    `wf_version_id` varchar(36) NOT NULL COMMENT '工作流版本ID',
+    `run_scope`     varchar(36) NOT NULL COMMENT '运行范围：WORKFLOW（整个工作流），NODE（单个节点独立执行）',
+    `run_status`    VARCHAR(36) NOT NULL COMMENT '运行状态',
+    `input_data`    JSON                 DEFAULT NULL COMMENT '节点执行时的输入参数，JSON 格式',
+    `output_data`   JSON                 DEFAULT NULL COMMENT '节点执行后的输出结果，JSON 格式',
+    `created_by`    varchar(36) NOT NULL COMMENT '创建人',
+    `created_at`    datetime    NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+    `updated_by`    varchar(36)          DEFAULT NULL COMMENT '更新人',
+    `updated_at`    datetime    NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+    PRIMARY KEY (`id`)
+) ENGINE = InnoDB COMMENT = '工作流 - 执行';
+
+-- ----------------------------
+-- 工作流 - 节点执行
+-- ----------------------------
+CREATE TABLE IF NOT EXISTS `ai_wf_node_run`
+(
+    `id`          varchar(36) NOT NULL COMMENT '表的主键',
+    `tenant_id`   varchar(36) NOT NULL COMMENT '租户id',
+    `run_id`      VARCHAR(36) NOT NULL COMMENT '所属工作流执行ID（独立执行则为空）',
+    `node_id`     VARCHAR(36) NOT NULL COMMENT '节点在工作流中的唯一标识符（主键ID）',
+    `run_status`  VARCHAR(36) NOT NULL COMMENT '节点运行状态',
+    `run_context` JSON                 DEFAULT NULL COMMENT '当前节点执行时所处的工作流上下文，JSON 格式',
+    `input_data`  JSON                 DEFAULT NULL COMMENT '节点执行时的输入参数，JSON 格式',
+    `output_data` JSON                 DEFAULT NULL COMMENT '节点执行后的输出结果，JSON 格式',
+    `error_msg`   TEXT                 DEFAULT NULL COMMENT '执行失败时的错误信息',
+    `created_by`  varchar(36) NOT NULL COMMENT '创建人',
+    `created_at`  datetime    NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+    `updated_by`  varchar(36)          DEFAULT NULL COMMENT '更新人',
+    `updated_at`  datetime    NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+    PRIMARY KEY (`id`)
+) ENGINE = InnoDB COMMENT = '工作流 - 节点执行';

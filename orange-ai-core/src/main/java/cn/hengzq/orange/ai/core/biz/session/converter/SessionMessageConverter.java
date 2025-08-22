@@ -6,6 +6,7 @@ import cn.hengzq.orange.ai.common.biz.session.vo.SessionMessageVO;
 import cn.hengzq.orange.ai.common.biz.session.vo.param.AddSessionMessageParam;
 import cn.hengzq.orange.ai.core.biz.session.entity.SessionMessageEntity;
 import cn.hengzq.orange.common.converter.Converter;
+import cn.hengzq.orange.common.dto.PageDTO;
 import cn.hutool.core.collection.CollUtil;
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
@@ -47,4 +48,6 @@ public interface SessionMessageConverter extends Converter {
         }
         return messageList;
     }
+
+    PageDTO<SessionMessageVO> toPage(PageDTO<SessionMessageEntity> page);
 }

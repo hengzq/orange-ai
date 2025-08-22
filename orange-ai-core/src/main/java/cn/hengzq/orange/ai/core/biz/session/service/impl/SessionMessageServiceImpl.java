@@ -2,14 +2,18 @@ package cn.hengzq.orange.ai.core.biz.session.service.impl;
 
 import cn.hengzq.orange.ai.common.biz.session.vo.SessionMessageVO;
 import cn.hengzq.orange.ai.common.biz.session.vo.param.AddSessionMessageParam;
+import cn.hengzq.orange.ai.common.biz.session.vo.param.MessagePageParam;
 import cn.hengzq.orange.ai.common.biz.session.vo.param.SessionMessageListParam;
 import cn.hengzq.orange.ai.common.biz.session.vo.param.SessionMessageRateParam;
+import cn.hengzq.orange.ai.core.biz.session.converter.SessionConverter;
 import cn.hengzq.orange.ai.core.biz.session.converter.SessionMessageConverter;
+import cn.hengzq.orange.ai.core.biz.session.entity.SessionEntity;
 import cn.hengzq.orange.ai.core.biz.session.entity.SessionMessageEntity;
 import cn.hengzq.orange.ai.core.biz.session.mapper.SessionMessageMapper;
 import cn.hengzq.orange.ai.core.biz.session.service.SessionMessageService;
 import cn.hengzq.orange.common.constant.GlobalConstant;
 import cn.hengzq.orange.common.constant.GlobalErrorCodeConstant;
+import cn.hengzq.orange.common.dto.PageDTO;
 import cn.hengzq.orange.common.exception.ServiceException;
 import cn.hengzq.orange.mybatis.query.CommonWrappers;
 import cn.hutool.core.util.StrUtil;
@@ -35,6 +39,14 @@ public class SessionMessageServiceImpl implements SessionMessageService {
                         .orderByAsc(SessionMessageEntity::getCreatedAt)
         );
         return SessionMessageConverter.INSTANCE.toListVO(entityList);
+    }
+
+    @Override
+    public PageDTO<SessionMessageVO> page(MessagePageParam param) {
+        PageDTO<SessionMessageEntity> page = sessionMessageMapper.selectPage(param, CommonWrappers.<SessionMessageEntity>lambdaQuery()
+                .eqIfPresent(SessionMessageEntity::getSessionId, param.getSessionId())
+                .orderByDesc(SessionMessageEntity::getCreatedAt));
+        return SessionMessageConverter.INSTANCE.toPage(page);
     }
 
     @Override

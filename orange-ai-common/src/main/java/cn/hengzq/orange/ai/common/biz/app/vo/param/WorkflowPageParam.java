@@ -10,10 +10,10 @@ import lombok.EqualsAndHashCode;
  */
 @EqualsAndHashCode(callSuper = true)
 @Data
-@Schema(description = "应用管理 - 查询所有的数据")
-public class AppPageParam extends PageParam {
+@Schema(description = "工作流管理 - 分页查询的数据")
+public class WorkflowPageParam extends PageParam {
 
-    @Schema(description = "模型名称 模糊匹配")
+    @Schema(description = "流水线名称 模糊匹配")
     private String name;
 
 }

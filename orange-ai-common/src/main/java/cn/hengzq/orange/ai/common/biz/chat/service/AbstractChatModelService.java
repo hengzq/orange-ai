@@ -201,6 +201,8 @@ public abstract class AbstractChatModelService implements ChatModelService {
         if (CollUtil.isNotEmpty(param.getCallbacks())) {
             chatClientBuilder.defaultToolCallbacks(param.getCallbacks());
         }
+        // 集成工作流服务
+//        chatClientBuilder.defaultToolCallbacks(Arrays.asList(ToolCallbacks.from(new WorkflowIntegrationService())));
 
         ChatClient.StreamResponseSpec stream = chatClientBuilder.build()
                 .prompt(prompt)

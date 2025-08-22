@@ -27,8 +27,9 @@ public class DashScopeImageModelServiceImpl extends AbstractImageModelService {
     @Override
     protected ImageModel createImageModel(ModelVO model) {
         String apiKey = SecureUtil.des(ModelConstant.SECRET_KEY.getBytes(StandardCharsets.UTF_8)).decryptStr(model.getApiKey());
-        DashScopeImageApi dashScopeApi = new DashScopeImageApi(apiKey);
-        return new DashScopeImageModel(dashScopeApi);
+        return new DashScopeImageModel(DashScopeImageApi.builder()
+                .apiKey(apiKey)
+                .build());
     }
 
     @Override

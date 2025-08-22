@@ -18,16 +18,24 @@
     </description>
 
     <dependencies>
+
+        <dependency>
+            <groupId>com.alibaba.cloud.ai</groupId>
+            <artifactId>spring-ai-alibaba-graph-core</artifactId>
+            <exclusions>
+                <exclusion>
+                    <artifactId>docker-java-core</artifactId>
+                    <groupId>com.github.docker-java</groupId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+
         <!-- MCP Server 依赖-->
         <dependency>
             <groupId>cn.hengzq.orange</groupId>
             <artifactId>orange-starter-mcp-server-webmvc</artifactId>
             <version>${revision}</version>
         </dependency>
-        <!--        <dependency>-->
-        <!--            <groupId>org.springframework.ai</groupId>-->
-        <!--            <artifactId>spring-ai-starter-mcp-server-webmvc</artifactId>-->
-        <!--        </dependency>-->
 
         <!--  阿里AI大模型      -->
         <dependency>

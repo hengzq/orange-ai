@@ -14,4 +14,6 @@ public interface ChatService {
     Flux<Result<ConversationResponse>> conversationStream(ConversationStreamParam param);
 
     Flux<Result<ConversationResponse>> conversationStream(ChatConversationParam param);
+
+    Boolean stopBySessionId(String sessionId);
 }

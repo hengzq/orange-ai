@@ -27,7 +27,7 @@ public interface AppService {
 
     List<AppVO> list(AppListParam query);
 
-    PageDTO<AppVO> page(AppPageParam param);
+    PageDTO<AppVO> page(WorkflowPageParam param);
 
     Flux<Result<ConversationResponse>> conversationStream(AppConversationStreamParam param);
 

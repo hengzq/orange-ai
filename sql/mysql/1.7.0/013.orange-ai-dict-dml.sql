@@ -70,23 +70,21 @@ VALUES (100200, @t_id, 1, '句号', 'FULL_STOP', 'ai_knowledge_base_doc_slice_id
        (100201, @t_id, 1, '逗号', 'COMMA', 'ai_knowledge_base_doc_slice_identifier', 1, '#909399', 1, '知识库文档切片标识符-逗号', @u_id);
 
 -- ------------------------------------------------------------------------------------------------------------------------------------------------------------------------
---  知识库文档状态  ai_knowledge_doc_status      type ID范围 [1003]  data ID范围 [100300 - 100400）
+--  知识库文档状态  ai_kb_doc_status      type ID范围 [1003]  data ID范围 [100300 - 100400）
 -- ------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 -- 新增字典类型
 INSERT INTO sys_dict_type (id, tenant_id, name, dict_type, enabled, preset, description, created_by)
-VALUES (1003, @t_id, 'AI - 知识库文档状态', 'ai_knowledge_doc_status', 1, 1, 'AI - 知识库文档切片标识符', @u_id);
+VALUES (1003, @t_id, 'AI - 知识库文档状态', 'ai_kb_doc_status', 1, 1, 'AI - 知识库文档切片标识符', @u_id);
 
 -- 新增字典数据
 INSERT INTO sys_dict_data (id, tenant_id, sort, dict_label, dict_value, dict_type, preset, show_style, enabled, description, created_by)
-VALUES (100300, @t_id, 1, '解析中', 'PARSING', 'ai_knowledge_doc_status', 1, '#409eff', 1, '知识库文档状态-解析中', @u_id),
-       (100301, @t_id, 2, '解析失败', 'PARSE_FAILED', 'ai_knowledge_doc_status', 1, '#909399', 1, '知识库文档状态-解析失败', @u_id),
-       (100302, @t_id, 3, '待向量化', 'EMB_PENDING', 'ai_knowledge_doc_status', 1, '#909399', 1, '知识库文档状态-待向量化', @u_id),
-       (100303, @t_id, 4, '向量化中', 'EMB_PROCESSING', 'ai_knowledge_doc_status', 1, '#909399', 1, '知识库文档状态-向量化中', @u_id),
-       (100304, @t_id, 5, '向量化失败', 'EMB_FAILED', 'ai_knowledge_doc_status', 1, '#909399', 1, '知识库文档状态-向量化失败', @u_id),
-       (100305, @t_id, 6, '成功', 'SUCCESS', 'ai_knowledge_doc_status', 1, '#909399', 1, '知识库文档状态-成功', @u_id)
+VALUES (100300, @t_id, 1, '解析中', 'PARSING', 'ai_kb_doc_status', 1, '#409eff', 1, '知识库文档状态-解析中', @u_id),
+       (100301, @t_id, 2, '解析失败', 'PARSE_FAILED', 'ai_kb_doc_status', 1, '#f56c6c', 1, '知识库文档状态-解析失败', @u_id),
+       (100302, @t_id, 3, '待向量化', 'EMB_PENDING', 'ai_kb_doc_status', 1, '#909399', 1, '知识库文档状态-待向量化', @u_id),
+       (100303, @t_id, 4, '向量化中', 'EMB_PROCESSING', 'ai_kb_doc_status', 1, '#409eff', 1, '知识库文档状态-向量化中', @u_id),
+       (100304, @t_id, 5, '向量化失败', 'EMB_FAILED', 'ai_kb_doc_status', 1, '#f56c6c', 1, '知识库文档状态-向量化失败', @u_id),
+       (100305, @t_id, 6, '向量化完成', 'EMB_COMPLETED', 'ai_kb_doc_status', 1, '#67c23a', 1, '知识库文档状态-向量化完成', @u_id)
 ;
-
-
 
 -- ------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 --  MCP SERVER 传输协议  ai_mcp_server_transport_protocol      type ID范围 [1004]  data ID范围 [100400 - 100500）
@@ -129,6 +127,22 @@ INSERT INTO sys_dict_data (id, tenant_id, sort, dict_label, dict_value, dict_typ
 VALUES (100600, @t_id, 1, '草稿', 'DRAFT', 'ai_app_status', 1, '#0003', 1, '草稿', @u_id),
        (100601, @t_id, 1, '已发布', 'PUBLISHED', 'ai_app_status', 1, '#5cb300', 1, '已发布', @u_id),
        (100602, @t_id, 1, '已发布编辑中', 'PUBLISHED_EDITING', 'ai_app_status', 1, '#409eff', 1, '已发布编辑中', @u_id)
+;
+
+
+-- ------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+--  知识库文档状态  ai_kb_doc_chunk_emb_status      type ID范围 [1007]  data ID范围 [100700 - 100800）
+-- ------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+-- 新增字典类型
+INSERT INTO sys_dict_type (id, tenant_id, name, dict_type, enabled, preset, description, created_by)
+VALUES (1007, @t_id, 'AI - 知识库文档块向量化状态', 'ai_kb_doc_chunk_emb_status', 1, 1, 'AI - 知识库文档块向量化状态', @u_id);
+
+-- 新增字典数据
+INSERT INTO sys_dict_data (id, tenant_id, sort, dict_label, dict_value, dict_type, preset, show_style, enabled, description, created_by)
+VALUES (100700, @t_id, 1, '待向量化', 'PENDING', 'ai_kb_doc_chunk_emb_status', 1, '#409eff', 1, '知识库文档块向量化状态-待向量化', @u_id),
+       (100701, @t_id, 2, '向量化中', 'PROCESSING', 'ai_kb_doc_chunk_emb_status', 1, '#909399', 1, '知识库文档块向量化状态-向量化中', @u_id),
+       (100702, @t_id, 3, '向量化完成', 'COMPLETED', 'ai_kb_doc_chunk_emb_status', 1, '#909399', 1, '知识库文档块向量化状态-向量化完成', @u_id),
+       (100703, @t_id, 4, '向量化失败', 'FAILED', 'ai_kb_doc_chunk_emb_status', 1, '#909399', 1, '知识库文档块向量化状态-向量化失败', @u_id)
 ;
 
 COMMIT;

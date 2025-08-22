@@ -32,12 +32,7 @@ public abstract class AbstractImageModelService implements ImageModelService {
 
     @Override
     public ImageModel getOrCreateImageModel(ModelVO model) {
-        if (MODEL_LFU_CACHE.containsKey(model.getApiKey())) {
-            return MODEL_LFU_CACHE.get(model.getApiKey());
-        }
-        ImageModel imageModel = createImageModel(model);
-        MODEL_LFU_CACHE.put(model.getApiKey(), imageModel);
-        return imageModel;
+        return MODEL_LFU_CACHE.get(model.getApiKey(), () -> createImageModel(model));
     }
 
     @Override

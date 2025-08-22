@@ -39,6 +39,10 @@
             <groupId>cn.hengzq.orange</groupId>
             <artifactId>orange-starter-common</artifactId>
         </dependency>
+        <dependency>
+            <groupId>cn.hengzq.orange</groupId>
+            <artifactId>orange-starter-context</artifactId>
+        </dependency>
 
         <dependency>
             <groupId>cn.hutool</groupId>

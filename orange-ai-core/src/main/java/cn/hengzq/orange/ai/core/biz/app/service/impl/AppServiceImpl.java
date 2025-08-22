@@ -142,6 +142,7 @@ public class AppServiceImpl implements AppService {
                 .sessionType(param.getSessionType())
                 .systemPrompt(latestVersion.getSystemPrompt())
                 .modelId(latestVersion.getModelId())
+                .modelConfig(latestVersion.getModelConfig())
                 .baseIds(latestVersion.getBaseIds())
                 .mcpIds(latestVersion.getMcpIds());
         return chatService.conversationStream(paramBuilder.build());
@@ -171,7 +172,7 @@ public class AppServiceImpl implements AppService {
     }
 
     @Override
-    public PageDTO<AppVO> page(AppPageParam param) {
+    public PageDTO<AppVO> page(WorkflowPageParam param) {
         PageDTO<AppEntity> page = appMapper.selectPage(param, CommonWrappers.<AppEntity>lambdaQuery()
                 .orderByDesc(BaseEntity::getCreatedAt)
         );

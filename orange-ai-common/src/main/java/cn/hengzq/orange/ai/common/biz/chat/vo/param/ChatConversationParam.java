@@ -1,5 +1,6 @@
 package cn.hengzq.orange.ai.common.biz.chat.vo.param;
 
+import cn.hengzq.orange.ai.common.biz.model.vo.ModelConfig;
 import cn.hengzq.orange.ai.common.biz.session.constant.SessionTypeEnum;
 import lombok.Builder;
 import lombok.Data;
@@ -39,6 +40,11 @@ public class ChatConversationParam {
      * 模型ID
      */
     private String modelId;
+
+    /**
+     * 模型配置
+     */
+    private ModelConfig modelConfig;
 
     /**
      * 对话使用到的知识库

@@ -74,6 +74,10 @@ values (101200, @t_id, 1012, '知识库-新增', 'orange-ai:knowledge:add', 1, 1
        (101221, @t_id, 1012, '切片-修改', 'orange-ai:knowledge-doc-slice:update', 1, 21, @u_id)
 ;
 
+INSERT INTO sys_menu (id, tenant_id, parent_id, name, permission, preset, path, icon, hidden, sort, created_by)
+VALUES (1013, @t_id, 1010, 'AI 工作流', 'orange-ai:workflow:view', 0, 'large-model/workflow', 'system-people-circle', 0, 50, @u_id);
+
+
 
 -- ----------------------------
 -- AI 运维中心
