@@ -15,6 +15,5 @@
     <packaging>pom</packaging>
 
     <modules>
-        <module>spring-ai-orange-starter-tool-call-orange-system</module>
     </modules>
 </project>

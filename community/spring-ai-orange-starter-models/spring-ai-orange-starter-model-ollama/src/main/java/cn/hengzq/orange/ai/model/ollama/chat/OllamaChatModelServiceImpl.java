@@ -1,9 +1,7 @@
 package cn.hengzq.orange.ai.model.ollama.chat;
 
-import cn.hengzq.orange.ai.common.biz.chat.dto.ChatModelConversationParam;
 import cn.hengzq.orange.ai.common.biz.chat.dto.ChatModelOptions;
 import cn.hengzq.orange.ai.common.biz.chat.service.AbstractChatModelService;
-import cn.hengzq.orange.ai.common.biz.model.vo.ModelVO;
 import cn.hengzq.orange.ai.common.constant.PlatformEnum;
 import cn.hengzq.orange.ai.model.ollama.constant.ChatModelEnum;
 import lombok.AllArgsConstructor;

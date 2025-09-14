@@ -4,13 +4,13 @@ import cn.hengzq.orange.ai.common.biz.chat.service.ChatModelService;
 import cn.hengzq.orange.ai.common.biz.workflow.constant.WorkflowRunScopeEnum;
 import cn.hengzq.orange.ai.common.biz.workflow.constant.WorkflowRunStatusEnum;
 import cn.hengzq.orange.ai.common.biz.workflow.event.WorkflowRunEvent;
-import cn.hengzq.orange.ai.common.biz.workflow.vo.WorkflowNodeVO;
-import cn.hengzq.orange.ai.common.biz.workflow.vo.WorkflowRunDetailVO;
-import cn.hengzq.orange.ai.common.biz.workflow.vo.WorkflowRunVO;
-import cn.hengzq.orange.ai.common.biz.workflow.vo.param.AddWorkflowParam;
-import cn.hengzq.orange.ai.common.biz.workflow.vo.param.CreateWorkflowRunParam;
-import cn.hengzq.orange.ai.common.biz.workflow.vo.param.WorkflowRunParam;
-import cn.hengzq.orange.ai.common.biz.workflow.vo.result.WorkflowRunResult;
+import cn.hengzq.orange.ai.common.biz.workflow.dto.WorkflowNodeVO;
+import cn.hengzq.orange.ai.common.biz.workflow.dto.WorkflowRunDetailVO;
+import cn.hengzq.orange.ai.common.biz.workflow.dto.WorkflowRunVO;
+import cn.hengzq.orange.ai.common.biz.workflow.dto.request.WorkflowCreateRequest;
+import cn.hengzq.orange.ai.common.biz.workflow.dto.request.CreateWorkflowRunParam;
+import cn.hengzq.orange.ai.common.biz.workflow.dto.request.WorkflowRunParam;
+import cn.hengzq.orange.ai.common.biz.workflow.dto.result.WorkflowRunResult;
 import cn.hengzq.orange.ai.common.constant.PlatformEnum;
 import cn.hengzq.orange.ai.core.biz.chat.service.ChatModelServiceFactory;
 import cn.hengzq.orange.ai.core.biz.workflow.converter.WorkflowRunConverter;
@@ -117,7 +117,7 @@ public class WorkflowRunServiceImpl implements WorkflowRunService {
 
 
     @Override
-    public String invokeLlmNode(AddWorkflowParam param) {
+    public String invokeLlmNode(WorkflowCreateRequest param) {
         ChatModelService chatModelService = chatModelServiceFactory.getChatModelService(PlatformEnum.ALI_BAI_LIAN);
         ChatModel chatModel = chatModelService.getOrCreateChatModel("qwen3-8b", "", "muovb3q5XyvX9l2yQN2xhtjAQ66gf65JK+bK6AT8H1lU6PJj31sU9g==");
 

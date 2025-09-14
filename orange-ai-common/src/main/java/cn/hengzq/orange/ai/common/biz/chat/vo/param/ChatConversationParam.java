@@ -1,6 +1,6 @@
 package cn.hengzq.orange.ai.common.biz.chat.vo.param;
 
-import cn.hengzq.orange.ai.common.biz.model.vo.ModelConfig;
+import cn.hengzq.orange.ai.common.biz.model.dto.ModelConfig;
 import cn.hengzq.orange.ai.common.biz.session.constant.SessionTypeEnum;
 import lombok.Builder;
 import lombok.Data;

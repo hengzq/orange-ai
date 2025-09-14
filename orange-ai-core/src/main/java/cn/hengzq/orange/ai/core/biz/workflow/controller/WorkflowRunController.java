@@ -1,10 +1,10 @@
 package cn.hengzq.orange.ai.core.biz.workflow.controller;
 
 
-import cn.hengzq.orange.ai.common.biz.workflow.vo.WorkflowRunDetailVO;
-import cn.hengzq.orange.ai.common.biz.workflow.vo.WorkflowRunVO;
-import cn.hengzq.orange.ai.common.biz.workflow.vo.param.WorkflowRunParam;
-import cn.hengzq.orange.ai.common.biz.workflow.vo.result.WorkflowRunResult;
+import cn.hengzq.orange.ai.common.biz.workflow.dto.WorkflowRunDetailVO;
+import cn.hengzq.orange.ai.common.biz.workflow.dto.WorkflowRunVO;
+import cn.hengzq.orange.ai.common.biz.workflow.dto.request.WorkflowRunParam;
+import cn.hengzq.orange.ai.common.biz.workflow.dto.result.WorkflowRunResult;
 import cn.hengzq.orange.ai.common.constant.AIConstant;
 import cn.hengzq.orange.ai.core.biz.workflow.service.WorkflowRunService;
 import cn.hengzq.orange.common.result.Result;

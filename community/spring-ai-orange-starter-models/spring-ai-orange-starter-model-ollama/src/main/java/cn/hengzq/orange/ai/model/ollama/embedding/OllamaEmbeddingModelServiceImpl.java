@@ -1,13 +1,12 @@
 package cn.hengzq.orange.ai.model.ollama.embedding;
 
 import cn.hengzq.orange.ai.common.biz.embedding.service.AbstractEmbeddingModelService;
-import cn.hengzq.orange.ai.common.biz.model.vo.ModelVO;
+import cn.hengzq.orange.ai.common.biz.model.dto.ModelResponse;
 import cn.hengzq.orange.ai.common.constant.PlatformEnum;
 import cn.hengzq.orange.ai.model.ollama.constant.EmbeddingModelEnum;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.ai.embedding.EmbeddingModel;
-import org.springframework.ai.ollama.OllamaChatModel;
 import org.springframework.ai.ollama.OllamaEmbeddingModel;
 import org.springframework.ai.ollama.api.OllamaApi;
 import org.springframework.ai.ollama.api.OllamaOptions;
@@ -24,7 +23,7 @@ public class OllamaEmbeddingModelServiceImpl extends AbstractEmbeddingModelServi
     }
 
     @Override
-    protected EmbeddingModel createEmbeddingModel(ModelVO model) {
+    protected EmbeddingModel createEmbeddingModel(ModelResponse model) {
         OllamaApi ollamaApi = OllamaApi.builder()
                 .baseUrl(model.getBaseUrl())
                 .build();

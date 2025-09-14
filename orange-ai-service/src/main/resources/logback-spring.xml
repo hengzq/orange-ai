@@ -17,7 +17,7 @@ debug：当此属性设置为true时，将打印出logback内部日志信息，�
         </filter>
         <!--定义控制台输出格式-->
         <encoder>
-            <pattern>%green(%d{yyyy-MM-dd HH:mm:ss.SSS}) [%cyan(%thread)] %yellow(%-5p) %c.%M[%line] - %blue(%m %n)</pattern>
+            <pattern>%green(%d{yyyy-MM-dd HH:mm:ss.SSS}) [%X{traceId}] [%thread] %yellow(%-5p) %c.%M[%line] - %blue(%m %n)</pattern>
             <charset>UTF-8</charset>
         </encoder>
     </appender>

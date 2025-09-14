@@ -172,7 +172,7 @@ public class AppServiceImpl implements AppService {
     }
 
     @Override
-    public PageDTO<AppVO> page(WorkflowPageParam param) {
+    public PageDTO<AppVO> page(WorkflowPageRequest param) {
         PageDTO<AppEntity> page = appMapper.selectPage(param, CommonWrappers.<AppEntity>lambdaQuery()
                 .orderByDesc(BaseEntity::getCreatedAt)
         );

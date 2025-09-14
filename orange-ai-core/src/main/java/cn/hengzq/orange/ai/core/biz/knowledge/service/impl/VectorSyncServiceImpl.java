@@ -6,7 +6,7 @@ import cn.hengzq.orange.ai.common.biz.knowledge.constant.KnowledgeConstant;
 import cn.hengzq.orange.ai.common.biz.knowledge.constant.SliceEmbStatus;
 import cn.hengzq.orange.ai.common.biz.knowledge.vo.BaseVO;
 import cn.hengzq.orange.ai.common.biz.knowledge.vo.DocVO;
-import cn.hengzq.orange.ai.common.biz.model.vo.ModelVO;
+import cn.hengzq.orange.ai.common.biz.model.dto.ModelResponse;
 import cn.hengzq.orange.ai.common.biz.vectorstore.constant.VectorDatabaseEnum;
 import cn.hengzq.orange.ai.common.biz.vectorstore.service.VectorStoreService;
 import cn.hengzq.orange.ai.core.biz.embedding.service.EmbeddingModelServiceFactory;
@@ -91,7 +91,7 @@ public class VectorSyncServiceImpl implements VectorSyncService {
         if (Objects.isNull(base) || StrUtil.isBlank(base.getEmbeddingModelId())) {
             return null;
         }
-        ModelVO model = modelService.getById(base.getEmbeddingModelId());
+        ModelResponse model = modelService.getById(base.getEmbeddingModelId());
         EmbeddingModelService embeddingModelService = embeddingModelServiceFactory.getEmbeddingModelService(model.getPlatform());
         EmbeddingModel embeddingModel = embeddingModelService.getOrCreateEmbeddingModel(model);
         VectorStoreService vectorStoreService = vectorStoreServiceFactory.getVectorStoreService(VectorDatabaseEnum.MILVUS);

@@ -1,12 +1,10 @@
 package cn.hengzq.orange.ai.common.biz.app.vo.param;
 
 import cn.hengzq.orange.ai.common.biz.app.constant.AppTypeEnum;
-import cn.hengzq.orange.ai.common.biz.model.vo.ModelConfig;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
 import java.io.Serializable;
-import java.util.List;
 
 /**
  * @author hengzq

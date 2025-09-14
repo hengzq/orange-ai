@@ -1,19 +1,19 @@
 package cn.hengzq.orange.ai.core.biz.workflow.service.impl;
 
-import cn.hengzq.orange.ai.common.biz.app.vo.param.WorkflowPageParam;
+import cn.hengzq.orange.ai.common.biz.app.vo.param.WorkflowPageRequest;
 import cn.hengzq.orange.ai.common.biz.model.constant.AIModelErrorCode;
 import cn.hengzq.orange.ai.common.biz.workflow.constant.ParamTypeEnum;
 import cn.hengzq.orange.ai.common.biz.workflow.constant.WorkflowConstant;
 import cn.hengzq.orange.ai.common.biz.workflow.constant.WorkflowNodeTypeEnum;
 import cn.hengzq.orange.ai.common.biz.workflow.constant.WorkflowStatusEnum;
-import cn.hengzq.orange.ai.common.biz.workflow.vo.WorkflowNodeVO;
-import cn.hengzq.orange.ai.common.biz.workflow.vo.WorkflowVO;
-import cn.hengzq.orange.ai.common.biz.workflow.vo.WorkflowVersionVO;
-import cn.hengzq.orange.ai.common.biz.workflow.vo.config.NodeInputConfig;
-import cn.hengzq.orange.ai.common.biz.workflow.vo.config.NodeOutputConfig;
-import cn.hengzq.orange.ai.common.biz.workflow.vo.config.Param;
-import cn.hengzq.orange.ai.common.biz.workflow.vo.config.Position;
-import cn.hengzq.orange.ai.common.biz.workflow.vo.param.*;
+import cn.hengzq.orange.ai.common.biz.workflow.dto.WorkflowNodeVO;
+import cn.hengzq.orange.ai.common.biz.workflow.dto.WorkflowVO;
+import cn.hengzq.orange.ai.common.biz.workflow.dto.WorkflowVersionVO;
+import cn.hengzq.orange.ai.common.biz.workflow.dto.config.NodeInputConfig;
+import cn.hengzq.orange.ai.common.biz.workflow.dto.config.NodeOutputConfig;
+import cn.hengzq.orange.ai.common.biz.workflow.dto.config.Param;
+import cn.hengzq.orange.ai.common.biz.workflow.dto.config.Position;
+import cn.hengzq.orange.ai.common.biz.workflow.dto.request.*;
 import cn.hengzq.orange.ai.core.biz.workflow.converter.WorkflowConverter;
 import cn.hengzq.orange.ai.core.biz.workflow.converter.WorkflowNodeConverter;
 import cn.hengzq.orange.ai.core.biz.workflow.converter.WorkflowVersionConverter;
@@ -62,7 +62,7 @@ public class WorkflowNodeServiceImpl implements WorkflowNodeService {
 
     @Override
     @Transactional
-    public String add(AddWorkflowParam param) {
+    public String add(WorkflowCreateRequest param) {
         String workflowId = IdUtil.getSnowflakeNextIdStr();
         String draftVersionId = workflowVersionService.add(AddWorkflowVersionParam.builder()
                 .workflowId(workflowId)
@@ -77,7 +77,7 @@ public class WorkflowNodeServiceImpl implements WorkflowNodeService {
     }
 
     @Override
-    public Boolean updateById(String id, UpdateWorkflowParam param) {
+    public Boolean updateById(String id, WorkflowUpdateRequest param) {
         WorkflowEntity entity = workflowMapper.selectById(id);
         Assert.nonNull(entity, AIModelErrorCode.GLOBAL_DATA_NOT_EXIST);
 
@@ -192,7 +192,7 @@ public class WorkflowNodeServiceImpl implements WorkflowNodeService {
     }
 
     @Override
-    public PageDTO<WorkflowVO> page(WorkflowPageParam param) {
+    public PageDTO<WorkflowVO> page(WorkflowPageRequest param) {
         PageDTO<WorkflowEntity> page = workflowMapper.selectPage(param, CommonWrappers.<WorkflowEntity>lambdaQuery()
                 .orderByDesc(BaseEntity::getCreatedAt)
         );

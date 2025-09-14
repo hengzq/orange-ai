@@ -1,10 +1,6 @@
 package cn.hengzq.orange.ai.core.biz.prompt.controller;
 
 
-import cn.hengzq.orange.ai.common.biz.model.vo.param.AddModelParam;
-import cn.hengzq.orange.ai.common.biz.model.vo.param.ModelListParam;
-import cn.hengzq.orange.ai.common.biz.model.vo.param.ModelPageParam;
-import cn.hengzq.orange.ai.common.biz.model.vo.param.UpdateModelParam;
 import cn.hengzq.orange.ai.common.biz.prompt.vo.PromptTemplateVO;
 import cn.hengzq.orange.ai.common.biz.prompt.vo.param.AddPromptTemplateParam;
 import cn.hengzq.orange.ai.common.biz.prompt.vo.param.PromptTemplateListParam;

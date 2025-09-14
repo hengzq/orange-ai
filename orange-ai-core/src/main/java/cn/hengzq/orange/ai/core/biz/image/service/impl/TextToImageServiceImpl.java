@@ -6,7 +6,7 @@ import cn.hengzq.orange.ai.common.biz.image.vo.TextToImageVO;
 import cn.hengzq.orange.ai.common.biz.image.vo.param.GenerateImageParam;
 import cn.hengzq.orange.ai.common.biz.image.vo.param.TextToImageListParam;
 import cn.hengzq.orange.ai.common.biz.image.vo.param.TextToImagePageParam;
-import cn.hengzq.orange.ai.common.biz.model.vo.ModelVO;
+import cn.hengzq.orange.ai.common.biz.model.dto.ModelResponse;
 import cn.hengzq.orange.ai.core.biz.image.converter.TextToImageConverter;
 import cn.hengzq.orange.ai.core.biz.image.entity.TextToImageEntity;
 import cn.hengzq.orange.ai.core.biz.image.mapper.TextToImageMapper;
@@ -14,22 +14,14 @@ import cn.hengzq.orange.ai.core.biz.image.service.ImageModelServiceFactory;
 import cn.hengzq.orange.ai.core.biz.image.service.TextToImageService;
 import cn.hengzq.orange.ai.core.biz.model.service.ModelService;
 import cn.hengzq.orange.common.dto.PageDTO;
-import cn.hengzq.orange.common.result.ResultWrapper;
-import cn.hengzq.orange.context.GlobalContextHelper;
 import cn.hengzq.orange.mybatis.entity.BaseEntity;
 import cn.hengzq.orange.mybatis.query.CommonWrappers;
 import cn.hengzq.orange.system.api.biz.storage.StorageObjectApi;
-import cn.hengzq.orange.system.common.biz.storage.vo.StorageObjectVO;
-import cn.hengzq.orange.system.common.biz.storage.vo.param.StorageObjectUploadParam;
-import cn.hutool.core.codec.Base64;
-import cn.hutool.core.collection.CollUtil;
-import cn.hutool.core.img.ImgUtil;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.ai.image.ImageGeneration;
 import org.springframework.ai.image.ImageResponse;
 import org.springframework.stereotype.Service;
-import reactor.core.publisher.Flux;
 
 import java.util.List;
 import java.util.Objects;
@@ -67,7 +59,7 @@ public class TextToImageServiceImpl implements TextToImageService {
 
     @Override
     public TextToImageVO generate(GenerateImageParam param) {
-        ModelVO model = modelService.getById(param.getModelId());
+        ModelResponse model = modelService.getById(param.getModelId());
         if (Objects.isNull(model)) {
             return null;
         }

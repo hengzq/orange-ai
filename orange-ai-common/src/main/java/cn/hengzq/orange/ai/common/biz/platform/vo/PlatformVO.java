@@ -1,6 +1,6 @@
 package cn.hengzq.orange.ai.common.biz.platform.vo;
 
-import cn.hengzq.orange.ai.common.biz.model.vo.ModelTypeVO;
+import cn.hengzq.orange.ai.common.biz.model.dto.ModelType;
 import cn.hengzq.orange.ai.common.constant.PlatformEnum;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
@@ -23,13 +23,13 @@ public class PlatformVO implements Serializable {
         this.code = code;
     }
 
-    public PlatformVO(String name, PlatformEnum code, List<ModelTypeVO> modelTypes) {
+    public PlatformVO(String name, PlatformEnum code, List<ModelType> modelTypes) {
         this.name = name;
         this.code = code;
         this.modelTypes = modelTypes;
     }
 
-    public PlatformVO(String name, PlatformEnum code, Integer sort, List<ModelTypeVO> modelTypes) {
+    public PlatformVO(String name, PlatformEnum code, Integer sort, List<ModelType> modelTypes) {
         this.name = name;
         this.code = code;
         this.sort = sort;
@@ -47,7 +47,7 @@ public class PlatformVO implements Serializable {
 
 
     @Schema(description = "支持的模型种类")
-    List<ModelTypeVO> modelTypes;
+    List<ModelType> modelTypes;
 
 
 }

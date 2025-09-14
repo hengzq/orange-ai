@@ -1,9 +1,8 @@
 package cn.hengzq.orange.ai.common.biz.embedding.service;
 
 
-import cn.hengzq.orange.ai.common.biz.model.vo.ModelVO;
+import cn.hengzq.orange.ai.common.biz.model.dto.ModelResponse;
 import cn.hengzq.orange.ai.common.constant.PlatformEnum;
-import org.springframework.ai.chat.model.ChatModel;
 import org.springframework.ai.embedding.EmbeddingModel;
 
 import java.util.List;
@@ -13,7 +12,7 @@ public interface EmbeddingModelService {
     PlatformEnum getPlatform();
 
 
-    EmbeddingModel getOrCreateEmbeddingModel(ModelVO model);
+    EmbeddingModel getOrCreateEmbeddingModel(ModelResponse model);
 
     /**
      * 获取或创建向量模型

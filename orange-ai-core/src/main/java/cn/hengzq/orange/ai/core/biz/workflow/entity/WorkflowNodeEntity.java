@@ -1,9 +1,9 @@
 package cn.hengzq.orange.ai.core.biz.workflow.entity;
 
 import cn.hengzq.orange.ai.common.biz.workflow.constant.WorkflowNodeTypeEnum;
-import cn.hengzq.orange.ai.common.biz.workflow.vo.config.NodeInputConfig;
-import cn.hengzq.orange.ai.common.biz.workflow.vo.config.NodeOutputConfig;
-import cn.hengzq.orange.ai.common.biz.workflow.vo.config.Position;
+import cn.hengzq.orange.ai.common.biz.workflow.dto.config.NodeInputConfig;
+import cn.hengzq.orange.ai.common.biz.workflow.dto.config.NodeOutputConfig;
+import cn.hengzq.orange.ai.common.biz.workflow.dto.config.Position;
 import cn.hengzq.orange.mybatis.entity.BaseTenantEntity;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;

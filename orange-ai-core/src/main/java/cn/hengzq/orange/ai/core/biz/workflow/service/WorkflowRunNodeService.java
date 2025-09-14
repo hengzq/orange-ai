@@ -1,8 +1,8 @@
 package cn.hengzq.orange.ai.core.biz.workflow.service;
 
-import cn.hengzq.orange.ai.common.biz.workflow.vo.WorkflowRunNodeVO;
-import cn.hengzq.orange.ai.common.biz.workflow.vo.param.CreateWorkflowRunNodeParam;
-import cn.hengzq.orange.ai.common.biz.workflow.vo.param.UpdateWorkflowRunNodeParam;
+import cn.hengzq.orange.ai.common.biz.workflow.dto.WorkflowRunNodeVO;
+import cn.hengzq.orange.ai.common.biz.workflow.dto.request.CreateWorkflowRunNodeParam;
+import cn.hengzq.orange.ai.common.biz.workflow.dto.request.UpdateWorkflowRunNodeParam;
 
 import java.util.List;
 

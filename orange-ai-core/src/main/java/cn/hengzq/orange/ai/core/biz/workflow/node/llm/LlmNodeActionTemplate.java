@@ -1,14 +1,14 @@
 package cn.hengzq.orange.ai.core.biz.workflow.node.llm;
 
 import cn.hengzq.orange.ai.common.biz.chat.service.ChatModelService;
-import cn.hengzq.orange.ai.common.biz.model.vo.ModelVO;
+import cn.hengzq.orange.ai.common.biz.model.dto.ModelResponse;
 import cn.hengzq.orange.ai.common.biz.workflow.constant.WorkflowConstant;
 import cn.hengzq.orange.ai.common.biz.workflow.constant.WorkflowNodeTypeEnum;
-import cn.hengzq.orange.ai.common.biz.workflow.vo.WorkflowNodeVO;
-import cn.hengzq.orange.ai.common.biz.workflow.vo.config.LlmNodeParameter;
-import cn.hengzq.orange.ai.common.biz.workflow.vo.config.NodeInputConfig;
-import cn.hengzq.orange.ai.common.biz.workflow.vo.config.NodeOutputConfig;
-import cn.hengzq.orange.ai.common.biz.workflow.vo.config.Param;
+import cn.hengzq.orange.ai.common.biz.workflow.dto.WorkflowNodeVO;
+import cn.hengzq.orange.ai.common.biz.workflow.dto.config.LlmNodeParameter;
+import cn.hengzq.orange.ai.common.biz.workflow.dto.config.NodeInputConfig;
+import cn.hengzq.orange.ai.common.biz.workflow.dto.config.NodeOutputConfig;
+import cn.hengzq.orange.ai.common.biz.workflow.dto.config.Param;
 import cn.hengzq.orange.ai.common.util.PlaceholderUtils;
 import cn.hengzq.orange.ai.core.biz.chat.service.ChatModelServiceFactory;
 import cn.hengzq.orange.ai.core.biz.model.service.ModelService;
@@ -51,7 +51,7 @@ public class LlmNodeActionTemplate implements NodeActionTemplate {
 
         NodeInputConfig inputConfig = node.getInputConfig();
         LlmNodeParameter llmParam = inputConfig.getLlmParam();
-        ModelVO model = modelService.getById(llmParam.getModelId());
+        ModelResponse model = modelService.getById(llmParam.getModelId());
 
         ChatModelService chatModelService = chatModelServiceFactory.getChatModelService(model.getPlatform());
         ChatModel chatModel = chatModelService.getOrCreateChatModel(model.getModelName(), model.getBaseUrl(), model.getApiKey());

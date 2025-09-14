@@ -1,6 +1,6 @@
 package cn.hengzq.orange.ai.common.biz.knowledge.vo;
 
-import cn.hengzq.orange.ai.common.biz.model.vo.ModelVO;
+import cn.hengzq.orange.ai.common.biz.model.dto.ModelResponse;
 import cn.hengzq.orange.ai.common.constant.PlatformEnum;
 import cn.hengzq.orange.common.dto.BaseTenantDTO;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -28,7 +28,7 @@ public class BaseVO extends BaseTenantDTO {
     private String embeddingModelId;
 
     @Schema(description = "嵌入式模型")
-    private ModelVO embeddingModel;
+    private ModelResponse embeddingModel;
 
     @Schema(description = "模型启用状态 true:启用 false：不启用")
     private boolean enabled;

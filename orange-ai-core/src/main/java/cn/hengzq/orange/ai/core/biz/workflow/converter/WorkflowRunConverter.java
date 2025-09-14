@@ -1,10 +1,10 @@
 package cn.hengzq.orange.ai.core.biz.workflow.converter;
 
 
-import cn.hengzq.orange.ai.common.biz.workflow.vo.WorkflowRunDetailVO;
-import cn.hengzq.orange.ai.common.biz.workflow.vo.WorkflowRunVO;
-import cn.hengzq.orange.ai.common.biz.workflow.vo.param.CreateWorkflowRunParam;
-import cn.hengzq.orange.ai.common.biz.workflow.vo.result.WorkflowRunResult;
+import cn.hengzq.orange.ai.common.biz.workflow.dto.WorkflowRunDetailVO;
+import cn.hengzq.orange.ai.common.biz.workflow.dto.WorkflowRunVO;
+import cn.hengzq.orange.ai.common.biz.workflow.dto.request.CreateWorkflowRunParam;
+import cn.hengzq.orange.ai.common.biz.workflow.dto.result.WorkflowRunResult;
 import cn.hengzq.orange.ai.core.biz.workflow.entity.WorkflowRunEntity;
 import cn.hengzq.orange.common.converter.Converter;
 import cn.hutool.core.collection.CollUtil;

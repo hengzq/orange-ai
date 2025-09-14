@@ -3,10 +3,10 @@ package cn.hengzq.orange.ai.core.biz.workflow.service;
 
 import cn.hengzq.orange.ai.common.biz.app.vo.AppVersionVO;
 import cn.hengzq.orange.ai.common.biz.app.vo.param.AppVersionPageParam;
-import cn.hengzq.orange.ai.common.biz.workflow.vo.WorkflowVersionVO;
-import cn.hengzq.orange.ai.common.biz.workflow.vo.param.AddWorkflowVersionParam;
-import cn.hengzq.orange.ai.common.biz.workflow.vo.param.UpdateWorkflowVersionParam;
-import cn.hengzq.orange.ai.common.biz.workflow.vo.param.WorkflowVersionListParam;
+import cn.hengzq.orange.ai.common.biz.workflow.dto.WorkflowVersionVO;
+import cn.hengzq.orange.ai.common.biz.workflow.dto.request.AddWorkflowVersionParam;
+import cn.hengzq.orange.ai.common.biz.workflow.dto.request.UpdateWorkflowVersionParam;
+import cn.hengzq.orange.ai.common.biz.workflow.dto.request.WorkflowVersionListParam;
 import cn.hengzq.orange.common.dto.PageDTO;
 
 import java.util.List;

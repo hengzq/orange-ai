@@ -1,19 +1,16 @@
 package cn.hengzq.orange.ai.core.biz.workflow.service.impl;
 
 import cn.hengzq.orange.ai.common.biz.chat.service.ChatModelService;
-import cn.hengzq.orange.ai.common.biz.model.vo.ModelVO;
+import cn.hengzq.orange.ai.common.biz.model.dto.ModelResponse;
 import cn.hengzq.orange.ai.common.biz.workflow.constant.WorkflowConstant;
 import cn.hengzq.orange.ai.common.biz.workflow.constant.WorkflowNodeTypeEnum;
 import cn.hengzq.orange.ai.common.biz.workflow.constant.WorkflowRunStatusEnum;
-import cn.hengzq.orange.ai.common.biz.workflow.vo.*;
-import cn.hengzq.orange.ai.common.biz.workflow.vo.config.LlmNodeParameter;
-import cn.hengzq.orange.ai.common.biz.workflow.vo.config.NodeInputConfig;
-import cn.hengzq.orange.ai.common.biz.workflow.vo.config.NodeOutputConfig;
-import cn.hengzq.orange.ai.common.biz.workflow.vo.config.Param;
-import cn.hengzq.orange.ai.common.biz.workflow.vo.param.CreateWorkflowRunNodeParam;
-import cn.hengzq.orange.ai.common.biz.workflow.vo.param.UpdateWorkflowRunNodeParam;
+import cn.hengzq.orange.ai.common.biz.workflow.dto.*;
+import cn.hengzq.orange.ai.common.biz.workflow.dto.config.LlmNodeParameter;
+import cn.hengzq.orange.ai.common.biz.workflow.dto.config.NodeInputConfig;
+import cn.hengzq.orange.ai.common.biz.workflow.dto.request.CreateWorkflowRunNodeParam;
+import cn.hengzq.orange.ai.common.biz.workflow.dto.request.UpdateWorkflowRunNodeParam;
 import cn.hengzq.orange.ai.common.constant.PlatformEnum;
-import cn.hengzq.orange.ai.common.util.PlaceholderUtils;
 import cn.hengzq.orange.ai.core.biz.chat.service.ChatModelServiceFactory;
 import cn.hengzq.orange.ai.core.biz.model.service.ModelService;
 import cn.hengzq.orange.ai.core.biz.workflow.entity.WorkflowRunEntity;
@@ -36,7 +33,6 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.ai.chat.client.ChatClient;
-import org.springframework.ai.chat.messages.AssistantMessage;
 import org.springframework.ai.chat.model.ChatModel;
 import org.springframework.boot.autoconfigure.websocket.servlet.WebSocketServletAutoConfiguration;
 import org.springframework.stereotype.Service;
@@ -142,7 +138,7 @@ public class WorkflowGraphBuilder {
         } else if (WorkflowNodeTypeEnum.LLM.equals(node.getNodeType())) {
             NodeInputConfig inputConfig = node.getInputConfig();
             LlmNodeParameter llmParam = inputConfig.getLlmParam();
-            ModelVO model = modelService.getById(llmParam.getModelId());
+            ModelResponse model = modelService.getById(llmParam.getModelId());
 
             ChatModelService chatModelService = chatModelServiceFactory.getChatModelService(model.getPlatform());
             ChatModel chatModel = chatModelService.getOrCreateChatModel(model.getModelName(), model.getBaseUrl(), model.getApiKey());

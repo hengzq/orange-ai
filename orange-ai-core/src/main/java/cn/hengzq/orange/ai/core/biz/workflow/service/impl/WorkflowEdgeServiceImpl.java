@@ -1,12 +1,12 @@
 package cn.hengzq.orange.ai.core.biz.workflow.service.impl;
 
-import cn.hengzq.orange.ai.common.biz.app.vo.param.WorkflowPageParam;
+import cn.hengzq.orange.ai.common.biz.app.vo.param.WorkflowPageRequest;
 import cn.hengzq.orange.ai.common.biz.model.constant.AIModelErrorCode;
 import cn.hengzq.orange.ai.common.biz.workflow.constant.WorkflowNodeTypeEnum;
 import cn.hengzq.orange.ai.common.biz.workflow.constant.WorkflowStatusEnum;
-import cn.hengzq.orange.ai.common.biz.workflow.vo.*;
-import cn.hengzq.orange.ai.common.biz.workflow.vo.config.Position;
-import cn.hengzq.orange.ai.common.biz.workflow.vo.param.*;
+import cn.hengzq.orange.ai.common.biz.workflow.dto.*;
+import cn.hengzq.orange.ai.common.biz.workflow.dto.config.Position;
+import cn.hengzq.orange.ai.common.biz.workflow.dto.request.*;
 import cn.hengzq.orange.ai.core.biz.workflow.converter.WorkflowConverter;
 import cn.hengzq.orange.ai.core.biz.workflow.converter.WorkflowEdgeConverter;
 import cn.hengzq.orange.ai.core.biz.workflow.converter.WorkflowNodeConverter;
@@ -60,7 +60,7 @@ public class WorkflowEdgeServiceImpl implements WorkflowEdgeService {
 
     @Override
     @Transactional
-    public String add(AddWorkflowParam param) {
+    public String add(WorkflowCreateRequest param) {
         String workflowId = IdUtil.getSnowflakeNextIdStr();
         String draftVersionId = workflowVersionService.add(AddWorkflowVersionParam.builder()
                 .workflowId(workflowId)
@@ -75,7 +75,7 @@ public class WorkflowEdgeServiceImpl implements WorkflowEdgeService {
     }
 
     @Override
-    public Boolean updateById(String id, UpdateWorkflowParam param) {
+    public Boolean updateById(String id, WorkflowUpdateRequest param) {
         WorkflowEntity entity = workflowMapper.selectById(id);
         Assert.nonNull(entity, AIModelErrorCode.GLOBAL_DATA_NOT_EXIST);
 
@@ -186,7 +186,7 @@ public class WorkflowEdgeServiceImpl implements WorkflowEdgeService {
     }
 
     @Override
-    public PageDTO<WorkflowVO> page(WorkflowPageParam param) {
+    public PageDTO<WorkflowVO> page(WorkflowPageRequest param) {
         PageDTO<WorkflowEntity> page = workflowMapper.selectPage(param, CommonWrappers.<WorkflowEntity>lambdaQuery()
                 .orderByDesc(BaseEntity::getCreatedAt)
         );

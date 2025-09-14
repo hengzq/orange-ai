@@ -16,8 +16,8 @@ import cn.hengzq.orange.ai.common.biz.knowledge.vo.param.KnowledgeBaseListParam;
 import cn.hengzq.orange.ai.common.biz.mcp.vo.McpServerVO;
 import cn.hengzq.orange.ai.common.biz.mcp.vo.param.McpServerListParam;
 import cn.hengzq.orange.ai.common.biz.model.constant.AIModelErrorCode;
-import cn.hengzq.orange.ai.common.biz.model.vo.ModelConfig;
-import cn.hengzq.orange.ai.common.biz.model.vo.ModelVO;
+import cn.hengzq.orange.ai.common.biz.model.dto.ModelConfig;
+import cn.hengzq.orange.ai.common.biz.model.dto.ModelResponse;
 import cn.hengzq.orange.ai.common.biz.session.constant.SessionTypeEnum;
 import cn.hengzq.orange.ai.common.biz.session.vo.SessionMessageVO;
 import cn.hengzq.orange.ai.common.biz.session.vo.param.AddSessionMessageParam;
@@ -36,7 +36,6 @@ import cn.hengzq.orange.ai.core.biz.session.service.SessionMessageService;
 import cn.hengzq.orange.ai.core.biz.session.service.SessionService;
 import cn.hengzq.orange.ai.core.biz.vectorstore.service.VectorStoreServiceFactory;
 import cn.hengzq.orange.ai.core.biz.workflow.service.WorkflowRunService;
-import cn.hengzq.orange.ai.core.biz.workflow.service.WorkflowIntegrationService;
 import cn.hengzq.orange.common.dto.PageDTO;
 import cn.hengzq.orange.common.exception.ServiceException;
 import cn.hengzq.orange.common.result.Result;
@@ -55,7 +54,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.ai.chat.messages.Message;
 import org.springframework.ai.mcp.McpToolUtils;
-import org.springframework.ai.support.ToolCallbacks;
 import org.springframework.ai.tool.ToolCallback;
 import org.springframework.ai.vectorstore.VectorStore;
 import org.springframework.stereotype.Service;
@@ -92,7 +90,7 @@ public class ChatServiceImpl implements ChatService {
 
     @Override
     public ConversationResponse conversation(ConversationStreamParam param) {
-        ModelVO model = getModel(param.getModelId());
+        ModelResponse model = getModel(param.getModelId());
         ChatModelService chatModelService = chatModelServiceFactory.getChatModelService(model.getPlatform());
         ChatModelConversationParam chatModelConversationParam = ChatModelConversationParam.builder()
                 .modelOptions(ChatModelOptions.builder()
@@ -108,7 +106,7 @@ public class ChatServiceImpl implements ChatService {
 
     @Override
     public Flux<Result<ConversationResponse>> conversationStream(ConversationStreamParam param) {
-        ModelVO model = modelService.getById(param.getModelId());
+        ModelResponse model = modelService.getById(param.getModelId());
         if (Objects.isNull(model)) {
             return Flux.just(ResultWrapper.fail());
         }
@@ -184,7 +182,7 @@ public class ChatServiceImpl implements ChatService {
                     chatParam.setCallbacks(getCallbacks(param.getMcpIds()));
 
                     // TODO 待优化
-                    chatParam.setCallbacks(Arrays.asList(ToolCallbacks.from(new WorkflowIntegrationService(workflowRunService))));
+//                    chatParam.setCallbacks(Arrays.asList(ToolCallbacks.from(new WorkflowIntegrationService(workflowRunService))));
 
                     ChatModelService chatModelService = chatModelServiceFactory.getChatModelService(chatModelOptions.getPlatform());
                     return chatModelService.stream(chatParam)
@@ -272,7 +270,7 @@ public class ChatServiceImpl implements ChatService {
 
         List<VectorStore> vectorStores = new ArrayList<>();
         for (BaseVO base : baseList) {
-            ModelVO embeddingModel = base.getEmbeddingModel();
+            ModelResponse embeddingModel = base.getEmbeddingModel();
             EmbeddingModelService embeddingModelService = embeddingModelServiceFactory.getEmbeddingModelService(embeddingModel.getPlatform());
             VectorStoreService vectorStoreService = vectorStoreServiceFactory.getVectorStoreService(VectorDatabaseEnum.MILVUS);
             VectorStore vectorStore = vectorStoreService.getOrCreateVectorStore(base.getVectorCollectionName(), embeddingModelService.getOrCreateEmbeddingModel(embeddingModel));
@@ -285,7 +283,7 @@ public class ChatServiceImpl implements ChatService {
         if (StrUtil.isBlank(modelId)) {
             throw new ServiceException(ChatErrorCode.CHAT_NO_CONFIG_MODEL_ERROR);
         }
-        ModelVO model = modelService.getById(modelId);
+        ModelResponse model = modelService.getById(modelId);
         if (Objects.isNull(model)) {
             throw new ServiceException(ChatErrorCode.CHAT_NO_CONFIG_MODEL_ERROR);
         }
@@ -305,7 +303,7 @@ public class ChatServiceImpl implements ChatService {
         return options;
     }
 
-    private @NotNull Flux<Result<ConversationResponse>> stream(ChatModelConversationParam param, ModelVO model, String sessionId, String questionId) {
+    private @NotNull Flux<Result<ConversationResponse>> stream(ChatModelConversationParam param, ModelResponse model, String sessionId, String questionId) {
         ChatModelService chatModelService = chatModelServiceFactory.getChatModelService(model.getPlatform());
         AtomicReference<StringBuffer> content = new AtomicReference<>(new StringBuffer());
         return chatModelService.stream(param)
@@ -336,8 +334,8 @@ public class ChatServiceImpl implements ChatService {
                 });
     }
 
-    private @NotNull ModelVO getModel(String modelId) {
-        ModelVO model = modelService.getById(modelId);
+    private @NotNull ModelResponse getModel(String modelId) {
+        ModelResponse model = modelService.getById(modelId);
         if (Objects.isNull(model)) {
             log.error("模型不存在 modelId: {}", modelId);
             throw new ServiceException(AIModelErrorCode.MODEL_DATA_NOT_EXIST);

@@ -4,12 +4,13 @@ import cn.hengzq.orange.ai.common.biz.chat.service.ChatModelService;
 import cn.hengzq.orange.ai.common.biz.embedding.service.EmbeddingModelService;
 import cn.hengzq.orange.ai.common.biz.model.constant.AIModelErrorCode;
 import cn.hengzq.orange.ai.common.biz.model.constant.ModelConstant;
-import cn.hengzq.orange.ai.common.biz.model.vo.ModelVO;
-import cn.hengzq.orange.ai.common.biz.model.vo.param.AddModelParam;
-import cn.hengzq.orange.ai.common.biz.model.vo.param.ModelListParam;
-import cn.hengzq.orange.ai.common.biz.model.vo.param.ModelPageParam;
-import cn.hengzq.orange.ai.common.biz.model.vo.param.UpdateModelParam;
+import cn.hengzq.orange.ai.common.biz.model.dto.ModelResponse;
+import cn.hengzq.orange.ai.common.biz.model.dto.param.ModelCreateRequest;
+import cn.hengzq.orange.ai.common.biz.model.dto.param.ModelQueryRequest;
+import cn.hengzq.orange.ai.common.biz.model.dto.param.ModelPageRequest;
+import cn.hengzq.orange.ai.common.biz.model.dto.param.ModelUpdateRequest;
 import cn.hengzq.orange.ai.common.constant.ModelTypeEnum;
+import cn.hengzq.orange.ai.common.constant.RedisKeys;
 import cn.hengzq.orange.ai.core.biz.chat.service.ChatModelServiceFactory;
 import cn.hengzq.orange.ai.core.biz.embedding.service.EmbeddingModelServiceFactory;
 import cn.hengzq.orange.ai.core.biz.model.converter.ModelConverter;
@@ -29,12 +30,15 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.ai.chat.model.ChatModel;
 import org.springframework.ai.embedding.EmbeddingModel;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Optional;
 
 
 /**
@@ -53,17 +57,7 @@ public class ModelServiceImpl implements ModelService {
 
 
     @Override
-    public Boolean removeById(String id) {
-        ModelEntity entity = modelMapper.selectById(id);
-        if (Objects.isNull(entity)) {
-            return Boolean.TRUE;
-        }
-        modelMapper.deleteById(id);
-        return Boolean.TRUE;
-    }
-
-    @Override
-    public String add(AddModelParam request) {
+    public String createModel(ModelCreateRequest request) {
         if (StrUtil.isNotBlank(request.getApiKey())) {
             request.setApiKey(SecureUtil.des(ModelConstant.SECRET_KEY.getBytes(StandardCharsets.UTF_8)).encryptBase64(request.getApiKey()));
         }
@@ -76,7 +70,7 @@ public class ModelServiceImpl implements ModelService {
         return modelMapper.insertOne(entity);
     }
 
-    private boolean checkModel(AddModelParam request) {
+    private boolean checkModel(ModelCreateRequest request) {
         try {
             if (ModelTypeEnum.CHAT.equals(request.getModelType())) {
                 ChatModelService chatModelService = chatModelServiceFactory.getChatModelService(request.getPlatform());
@@ -95,26 +89,45 @@ public class ModelServiceImpl implements ModelService {
     }
 
     @Override
-    public Boolean updateById(String id, UpdateModelParam request) {
+    @CacheEvict(cacheNames = {RedisKeys.MODEL_BASIC_KEY_PREFIX}, key = "#id")
+    public void deleteModelById(String id) {
+        ModelEntity entity = modelMapper.selectById(id);
+        if (Objects.isNull(entity)) {
+            return;
+        }
+        modelMapper.deleteById(id);
+    }
+
+    @Override
+    @CacheEvict(cacheNames = {RedisKeys.MODEL_BASIC_KEY_PREFIX}, key = "#id")
+    public void updateModelById(String id, ModelUpdateRequest request) {
         ModelEntity entity = modelMapper.selectById(id);
         Assert.nonNull(entity, AIModelErrorCode.GLOBAL_DATA_NOT_EXIST);
         entity = ModelConverter.INSTANCE.toUpdateEntity(entity, request);
         if (StrUtil.isNotBlank(entity.getApiKey())) {
             entity.setApiKey(SecureUtil.des(ModelConstant.SECRET_KEY.getBytes(StandardCharsets.UTF_8)).encryptBase64(entity.getApiKey()));
         }
-        return modelMapper.updateOneById(entity);
+        modelMapper.updateOneById(entity);
     }
 
     @Override
-    public Boolean updateEnabledById(String id, boolean enabled) {
+    @CacheEvict(cacheNames = {RedisKeys.MODEL_BASIC_KEY_PREFIX}, key = "#id")
+    public void updateEnabledById(String id, boolean enabled) {
         ModelEntity entity = modelMapper.selectById(id);
         Assert.nonNull(entity, AIModelErrorCode.GLOBAL_DATA_NOT_EXIST);
         entity.setEnabled(enabled);
-        return modelMapper.updateOneById(entity);
+        modelMapper.updateOneById(entity);
     }
 
     @Override
-    public ModelVO getById(String id) {
+    @Cacheable(cacheNames = {RedisKeys.MODEL_BASIC_KEY_PREFIX}, key = "#id")
+    public Optional<ModelResponse> getModelById(String id) {
+        if (StrUtil.isBlank(id)) return Optional.empty();
+        return Optional.ofNullable(ModelConverter.INSTANCE.toVO(modelMapper.selectById(id)));
+    }
+
+    @Override
+    public ModelResponse getById(String id) {
         if (Objects.isNull(id)) {
             return null;
         }
@@ -122,7 +135,7 @@ public class ModelServiceImpl implements ModelService {
     }
 
     @Override
-    public List<ModelVO> list(ModelListParam param) {
+    public List<ModelResponse> list(ModelQueryRequest param) {
         List<ModelEntity> entityList = modelMapper.selectList(
                 CommonWrappers.<ModelEntity>lambdaQuery()
                         .eqIfPresent(ModelEntity::getPlatform, param.getPlatform())
@@ -135,7 +148,7 @@ public class ModelServiceImpl implements ModelService {
     }
 
     @Override
-    public PageDTO<ModelVO> page(ModelPageParam param) {
+    public PageDTO<ModelResponse> page(ModelPageRequest param) {
         PageDTO<ModelEntity> page = modelMapper.selectPage(param, CommonWrappers.<ModelEntity>lambdaQuery()
                 .eqIfPresent(ModelEntity::getPlatform, param.getPlatform())
                 .eqIfPresent(ModelEntity::getModelType, param.getModelType())
@@ -146,13 +159,13 @@ public class ModelServiceImpl implements ModelService {
     }
 
     @Override
-    public Map<String, ModelVO> mapModelByIds(List<String> modelIds) {
+    public Map<String, ModelResponse> mapModelByIds(List<String> modelIds) {
         if (CollUtil.isEmpty(modelIds)) {
             return Map.of();
         }
         List<ModelEntity> entityList = modelMapper.selectList(CommonWrappers.<ModelEntity>lambdaQuery().in(ModelEntity::getId, modelIds));
-        List<ModelVO> modelList = ModelConverter.INSTANCE.toListVO(entityList);
-        return CollUtils.convertMap(modelList, ModelVO::getId, modelVO -> modelVO);
+        List<ModelResponse> modelList = ModelConverter.INSTANCE.toListVO(entityList);
+        return CollUtils.convertMap(modelList, ModelResponse::getId, modelVO -> modelVO);
     }
 
 

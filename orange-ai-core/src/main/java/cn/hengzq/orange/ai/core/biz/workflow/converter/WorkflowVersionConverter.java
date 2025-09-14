@@ -2,10 +2,10 @@ package cn.hengzq.orange.ai.core.biz.workflow.converter;
 
 
 import cn.hengzq.orange.ai.common.biz.app.vo.AppVersionVO;
-import cn.hengzq.orange.ai.common.biz.workflow.vo.WorkflowVersionVO;
-import cn.hengzq.orange.ai.common.biz.workflow.vo.param.AddWorkflowVersionParam;
-import cn.hengzq.orange.ai.common.biz.workflow.vo.param.UpdateWorkflowParam;
-import cn.hengzq.orange.ai.common.biz.workflow.vo.param.UpdateWorkflowVersionParam;
+import cn.hengzq.orange.ai.common.biz.workflow.dto.WorkflowVersionVO;
+import cn.hengzq.orange.ai.common.biz.workflow.dto.request.AddWorkflowVersionParam;
+import cn.hengzq.orange.ai.common.biz.workflow.dto.request.WorkflowUpdateRequest;
+import cn.hengzq.orange.ai.common.biz.workflow.dto.request.UpdateWorkflowVersionParam;
 import cn.hengzq.orange.ai.core.biz.workflow.entity.WorkflowVersionEntity;
 import cn.hengzq.orange.common.converter.Converter;
 import cn.hengzq.orange.common.dto.PageDTO;
@@ -29,7 +29,7 @@ public interface WorkflowVersionConverter extends Converter {
 
     List<WorkflowVersionVO> toListVO(List<WorkflowVersionEntity> entityList);
 
-    UpdateWorkflowVersionParam toUpdate(UpdateWorkflowParam param);
+    UpdateWorkflowVersionParam toUpdate(WorkflowUpdateRequest param);
 
     @Mapping(source = "entity.id", target = "id")
     @Mapping(source = "param.name", target = "name")

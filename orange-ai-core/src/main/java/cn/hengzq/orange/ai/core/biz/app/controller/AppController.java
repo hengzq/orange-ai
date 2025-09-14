@@ -66,7 +66,7 @@ public class AppController {
 
     @Operation(summary = "分页查询", operationId = "orange-ai:app:page")
     @PostMapping(value = "/page")
-    public Result<PageDTO<AppVO>> page(@RequestBody WorkflowPageParam param) {
+    public Result<PageDTO<AppVO>> page(@RequestBody WorkflowPageRequest param) {
         PageDTO<AppVO> result = appService.page(param);
         return ResultWrapper.ok(result);
     }

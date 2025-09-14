@@ -2,7 +2,7 @@ package cn.hengzq.orange.ai.core.biz.workflow.node.start;
 
 import cn.hengzq.orange.ai.common.biz.workflow.constant.WorkflowConstant;
 import cn.hengzq.orange.ai.common.biz.workflow.constant.WorkflowNodeTypeEnum;
-import cn.hengzq.orange.ai.common.biz.workflow.vo.WorkflowNodeVO;
+import cn.hengzq.orange.ai.common.biz.workflow.dto.WorkflowNodeVO;
 import cn.hengzq.orange.ai.core.biz.workflow.entity.WorkflowRunEntity;
 import cn.hengzq.orange.ai.core.biz.workflow.node.NodeActionTemplate;
 import cn.hutool.core.collection.CollUtil;

@@ -1,9 +1,9 @@
 package cn.hengzq.orange.ai.core.biz.workflow.converter;
 
 
-import cn.hengzq.orange.ai.common.biz.workflow.vo.WorkflowRunNodeVO;
-import cn.hengzq.orange.ai.common.biz.workflow.vo.param.CreateWorkflowRunNodeParam;
-import cn.hengzq.orange.ai.common.biz.workflow.vo.param.UpdateWorkflowRunNodeParam;
+import cn.hengzq.orange.ai.common.biz.workflow.dto.WorkflowRunNodeVO;
+import cn.hengzq.orange.ai.common.biz.workflow.dto.request.CreateWorkflowRunNodeParam;
+import cn.hengzq.orange.ai.common.biz.workflow.dto.request.UpdateWorkflowRunNodeParam;
 import cn.hengzq.orange.ai.core.biz.workflow.entity.WorkflowNodeRunEntity;
 import cn.hengzq.orange.common.converter.Converter;
 import org.mapstruct.Mapper;

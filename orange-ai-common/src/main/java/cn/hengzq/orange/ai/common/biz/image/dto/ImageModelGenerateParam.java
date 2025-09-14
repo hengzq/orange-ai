@@ -1,13 +1,9 @@
 package cn.hengzq.orange.ai.common.biz.image.dto;
 
-import cn.hengzq.orange.ai.common.biz.model.vo.ModelVO;
+import cn.hengzq.orange.ai.common.biz.model.dto.ModelResponse;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Builder;
 import lombok.Data;
-import org.springframework.ai.chat.messages.Message;
-
-import java.util.Collections;
-import java.util.List;
 
 @Data
 @Builder
@@ -21,7 +17,7 @@ public class ImageModelGenerateParam {
     /**
      * 模型
      */
-    private ModelVO model;
+    private ModelResponse model;
 
     @Schema(description = "生成图片数量，默认为：1")
     private Integer quantity = 1;

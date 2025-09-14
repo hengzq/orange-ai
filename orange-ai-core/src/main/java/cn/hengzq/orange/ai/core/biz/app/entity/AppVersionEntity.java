@@ -2,7 +2,7 @@ package cn.hengzq.orange.ai.core.biz.app.entity;
 
 import cn.hengzq.orange.ai.common.biz.app.constant.AppVersionStatusEnum;
 import cn.hengzq.orange.ai.common.biz.app.vo.AppBaseConfig;
-import cn.hengzq.orange.ai.common.biz.model.vo.ModelConfig;
+import cn.hengzq.orange.ai.common.biz.model.dto.ModelConfig;
 import cn.hengzq.orange.mybatis.entity.BaseTenantEntity;
 import cn.hengzq.orange.mybatis.handler.ListToStringTypeHandler;
 import com.baomidou.mybatisplus.annotation.IdType;

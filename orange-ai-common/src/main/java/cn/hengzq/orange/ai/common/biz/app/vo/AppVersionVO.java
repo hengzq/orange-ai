@@ -1,7 +1,7 @@
 package cn.hengzq.orange.ai.common.biz.app.vo;
 
 import cn.hengzq.orange.ai.common.biz.app.constant.AppVersionStatusEnum;
-import cn.hengzq.orange.ai.common.biz.model.vo.ModelConfig;
+import cn.hengzq.orange.ai.common.biz.model.dto.ModelConfig;
 import cn.hengzq.orange.common.dto.BaseTenantDTO;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;

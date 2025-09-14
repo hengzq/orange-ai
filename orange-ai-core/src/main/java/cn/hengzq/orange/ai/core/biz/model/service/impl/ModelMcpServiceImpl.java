@@ -1,7 +1,7 @@
 package cn.hengzq.orange.ai.core.biz.model.service.impl;
 
-import cn.hengzq.orange.ai.common.biz.model.vo.ModelVO;
-import cn.hengzq.orange.ai.common.biz.model.vo.param.ModelListParam;
+import cn.hengzq.orange.ai.common.biz.model.dto.ModelResponse;
+import cn.hengzq.orange.ai.common.biz.model.dto.param.ModelQueryRequest;
 import cn.hengzq.orange.ai.core.biz.model.service.ModelService;
 import cn.hengzq.orange.common.service.mcp.McpServerService;
 import lombok.AllArgsConstructor;
@@ -29,8 +29,8 @@ public class ModelMcpServiceImpl implements McpServerService {
             description = "Retrieves a list of all available models in the current system. " +
                     "Returns metadata for each model, including model ID, platform, model type, name, and status. " +
                     "Used for querying and selecting AI models that can be invoked.")
-    public List<ModelVO> list() {
-        return modelService.list(ModelListParam.builder().build());
+    public List<ModelResponse> list() {
+        return modelService.list(ModelQueryRequest.builder().build());
     }
 
 }

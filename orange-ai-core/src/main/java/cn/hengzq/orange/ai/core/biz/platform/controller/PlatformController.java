@@ -1,7 +1,7 @@
 package cn.hengzq.orange.ai.core.biz.platform.controller;
 
 
-import cn.hengzq.orange.ai.common.biz.model.vo.ModelTypeVO;
+import cn.hengzq.orange.ai.common.biz.model.dto.ModelType;
 import cn.hengzq.orange.ai.common.biz.platform.vo.PlatformVO;
 import cn.hengzq.orange.ai.common.biz.platform.vo.param.PlatformListParam;
 import cn.hengzq.orange.ai.common.constant.AIConstant;
@@ -52,7 +52,7 @@ public class PlatformController {
                         item.getDescription(),
                         item,
                         item.getSort(),
-                        item.getModelTypes().stream().map(type -> new ModelTypeVO(type.getDescription(), type)).toList())
+                        item.getModelTypes().stream().map(type -> new ModelType(type.getDescription(), type)).toList())
                 )
                 .sorted(Comparator.comparing(PlatformVO::getSort))
                 .collect(Collectors.toList());

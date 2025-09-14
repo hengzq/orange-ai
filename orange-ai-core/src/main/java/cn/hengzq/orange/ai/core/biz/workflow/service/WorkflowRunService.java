@@ -1,11 +1,11 @@
 package cn.hengzq.orange.ai.core.biz.workflow.service;
 
-import cn.hengzq.orange.ai.common.biz.workflow.vo.WorkflowRunDetailVO;
-import cn.hengzq.orange.ai.common.biz.workflow.vo.WorkflowRunVO;
-import cn.hengzq.orange.ai.common.biz.workflow.vo.param.AddWorkflowParam;
-import cn.hengzq.orange.ai.common.biz.workflow.vo.param.CreateWorkflowRunParam;
-import cn.hengzq.orange.ai.common.biz.workflow.vo.param.WorkflowRunParam;
-import cn.hengzq.orange.ai.common.biz.workflow.vo.result.WorkflowRunResult;
+import cn.hengzq.orange.ai.common.biz.workflow.dto.WorkflowRunDetailVO;
+import cn.hengzq.orange.ai.common.biz.workflow.dto.WorkflowRunVO;
+import cn.hengzq.orange.ai.common.biz.workflow.dto.request.WorkflowCreateRequest;
+import cn.hengzq.orange.ai.common.biz.workflow.dto.request.CreateWorkflowRunParam;
+import cn.hengzq.orange.ai.common.biz.workflow.dto.request.WorkflowRunParam;
+import cn.hengzq.orange.ai.common.biz.workflow.dto.result.WorkflowRunResult;
 import cn.hengzq.orange.ai.core.biz.workflow.entity.WorkflowNodeRunEntity;
 
 public interface WorkflowRunService {
@@ -21,7 +21,7 @@ public interface WorkflowRunService {
 
     String executeWorkflow();
 
-    String invokeLlmNode(AddWorkflowParam param);
+    String invokeLlmNode(WorkflowCreateRequest param);
 
     WorkflowRunResult runWorkflowById(String id, WorkflowRunParam param);
 

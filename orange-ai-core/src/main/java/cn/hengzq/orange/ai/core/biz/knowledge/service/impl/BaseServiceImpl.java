@@ -8,7 +8,7 @@ import cn.hengzq.orange.ai.common.biz.knowledge.vo.param.KnowledgeBaseListParam;
 import cn.hengzq.orange.ai.common.biz.knowledge.vo.param.KnowledgeBasePageParam;
 import cn.hengzq.orange.ai.common.biz.knowledge.vo.param.UpdateKnowledgeBaseParam;
 import cn.hengzq.orange.ai.common.biz.model.constant.AIModelErrorCode;
-import cn.hengzq.orange.ai.common.biz.model.vo.ModelVO;
+import cn.hengzq.orange.ai.common.biz.model.dto.ModelResponse;
 import cn.hengzq.orange.ai.common.biz.vectorstore.constant.VectorDatabaseEnum;
 import cn.hengzq.orange.ai.common.biz.vectorstore.service.VectorStoreService;
 import cn.hengzq.orange.ai.core.biz.embedding.service.EmbeddingModelServiceFactory;
@@ -76,7 +76,7 @@ public class BaseServiceImpl implements BaseService {
     public String add(AddKnowledgeBaseParam param) {
         BaseEntity entity = BaseConverter.INSTANCE.toEntity(param);
         // 查询知识库使用的向量模型
-        ModelVO model = modelService.getById(param.getEmbeddingModelId());
+        ModelResponse model = modelService.getById(param.getEmbeddingModelId());
         String baseId = IdUtil.getSnowflakeNextIdStr();
 
         EmbeddingModelService embeddingModelService = embeddingModelServiceFactory.getEmbeddingModelService(model.getPlatform());
@@ -136,7 +136,7 @@ public class BaseServiceImpl implements BaseService {
             return listVO;
         }
         List<String> modelIds = CollUtils.convertList(listVO, BaseVO::getEmbeddingModelId);
-        Map<String, ModelVO> modelMap = modelService.mapModelByIds(modelIds);
+        Map<String, ModelResponse> modelMap = modelService.mapModelByIds(modelIds);
         listVO.forEach(item -> {
             if (modelMap.containsKey(item.getEmbeddingModelId())) {
                 item.setEmbeddingModel(modelMap.get(item.getEmbeddingModelId()));

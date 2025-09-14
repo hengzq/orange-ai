@@ -1,17 +1,17 @@
 package cn.hengzq.orange.ai.core.biz.workflow.service.impl;
 
 import cn.hengzq.orange.ai.common.biz.app.vo.param.AppListParam;
-import cn.hengzq.orange.ai.common.biz.app.vo.param.WorkflowPageParam;
+import cn.hengzq.orange.ai.common.biz.app.vo.param.WorkflowPageRequest;
 import cn.hengzq.orange.ai.common.biz.model.constant.AIModelErrorCode;
 import cn.hengzq.orange.ai.common.biz.workflow.constant.WorkflowStatusEnum;
-import cn.hengzq.orange.ai.common.biz.workflow.vo.*;
-import cn.hengzq.orange.ai.common.biz.workflow.vo.param.*;
-import cn.hengzq.orange.ai.common.biz.workflow.vo.result.WorkflowRunResult;
+import cn.hengzq.orange.ai.common.biz.workflow.dto.*;
+import cn.hengzq.orange.ai.common.biz.workflow.dto.request.*;
 import cn.hengzq.orange.ai.core.biz.workflow.converter.WorkflowConverter;
 import cn.hengzq.orange.ai.core.biz.workflow.converter.WorkflowVersionConverter;
 import cn.hengzq.orange.ai.core.biz.workflow.entity.WorkflowEntity;
 import cn.hengzq.orange.ai.core.biz.workflow.mapper.WorkflowMapper;
 import cn.hengzq.orange.ai.core.biz.workflow.service.*;
+import cn.hengzq.orange.common.constant.PageConstant;
 import cn.hengzq.orange.common.dto.PageDTO;
 import cn.hengzq.orange.common.util.Assert;
 import cn.hengzq.orange.mybatis.entity.BaseEntity;
@@ -19,6 +19,8 @@ import cn.hengzq.orange.mybatis.query.CommonWrappers;
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.IdUtil;
 import cn.hutool.core.util.StrUtil;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -47,18 +49,16 @@ public class WorkflowServiceImpl implements WorkflowService {
 
 
     @Override
-    public Boolean removeById(String id) {
+    public void deleteWorkflowById(String id) {
         if (!workflowMapper.deleteOneById(id)) {
-            return Boolean.FALSE;
         }
         // 删除关联数据
 //        workflowVersionService.deleteByAppId(id);
-        return Boolean.TRUE;
     }
 
     @Override
     @Transactional
-    public String create(AddWorkflowParam param) {
+    public String createWorkflow(WorkflowCreateRequest param) {
         String workflowId = IdUtil.getSnowflakeNextIdStr();
         String draftVersionId = workflowVersionService.add(AddWorkflowVersionParam.builder()
                 .workflowId(workflowId)
@@ -76,7 +76,7 @@ public class WorkflowServiceImpl implements WorkflowService {
     }
 
     @Override
-    public Boolean updateById(String id, UpdateWorkflowParam param) {
+    public Boolean updateById(String id, WorkflowUpdateRequest param) {
         WorkflowEntity entity = workflowMapper.selectById(id);
         Assert.nonNull(entity, AIModelErrorCode.GLOBAL_DATA_NOT_EXIST);
 
@@ -212,20 +212,13 @@ public class WorkflowServiceImpl implements WorkflowService {
     }
 
     @Override
-    public PageDTO<WorkflowVO> page(WorkflowPageParam param) {
-        PageDTO<WorkflowEntity> page = workflowMapper.selectPage(param, CommonWrappers.<WorkflowEntity>lambdaQuery()
-                .orderByDesc(BaseEntity::getCreatedAt)
-        );
-        if (Objects.isNull(page) || CollUtil.isEmpty(page.getRecords())) {
-            return PageDTO.of(param.getPageNo(), param.getPageSize());
-        }
+    public PageDTO<WorkflowListResponse> pageWorkflows(WorkflowPageRequest request) {
+        Integer pageNo = Objects.isNull(request.getPageNo()) ? PageConstant.PAGE_NO : request.getPageNo();
+        Integer pageSize = Objects.isNull(request.getPageSize()) ? PageConstant.PAGE_SIZE : request.getPageSize();
 
-        PageDTO<WorkflowVO> pageResult = WorkflowConverter.INSTANCE.toPage(page);
-        if (CollUtil.isEmpty(pageResult.getRecords())) {
-            return pageResult;
-        }
-        pageResult.setRecords(assembleList(pageResult.getRecords(), false));
-        return pageResult;
+        IPage<WorkflowListResponse> page = workflowMapper.selectWorkflowPage(new Page<>((long) pageNo, (long) pageSize), request);
+
+        return PageDTO.of(pageNo, pageSize, (int) page.getTotal(), page.getRecords());
     }
 
     private List<WorkflowVO> assembleList(List<WorkflowVO> records, boolean latestReleased) {

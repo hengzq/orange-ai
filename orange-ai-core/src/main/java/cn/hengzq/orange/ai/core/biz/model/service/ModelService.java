@@ -1,35 +1,38 @@
 package cn.hengzq.orange.ai.core.biz.model.service;
 
 
-import cn.hengzq.orange.ai.common.biz.model.vo.ModelVO;
-import cn.hengzq.orange.ai.common.biz.model.vo.param.AddModelParam;
-import cn.hengzq.orange.ai.common.biz.model.vo.param.ModelListParam;
-import cn.hengzq.orange.ai.common.biz.model.vo.param.ModelPageParam;
-import cn.hengzq.orange.ai.common.biz.model.vo.param.UpdateModelParam;
+import cn.hengzq.orange.ai.common.biz.model.dto.ModelResponse;
+import cn.hengzq.orange.ai.common.biz.model.dto.param.ModelCreateRequest;
+import cn.hengzq.orange.ai.common.biz.model.dto.param.ModelPageRequest;
+import cn.hengzq.orange.ai.common.biz.model.dto.param.ModelQueryRequest;
+import cn.hengzq.orange.ai.common.biz.model.dto.param.ModelUpdateRequest;
 import cn.hengzq.orange.common.dto.PageDTO;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 /**
  * @author hengzq
  */
 public interface ModelService {
 
-    String add(AddModelParam request);
+    String createModel(ModelCreateRequest request);
 
-    Boolean removeById(String id);
+    void deleteModelById(String id);
 
-    Boolean updateById(String id, UpdateModelParam request);
+    void updateModelById(String id, ModelUpdateRequest request);
 
-    Boolean updateEnabledById(String id, boolean enabled);
+    void updateEnabledById(String id, boolean enabled);
 
-    ModelVO getById(String id);
+    Optional<ModelResponse> getModelById(String id);
 
-    List<ModelVO> list(ModelListParam query);
+    ModelResponse getById(String id);
 
-    PageDTO<ModelVO> page(ModelPageParam param);
+    List<ModelResponse> list(ModelQueryRequest query);
 
-    Map<String, ModelVO> mapModelByIds(List<String> modelIds);
+    PageDTO<ModelResponse> page(ModelPageRequest param);
+
+    Map<String, ModelResponse> mapModelByIds(List<String> modelIds);
 
 }

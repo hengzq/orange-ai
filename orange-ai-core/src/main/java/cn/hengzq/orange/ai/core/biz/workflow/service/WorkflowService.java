@@ -1,12 +1,14 @@
 package cn.hengzq.orange.ai.core.biz.workflow.service;
 
 
-import cn.hengzq.orange.ai.common.biz.app.vo.param.*;
-import cn.hengzq.orange.ai.common.biz.workflow.vo.WorkflowDetailVO;
-import cn.hengzq.orange.ai.common.biz.workflow.vo.WorkflowVO;
-import cn.hengzq.orange.ai.common.biz.workflow.vo.param.AddWorkflowParam;
-import cn.hengzq.orange.ai.common.biz.workflow.vo.param.UpdateWorkflowGraphParam;
-import cn.hengzq.orange.ai.common.biz.workflow.vo.param.UpdateWorkflowParam;
+import cn.hengzq.orange.ai.common.biz.app.vo.param.AppListParam;
+import cn.hengzq.orange.ai.common.biz.app.vo.param.WorkflowPageRequest;
+import cn.hengzq.orange.ai.common.biz.workflow.dto.WorkflowDetailVO;
+import cn.hengzq.orange.ai.common.biz.workflow.dto.WorkflowListResponse;
+import cn.hengzq.orange.ai.common.biz.workflow.dto.WorkflowVO;
+import cn.hengzq.orange.ai.common.biz.workflow.dto.request.UpdateWorkflowGraphParam;
+import cn.hengzq.orange.ai.common.biz.workflow.dto.request.WorkflowCreateRequest;
+import cn.hengzq.orange.ai.common.biz.workflow.dto.request.WorkflowUpdateRequest;
 import cn.hengzq.orange.common.dto.PageDTO;
 
 import java.util.List;
@@ -16,11 +18,11 @@ import java.util.List;
  */
 public interface WorkflowService {
 
-    String create(AddWorkflowParam param);
+    String createWorkflow(WorkflowCreateRequest param);
 
-    Boolean removeById(String id);
+    void deleteWorkflowById(String id);
 
-    Boolean updateById(String id, UpdateWorkflowParam request);
+    Boolean updateById(String id, WorkflowUpdateRequest request);
 
     Boolean updateGraphById(String id, UpdateWorkflowGraphParam param);
 
@@ -28,9 +30,9 @@ public interface WorkflowService {
 
     WorkflowVO getById(String id);
 
-    List<WorkflowVO> list(AppListParam query);
+    PageDTO<WorkflowListResponse> pageWorkflows(WorkflowPageRequest request);
 
-    PageDTO<WorkflowVO> page(WorkflowPageParam param);
+    List<WorkflowVO> list(AppListParam query);
 
     WorkflowVO getById(String id, boolean latestReleased);
 

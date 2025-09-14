@@ -2,7 +2,7 @@ package cn.hengzq.orange.ai.model.alibaba.image;
 
 import cn.hengzq.orange.ai.common.biz.image.service.AbstractImageModelService;
 import cn.hengzq.orange.ai.common.biz.model.constant.ModelConstant;
-import cn.hengzq.orange.ai.common.biz.model.vo.ModelVO;
+import cn.hengzq.orange.ai.common.biz.model.dto.ModelResponse;
 import cn.hengzq.orange.ai.common.constant.PlatformEnum;
 import cn.hengzq.orange.ai.model.alibaba.constant.ImageModelEnum;
 import cn.hutool.crypto.SecureUtil;
@@ -25,7 +25,7 @@ public class DashScopeImageModelServiceImpl extends AbstractImageModelService {
     }
 
     @Override
-    protected ImageModel createImageModel(ModelVO model) {
+    protected ImageModel createImageModel(ModelResponse model) {
         String apiKey = SecureUtil.des(ModelConstant.SECRET_KEY.getBytes(StandardCharsets.UTF_8)).decryptStr(model.getApiKey());
         return new DashScopeImageModel(DashScopeImageApi.builder()
                 .apiKey(apiKey)

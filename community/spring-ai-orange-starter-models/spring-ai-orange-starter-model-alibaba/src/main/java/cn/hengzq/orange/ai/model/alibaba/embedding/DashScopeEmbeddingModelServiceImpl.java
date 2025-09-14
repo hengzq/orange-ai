@@ -2,7 +2,7 @@ package cn.hengzq.orange.ai.model.alibaba.embedding;
 
 import cn.hengzq.orange.ai.common.biz.embedding.service.AbstractEmbeddingModelService;
 import cn.hengzq.orange.ai.common.biz.model.constant.ModelConstant;
-import cn.hengzq.orange.ai.common.biz.model.vo.ModelVO;
+import cn.hengzq.orange.ai.common.biz.model.dto.ModelResponse;
 import cn.hengzq.orange.ai.common.constant.PlatformEnum;
 import cn.hengzq.orange.ai.model.alibaba.constant.EmbeddingModelEnum;
 import cn.hutool.crypto.SecureUtil;
@@ -27,7 +27,7 @@ public class DashScopeEmbeddingModelServiceImpl extends AbstractEmbeddingModelSe
     }
 
     @Override
-    protected EmbeddingModel createEmbeddingModel(ModelVO model) {
+    protected EmbeddingModel createEmbeddingModel(ModelResponse model) {
         String apiKey = SecureUtil.des(ModelConstant.SECRET_KEY.getBytes(StandardCharsets.UTF_8)).decryptStr(model.getApiKey());
         DashScopeApi dashScopeApi = DashScopeApi.builder().apiKey(apiKey).build();
         return new DashScopeEmbeddingModel(dashScopeApi,

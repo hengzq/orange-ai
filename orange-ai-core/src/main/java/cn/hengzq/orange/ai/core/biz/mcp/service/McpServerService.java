@@ -7,7 +7,6 @@ import cn.hengzq.orange.ai.common.biz.mcp.vo.param.AddMcpServerParam;
 import cn.hengzq.orange.ai.common.biz.mcp.vo.param.McpServerListParam;
 import cn.hengzq.orange.ai.common.biz.mcp.vo.param.McpServerPageParam;
 import cn.hengzq.orange.ai.common.biz.mcp.vo.param.UpdateMcpServerParam;
-import cn.hengzq.orange.ai.common.biz.model.vo.param.AddModelParam;
 import cn.hengzq.orange.common.dto.PageDTO;
 
 import java.util.List;

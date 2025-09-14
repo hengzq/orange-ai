@@ -2,11 +2,9 @@ package cn.hengzq.orange.ai.core.biz.workflow.service.impl;
 
 import cn.hengzq.orange.ai.common.biz.model.constant.AIModelErrorCode;
 import cn.hengzq.orange.ai.common.biz.workflow.constant.WorkflowRunStatusEnum;
-import cn.hengzq.orange.ai.common.biz.workflow.vo.WorkflowRunNodeVO;
-import cn.hengzq.orange.ai.common.biz.workflow.vo.param.CreateWorkflowRunNodeParam;
-import cn.hengzq.orange.ai.common.biz.workflow.vo.param.UpdateWorkflowRunNodeParam;
-import cn.hengzq.orange.ai.core.biz.mcp.converter.McpServerConverter;
-import cn.hengzq.orange.ai.core.biz.mcp.entity.McpServerEntity;
+import cn.hengzq.orange.ai.common.biz.workflow.dto.WorkflowRunNodeVO;
+import cn.hengzq.orange.ai.common.biz.workflow.dto.request.CreateWorkflowRunNodeParam;
+import cn.hengzq.orange.ai.common.biz.workflow.dto.request.UpdateWorkflowRunNodeParam;
 import cn.hengzq.orange.ai.core.biz.workflow.converter.WorkflowRunNodeConverter;
 import cn.hengzq.orange.ai.core.biz.workflow.entity.WorkflowNodeRunEntity;
 import cn.hengzq.orange.ai.core.biz.workflow.mapper.WorkflowNodeRunMapper;

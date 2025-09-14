@@ -1,6 +1,6 @@
 package cn.hengzq.orange.ai.common.biz.embedding.service;
 
-import cn.hengzq.orange.ai.common.biz.model.vo.ModelVO;
+import cn.hengzq.orange.ai.common.biz.model.dto.ModelResponse;
 import cn.hutool.cache.Cache;
 import cn.hutool.cache.CacheUtil;
 import org.springframework.ai.embedding.EmbeddingModel;
@@ -16,7 +16,7 @@ public abstract class AbstractEmbeddingModelService implements EmbeddingModelSer
      */
     protected static final Cache<String, EmbeddingModel> embeddingModelCache = CacheUtil.newLFUCache(100);
 
-    protected abstract EmbeddingModel createEmbeddingModel(ModelVO model);
+    protected abstract EmbeddingModel createEmbeddingModel(ModelResponse model);
 
     /**
      * 创建 EmbeddingModel
@@ -29,7 +29,7 @@ public abstract class AbstractEmbeddingModelService implements EmbeddingModelSer
     protected abstract EmbeddingModel createEmbeddingModel(String model, String baseUrl, String apiKey);
 
     @Override
-    public EmbeddingModel getOrCreateEmbeddingModel(ModelVO model) {
+    public EmbeddingModel getOrCreateEmbeddingModel(ModelResponse model) {
         String key = model.getModelName() + "_" + model.getApiKey();
         if (embeddingModelCache.containsKey(key)) {
             return embeddingModelCache.get(key);

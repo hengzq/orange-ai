@@ -3,7 +3,6 @@ package cn.hengzq.orange.ai.model.minimax.chat;
 import cn.hengzq.orange.ai.common.biz.chat.dto.ChatModelOptions;
 import cn.hengzq.orange.ai.common.biz.chat.service.AbstractChatModelService;
 import cn.hengzq.orange.ai.common.biz.model.constant.ModelConstant;
-import cn.hengzq.orange.ai.common.biz.model.vo.ModelVO;
 import cn.hengzq.orange.ai.common.constant.PlatformEnum;
 import cn.hengzq.orange.ai.model.minimax.constant.ChatModelEnum;
 import cn.hutool.crypto.SecureUtil;

@@ -1,9 +1,9 @@
 package cn.hengzq.orange.ai.core.biz.model.converter;
 
 
-import cn.hengzq.orange.ai.common.biz.model.vo.ModelVO;
-import cn.hengzq.orange.ai.common.biz.model.vo.param.AddModelParam;
-import cn.hengzq.orange.ai.common.biz.model.vo.param.UpdateModelParam;
+import cn.hengzq.orange.ai.common.biz.model.dto.ModelResponse;
+import cn.hengzq.orange.ai.common.biz.model.dto.param.ModelCreateRequest;
+import cn.hengzq.orange.ai.common.biz.model.dto.param.ModelUpdateRequest;
 import cn.hengzq.orange.ai.core.biz.model.entity.ModelEntity;
 import cn.hengzq.orange.common.converter.Converter;
 import cn.hengzq.orange.common.dto.PageDTO;
@@ -21,13 +21,13 @@ public interface ModelConverter extends Converter {
 
     ModelConverter INSTANCE = Mappers.getMapper(ModelConverter.class);
 
-    ModelEntity toEntity(ModelVO modelVO);
+    ModelEntity toEntity(ModelResponse modelResponse);
 
-    ModelEntity toEntity(AddModelParam request);
+    ModelEntity toEntity(ModelCreateRequest request);
 
-    ModelVO toVO(ModelEntity entity);
+    ModelResponse toVO(ModelEntity entity);
 
-    List<ModelVO> toListVO(List<ModelEntity> entityList);
+    List<ModelResponse> toListVO(List<ModelEntity> entityList);
 
     @Mapping(source = "entity.id", target = "id")
     @Mapping(source = "param.name", target = "name")
@@ -36,7 +36,7 @@ public interface ModelConverter extends Converter {
     @Mapping(source = "param.baseUrl", target = "baseUrl")
     @Mapping(source = "param.sort", target = "sort")
     @Mapping(source = "param.description", target = "description")
-    ModelEntity toUpdateEntity(ModelEntity entity, UpdateModelParam param);
+    ModelEntity toUpdateEntity(ModelEntity entity, ModelUpdateRequest param);
 
-    PageDTO<ModelVO> toPage(PageDTO<ModelEntity> page);
+    PageDTO<ModelResponse> toPage(PageDTO<ModelEntity> page);
 }

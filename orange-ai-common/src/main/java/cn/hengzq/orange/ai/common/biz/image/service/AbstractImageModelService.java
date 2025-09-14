@@ -1,7 +1,7 @@
 package cn.hengzq.orange.ai.common.biz.image.service;
 
 import cn.hengzq.orange.ai.common.biz.image.dto.ImageModelGenerateParam;
-import cn.hengzq.orange.ai.common.biz.model.vo.ModelVO;
+import cn.hengzq.orange.ai.common.biz.model.dto.ModelResponse;
 import cn.hutool.cache.Cache;
 import cn.hutool.cache.CacheUtil;
 import lombok.extern.slf4j.Slf4j;
@@ -22,7 +22,7 @@ public abstract class AbstractImageModelService implements ImageModelService {
     /**
      * 创建ChatModel
      */
-    protected abstract ImageModel createImageModel(ModelVO model);
+    protected abstract ImageModel createImageModel(ModelResponse model);
 
 
     @Override
@@ -31,22 +31,19 @@ public abstract class AbstractImageModelService implements ImageModelService {
     }
 
     @Override
-    public ImageModel getOrCreateImageModel(ModelVO model) {
+    public ImageModel getOrCreateImageModel(ModelResponse model) {
         return MODEL_LFU_CACHE.get(model.getApiKey(), () -> createImageModel(model));
     }
 
     @Override
     public ImageResponse textToImage(ImageModelGenerateParam param) {
-
         ImageModel imageModel = this.getOrCreateImageModel(param.getModel());
-
         ImageOptions options = ImageOptionsBuilder.builder()
                 .model(param.getModel().getModelName())
                 .height(param.getHeight())
                 .width(param.getWidth())
                 .N(param.getQuantity())
                 .build();
-
         ImagePrompt imagePrompt = new ImagePrompt(param.getPrompt(), options);
         return imageModel.call(imagePrompt);
     }

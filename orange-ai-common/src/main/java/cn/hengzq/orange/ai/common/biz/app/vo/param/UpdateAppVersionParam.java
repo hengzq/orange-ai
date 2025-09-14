@@ -1,7 +1,7 @@
 package cn.hengzq.orange.ai.common.biz.app.vo.param;
 
 import cn.hengzq.orange.ai.common.biz.app.vo.AppBaseConfig;
-import cn.hengzq.orange.ai.common.biz.model.vo.ModelConfig;
+import cn.hengzq.orange.ai.common.biz.model.dto.ModelConfig;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.*;
 
