@@ -1,4 +1,4 @@
-package cn.hengzq.orange.ai.common.biz.app.vo.param;
+package cn.hengzq.orange.ai.common.biz.app.dto.request;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.*;

@@ -1,12 +1,12 @@
 package cn.hengzq.orange.ai.core.biz.workflow.controller;
 
 
-import cn.hengzq.orange.ai.common.biz.app.vo.param.WorkflowPageRequest;
 import cn.hengzq.orange.ai.common.biz.workflow.dto.WorkflowDetailVO;
 import cn.hengzq.orange.ai.common.biz.workflow.dto.WorkflowListResponse;
 import cn.hengzq.orange.ai.common.biz.workflow.dto.WorkflowVO;
 import cn.hengzq.orange.ai.common.biz.workflow.dto.request.UpdateWorkflowGraphParam;
 import cn.hengzq.orange.ai.common.biz.workflow.dto.request.WorkflowCreateRequest;
+import cn.hengzq.orange.ai.common.biz.workflow.dto.request.WorkflowPageRequest;
 import cn.hengzq.orange.ai.common.biz.workflow.dto.request.WorkflowUpdateRequest;
 import cn.hengzq.orange.ai.common.constant.AIConstant;
 import cn.hengzq.orange.ai.core.biz.workflow.service.WorkflowRunService;

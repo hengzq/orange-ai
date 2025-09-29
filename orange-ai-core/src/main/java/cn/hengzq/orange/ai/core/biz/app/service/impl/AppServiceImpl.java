@@ -1,9 +1,10 @@
 package cn.hengzq.orange.ai.core.biz.app.service.impl;
 
 import cn.hengzq.orange.ai.common.biz.app.constant.AppStatusEnum;
-import cn.hengzq.orange.ai.common.biz.app.vo.AppVO;
-import cn.hengzq.orange.ai.common.biz.app.vo.AppVersionVO;
-import cn.hengzq.orange.ai.common.biz.app.vo.param.*;
+import cn.hengzq.orange.ai.common.biz.app.dto.AppListResponse;
+import cn.hengzq.orange.ai.common.biz.app.dto.AppVO;
+import cn.hengzq.orange.ai.common.biz.app.dto.AppVersionVO;
+import cn.hengzq.orange.ai.common.biz.app.dto.request.*;
 import cn.hengzq.orange.ai.common.biz.chat.vo.ConversationResponse;
 import cn.hengzq.orange.ai.common.biz.chat.vo.param.ChatConversationParam;
 import cn.hengzq.orange.ai.common.biz.model.constant.AIModelErrorCode;
@@ -15,17 +16,17 @@ import cn.hengzq.orange.ai.core.biz.app.mapper.AppMapper;
 import cn.hengzq.orange.ai.core.biz.app.service.AppService;
 import cn.hengzq.orange.ai.core.biz.app.service.AppVersionService;
 import cn.hengzq.orange.ai.core.biz.chat.service.ChatService;
-import cn.hengzq.orange.ai.core.biz.knowledge.service.BaseService;
-import cn.hengzq.orange.ai.core.biz.mcp.service.McpServerService;
-import cn.hengzq.orange.ai.core.biz.model.service.ModelService;
+import cn.hengzq.orange.common.constant.PageConstant;
 import cn.hengzq.orange.common.dto.PageDTO;
-import cn.hengzq.orange.common.result.Result;
+import cn.hengzq.orange.common.response.ApiResponse;
 import cn.hengzq.orange.common.util.Assert;
 import cn.hengzq.orange.mybatis.entity.BaseEntity;
 import cn.hengzq.orange.mybatis.query.CommonWrappers;
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.IdUtil;
 import cn.hutool.core.util.StrUtil;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -47,18 +48,9 @@ public class AppServiceImpl implements AppService {
 
     private final AppMapper appMapper;
 
-    private final ModelService modelService;
-
-    private final BaseService baseService;
-
     private final AppVersionService appVersionService;
 
     private final ChatService chatService;
-
-    private final McpServerService mcpServerService;
-
-    private final static String DEFAULT_SYSTEM_PROMPT = "你好！我是小橙子，一款基于大语言模型与检索增强生成（RAG）技术的智能问答助手。我能够根据您提供的知识库内容，快速理解上下文，并为您提供精准、专业且详细的解答。无论是复杂问题还是具体需求，我都会尽力帮助您找到最佳答案。请随时告诉我您的问题，我将全力以赴为您服务！";
-
 
     @Override
     public Boolean removeById(String id) {
@@ -74,7 +66,7 @@ public class AppServiceImpl implements AppService {
 
     @Override
     @Transactional
-    public String add(AddAppParam param) {
+    public String add(AppCreateRequest param) {
         String appId = IdUtil.getSnowflakeNextIdStr();
         String draftVersionId = appVersionService.add(AddAppVersionParam.builder()
                 .appId(appId)
@@ -90,7 +82,7 @@ public class AppServiceImpl implements AppService {
     }
 
     @Override
-    public Boolean updateById(String id, UpdateAppParam param) {
+    public Boolean updateById(String id, AppUpdateRequest param) {
         AppEntity entity = appMapper.selectById(id);
         Assert.nonNull(entity, AIModelErrorCode.GLOBAL_DATA_NOT_EXIST);
 
@@ -130,7 +122,7 @@ public class AppServiceImpl implements AppService {
     }
 
     @Override
-    public Flux<Result<ConversationResponse>> conversationStream(AppConversationStreamParam param) {
+    public Flux<ApiResponse<ConversationResponse>> conversationStream(AppConversationStreamParam param) {
         AppVO app = getLatestById(param.getAppId(), SessionTypeEnum.AGENT.equals(param.getSessionType()));
         AppVersionVO latestVersion = app.getLatestVersion();
 
@@ -172,20 +164,13 @@ public class AppServiceImpl implements AppService {
     }
 
     @Override
-    public PageDTO<AppVO> page(WorkflowPageRequest param) {
-        PageDTO<AppEntity> page = appMapper.selectPage(param, CommonWrappers.<AppEntity>lambdaQuery()
-                .orderByDesc(BaseEntity::getCreatedAt)
-        );
-        if (Objects.isNull(page) || CollUtil.isEmpty(page.getRecords())) {
-            return PageDTO.of(param.getPageNo(), param.getPageSize());
-        }
+    public PageDTO<AppListResponse> pageApps(AppPageRequest request) {
+        Integer pageNo = Objects.isNull(request.getPageNo()) ? PageConstant.PAGE_NO : request.getPageNo();
+        Integer pageSize = Objects.isNull(request.getPageSize()) ? PageConstant.PAGE_SIZE : request.getPageSize();
 
-        PageDTO<AppVO> pageResult = AppConverter.INSTANCE.toPage(page);
-        if (CollUtil.isEmpty(pageResult.getRecords())) {
-            return pageResult;
-        }
-        pageResult.setRecords(assembleList(pageResult.getRecords(), false));
-        return pageResult;
+        IPage<AppListResponse> page = appMapper.selectAppPage(new Page<>((long) pageNo, (long) pageSize), request);
+
+        return PageDTO.of(pageNo, pageSize, (int) page.getTotal(), page.getRecords());
     }
 
     private List<AppVO> assembleList(List<AppVO> records, boolean latestReleased) {

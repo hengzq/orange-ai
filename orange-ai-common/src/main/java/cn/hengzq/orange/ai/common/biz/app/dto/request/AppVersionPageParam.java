@@ -1,4 +1,4 @@
-package cn.hengzq.orange.ai.common.biz.app.vo.param;
+package cn.hengzq.orange.ai.common.biz.app.dto.request;
 
 import cn.hengzq.orange.common.dto.param.PageParam;
 import io.swagger.v3.oas.annotations.media.Schema;

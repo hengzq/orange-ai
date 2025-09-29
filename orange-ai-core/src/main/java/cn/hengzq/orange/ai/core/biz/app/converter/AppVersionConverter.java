@@ -1,10 +1,10 @@
 package cn.hengzq.orange.ai.core.biz.app.converter;
 
 
-import cn.hengzq.orange.ai.common.biz.app.vo.AppVersionVO;
-import cn.hengzq.orange.ai.common.biz.app.vo.param.AddAppVersionParam;
-import cn.hengzq.orange.ai.common.biz.app.vo.param.UpdateAppParam;
-import cn.hengzq.orange.ai.common.biz.app.vo.param.UpdateAppVersionParam;
+import cn.hengzq.orange.ai.common.biz.app.dto.AppVersionVO;
+import cn.hengzq.orange.ai.common.biz.app.dto.request.AddAppVersionParam;
+import cn.hengzq.orange.ai.common.biz.app.dto.request.AppUpdateRequest;
+import cn.hengzq.orange.ai.common.biz.app.dto.request.UpdateAppVersionParam;
 import cn.hengzq.orange.ai.core.biz.app.entity.AppVersionEntity;
 import cn.hengzq.orange.common.converter.Converter;
 import cn.hengzq.orange.common.dto.PageDTO;
@@ -28,7 +28,7 @@ public interface AppVersionConverter extends Converter {
 
     List<AppVersionVO> toListVO(List<AppVersionEntity> entityList);
 
-    UpdateAppVersionParam toUpdate(UpdateAppParam param);
+    UpdateAppVersionParam toUpdate(AppUpdateRequest param);
 
     @Mapping(source = "entity.id", target = "id")
     @Mapping(source = "param.name", target = "name")

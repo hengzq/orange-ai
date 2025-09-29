@@ -38,6 +38,7 @@ import cn.hengzq.orange.ai.core.biz.vectorstore.service.VectorStoreServiceFactor
 import cn.hengzq.orange.ai.core.biz.workflow.service.WorkflowRunService;
 import cn.hengzq.orange.common.dto.PageDTO;
 import cn.hengzq.orange.common.exception.ServiceException;
+import cn.hengzq.orange.common.response.ApiResponse;
 import cn.hengzq.orange.common.result.Result;
 import cn.hengzq.orange.common.result.ResultWrapper;
 import cn.hutool.cache.Cache;
@@ -61,7 +62,10 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.publisher.Sinks;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Objects;
 import java.util.concurrent.atomic.AtomicReference;
 
 @Slf4j
@@ -142,7 +146,7 @@ public class ChatServiceImpl implements ChatService {
     private final WorkflowRunService workflowRunService;
 
     @Override
-    public Flux<Result<ConversationResponse>> conversationStream(ChatConversationParam param) {
+    public Flux<ApiResponse<ConversationResponse>> conversationStream(ChatConversationParam param) {
         ChatParam chatParam = ChatParam.builder()
                 .prompt(param.getPrompt())
                 .systemPrompt(param.getSystemPrompt())
@@ -190,24 +194,24 @@ public class ChatServiceImpl implements ChatService {
                             ;
                 })
                 .map(result -> {
-                    content.get().append(result.getData().getContent());
-                    TokenUsageVO tokenUsage = result.getData().getTokenUsage();
+                    content.get().append(result.data().getContent());
+                    TokenUsageVO tokenUsage = result.data().getTokenUsage();
                     if (Objects.nonNull(tokenUsage)) {
 //                        userRecord.setTokenQuantity(result.getData().getTokenUsage().getPromptTokens());
 //                        assistantRecord.setTokenQuantity(result.getData().getTokenUsage().getGenerationTokens());
                     }
                     // 封装消息ID
-                    result.getData().setSessionId(sessionId);
+                    result.data().setSessionId(sessionId);
                     return result;
                 }).onErrorResume(error -> {
                     log.error("An error occurred: {}", error.getMessage(), error);
                     content.set(new StringBuffer());
                     if (error instanceof ServiceException se) {
                         content.get().append(se.getMessage());
-                        return Mono.just(ResultWrapper.fail(se.getErrorCode()));
+                        return Mono.just(ApiResponse.fail(se.getErrorCode()));
                     }
                     content.get().append(ChatErrorCode.CHAT_CONVERSATION_IS_ERROR.getMsg());
-                    return Mono.just(ResultWrapper.fail(ChatErrorCode.CHAT_CONVERSATION_IS_ERROR));
+                    return Mono.just(ApiResponse.fail(ChatErrorCode.CHAT_CONVERSATION_IS_ERROR));
                 }).doFinally(signalType -> {
                     sessionMessageService.add(AddSessionMessageParam.builder()
                             .sessionId(sessionId)

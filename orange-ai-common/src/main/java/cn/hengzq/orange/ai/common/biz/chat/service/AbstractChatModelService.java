@@ -8,6 +8,7 @@ import cn.hengzq.orange.ai.common.biz.chat.dto.ChatParam;
 import cn.hengzq.orange.ai.common.biz.chat.vo.ConversationResponse;
 import cn.hengzq.orange.ai.common.biz.mcp.vo.McpServerVO;
 import cn.hengzq.orange.common.exception.ServiceException;
+import cn.hengzq.orange.common.response.ApiResponse;
 import cn.hengzq.orange.common.result.Result;
 import cn.hengzq.orange.common.result.ResultWrapper;
 import cn.hutool.cache.Cache;
@@ -163,7 +164,7 @@ public abstract class AbstractChatModelService implements ChatModelService {
     }
 
     @Override
-    public Flux<Result<ConversationResponse>> stream(ChatParam param) {
+    public Flux<ApiResponse<ConversationResponse>> stream(ChatParam param) {
         List<Message> messages = CollUtil.isEmpty(param.getMessages()) ? new ArrayList<>() : new ArrayList<>(param.getMessages());
         messages.add(new UserMessage(param.getPrompt()));
 
@@ -228,7 +229,7 @@ public abstract class AbstractChatModelService implements ChatModelService {
 //                                    .totalTokens(usage.getTotalTokens())
 //                                    .build())
                             .build();
-                    return ResultWrapper.ok(replyVO);
+                    return ApiResponse.ok(replyVO);
                 });
     }
 

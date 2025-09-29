@@ -1,11 +1,11 @@
 package cn.hengzq.orange.ai.core.biz.app.service.impl;
 
 import cn.hengzq.orange.ai.common.biz.app.constant.AppVersionStatusEnum;
-import cn.hengzq.orange.ai.common.biz.app.vo.AppVersionVO;
-import cn.hengzq.orange.ai.common.biz.app.vo.param.AddAppVersionParam;
-import cn.hengzq.orange.ai.common.biz.app.vo.param.AppVersionListParam;
-import cn.hengzq.orange.ai.common.biz.app.vo.param.AppVersionPageParam;
-import cn.hengzq.orange.ai.common.biz.app.vo.param.UpdateAppVersionParam;
+import cn.hengzq.orange.ai.common.biz.app.dto.AppVersionVO;
+import cn.hengzq.orange.ai.common.biz.app.dto.request.AddAppVersionParam;
+import cn.hengzq.orange.ai.common.biz.app.dto.request.AppVersionListParam;
+import cn.hengzq.orange.ai.common.biz.app.dto.request.AppVersionPageParam;
+import cn.hengzq.orange.ai.common.biz.app.dto.request.UpdateAppVersionParam;
 import cn.hengzq.orange.ai.common.biz.model.constant.AIModelErrorCode;
 import cn.hengzq.orange.ai.core.biz.app.converter.AppVersionConverter;
 import cn.hengzq.orange.ai.core.biz.app.entity.AppVersionEntity;

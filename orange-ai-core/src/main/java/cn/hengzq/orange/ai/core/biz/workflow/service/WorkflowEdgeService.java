@@ -1,7 +1,7 @@
 package cn.hengzq.orange.ai.core.biz.workflow.service;
 
 
-import cn.hengzq.orange.ai.common.biz.app.vo.param.WorkflowPageRequest;
+import cn.hengzq.orange.ai.common.biz.app.dto.request.AppPageRequest;
 import cn.hengzq.orange.ai.common.biz.workflow.dto.WorkflowEdgeVO;
 import cn.hengzq.orange.ai.common.biz.workflow.dto.WorkflowNodeVO;
 import cn.hengzq.orange.ai.common.biz.workflow.dto.WorkflowVO;
@@ -28,7 +28,7 @@ public interface WorkflowEdgeService {
 
     WorkflowVO getById(String id);
 
-    PageDTO<WorkflowVO> page(WorkflowPageRequest param);
+    PageDTO<WorkflowVO> page(AppPageRequest param);
 
     WorkflowEdgeVO create(CreateWorkflowEdgeParam param);
 

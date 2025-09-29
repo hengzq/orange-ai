@@ -1,6 +1,6 @@
 package cn.hengzq.orange.ai.core.biz.workflow.service.impl;
 
-import cn.hengzq.orange.ai.common.biz.app.vo.param.WorkflowPageRequest;
+import cn.hengzq.orange.ai.common.biz.app.dto.request.AppPageRequest;
 import cn.hengzq.orange.ai.common.biz.model.constant.AIModelErrorCode;
 import cn.hengzq.orange.ai.common.biz.workflow.constant.WorkflowNodeTypeEnum;
 import cn.hengzq.orange.ai.common.biz.workflow.constant.WorkflowStatusEnum;
@@ -186,7 +186,7 @@ public class WorkflowEdgeServiceImpl implements WorkflowEdgeService {
     }
 
     @Override
-    public PageDTO<WorkflowVO> page(WorkflowPageRequest param) {
+    public PageDTO<WorkflowVO> page(AppPageRequest param) {
         PageDTO<WorkflowEntity> page = workflowMapper.selectPage(param, CommonWrappers.<WorkflowEntity>lambdaQuery()
                 .orderByDesc(BaseEntity::getCreatedAt)
         );

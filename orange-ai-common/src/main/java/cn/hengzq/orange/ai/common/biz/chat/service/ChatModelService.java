@@ -4,6 +4,7 @@ import cn.hengzq.orange.ai.common.biz.chat.dto.ChatModelConversationParam;
 import cn.hengzq.orange.ai.common.biz.chat.dto.ChatParam;
 import cn.hengzq.orange.ai.common.biz.chat.vo.ConversationResponse;
 import cn.hengzq.orange.ai.common.constant.PlatformEnum;
+import cn.hengzq.orange.common.response.ApiResponse;
 import cn.hengzq.orange.common.result.Result;
 import org.springframework.ai.chat.model.ChatModel;
 import reactor.core.publisher.Flux;
@@ -33,7 +34,7 @@ public interface ChatModelService {
     Flux<Result<ConversationResponse>> stream(ChatModelConversationParam param);
 
 
-    Flux<Result<ConversationResponse>> stream(ChatParam param);
+    Flux<ApiResponse<ConversationResponse>> stream(ChatParam param);
 
 
     /**

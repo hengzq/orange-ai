@@ -1,4 +1,4 @@
-package cn.hengzq.orange.ai.common.biz.app.vo;
+package cn.hengzq.orange.ai.common.biz.app.dto;
 
 import cn.hengzq.orange.ai.common.biz.app.constant.AppVersionStatusEnum;
 import cn.hengzq.orange.ai.common.biz.model.dto.ModelConfig;

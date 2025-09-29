@@ -1,7 +1,6 @@
 package cn.hengzq.orange.ai.core.biz.workflow.service.impl;
 
-import cn.hengzq.orange.ai.common.biz.app.vo.param.AppListParam;
-import cn.hengzq.orange.ai.common.biz.app.vo.param.WorkflowPageRequest;
+import cn.hengzq.orange.ai.common.biz.app.dto.request.AppListParam;
 import cn.hengzq.orange.ai.common.biz.model.constant.AIModelErrorCode;
 import cn.hengzq.orange.ai.common.biz.workflow.constant.WorkflowStatusEnum;
 import cn.hengzq.orange.ai.common.biz.workflow.dto.*;

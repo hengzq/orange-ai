@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.hengzq.orange.ai.core.biz.app.mapper.AppMapper">
+
+
+    <select id="selectAppPage" resultType="cn.hengzq.orange.ai.common.biz.app.dto.AppListResponse">
+        SELECT a.id,
+        a.app_status                                                       AS app_status,
+        IF(draft_v.id IS NOT NULL, draft_v.name, pub_v.name)               AS name,
+        IF(draft_v.id IS NOT NULL, draft_v.description, pub_v.description) AS description,
+
+        a.tenant_id                                                        AS tenant_id,
+        a.created_by                                                       AS created_by,
+        a.created_at                                                       AS created_at,
+        a.updated_by                                                       AS updated_by,
+        a.updated_at                                                       AS updated_at,
+        draft_v.id                                                         AS draft_version_id,
+        pub_v.id                                                           AS published_version_id
+
+        FROM ai_app a
+        LEFT JOIN ai_app_version draft_v ON a.draft_version_id = draft_v.id
+        LEFT JOIN ai_app_version pub_v ON a.published_version_id = pub_v.id
+        <where>
+            <if test="request != null and request.name != null and request.name != ''">
+                AND (
+                (draft_v.id IS NOT NULL AND draft_v.name LIKE CONCAT('%', #{request.name}, '%'))
+                OR
+                (draft_v.id IS NULL AND pub_v.name LIKE CONCAT('%', #{request.name}, '%'))
+                )
+            </if>
+        </where>
+        order by a.updated_at DESC
+    </select>
+
+</mapper>

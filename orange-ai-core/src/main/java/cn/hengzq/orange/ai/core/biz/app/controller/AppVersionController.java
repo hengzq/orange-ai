@@ -1,8 +1,8 @@
 package cn.hengzq.orange.ai.core.biz.app.controller;
 
 
-import cn.hengzq.orange.ai.common.biz.app.vo.AppVersionVO;
-import cn.hengzq.orange.ai.common.biz.app.vo.param.AppVersionPageParam;
+import cn.hengzq.orange.ai.common.biz.app.dto.AppVersionVO;
+import cn.hengzq.orange.ai.common.biz.app.dto.request.AppVersionPageParam;
 import cn.hengzq.orange.ai.common.constant.AIConstant;
 import cn.hengzq.orange.ai.core.biz.app.service.AppVersionService;
 import cn.hengzq.orange.common.dto.PageDTO;

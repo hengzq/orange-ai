@@ -1,7 +1,7 @@
 package cn.hengzq.orange.ai.core.biz.workflow.converter;
 
 
-import cn.hengzq.orange.ai.common.biz.app.vo.AppVersionVO;
+import cn.hengzq.orange.ai.common.biz.app.dto.AppVersionVO;
 import cn.hengzq.orange.ai.common.biz.workflow.dto.WorkflowVersionVO;
 import cn.hengzq.orange.ai.common.biz.workflow.dto.request.AddWorkflowVersionParam;
 import cn.hengzq.orange.ai.common.biz.workflow.dto.request.WorkflowUpdateRequest;

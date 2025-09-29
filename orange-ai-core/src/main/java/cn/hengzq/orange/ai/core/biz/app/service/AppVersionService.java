@@ -1,11 +1,11 @@
 package cn.hengzq.orange.ai.core.biz.app.service;
 
 
-import cn.hengzq.orange.ai.common.biz.app.vo.AppVersionVO;
-import cn.hengzq.orange.ai.common.biz.app.vo.param.AddAppVersionParam;
-import cn.hengzq.orange.ai.common.biz.app.vo.param.AppVersionListParam;
-import cn.hengzq.orange.ai.common.biz.app.vo.param.AppVersionPageParam;
-import cn.hengzq.orange.ai.common.biz.app.vo.param.UpdateAppVersionParam;
+import cn.hengzq.orange.ai.common.biz.app.dto.AppVersionVO;
+import cn.hengzq.orange.ai.common.biz.app.dto.request.AddAppVersionParam;
+import cn.hengzq.orange.ai.common.biz.app.dto.request.AppVersionListParam;
+import cn.hengzq.orange.ai.common.biz.app.dto.request.AppVersionPageParam;
+import cn.hengzq.orange.ai.common.biz.app.dto.request.UpdateAppVersionParam;
 import cn.hengzq.orange.common.dto.PageDTO;
 
 import java.util.List;
